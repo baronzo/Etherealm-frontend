@@ -8,11 +8,11 @@ export default function Navbar() {
     <div id="navbar">
       <div className="pathname">
         <div className="home">
-          <div>Etherealm</div>
+          <NavLink  exact to={'/'}>Etherealm</NavLink>
         </div>
         <div id="groupPath">
           <div className="path">
-            <NavLink to={'/'} activeClassName="active">Home</NavLink>
+            <NavLink exact to={'/'} activeClassName="active">Home</NavLink>
           </div>
           <div className="path">
             <NavLink to={'/map'} activeClassName="active">Map</NavLink>

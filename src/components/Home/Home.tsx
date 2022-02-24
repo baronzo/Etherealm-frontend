@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import './Home.scss'
 
 const Home = () => {
@@ -10,7 +11,9 @@ const Home = () => {
         <div id="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur temporibus nostrum animi non voluptate</div>
         <div className="button">
           <button className="wallet">Connect to a wallet</button>
-        <button className="map">View map</button>
+        <button className="map">
+          <NavLink to={'/map'}>View Map</NavLink>
+        </button>
         </div>
       </div>
       <div id="auction">Auction here</div>
