@@ -1,0 +1,47 @@
+#navbar {
+    position: absolute;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    // height: 55px;
+    box-shadow: -2px 4px 14px -4px rgba(0,0,0,0.53);
+    background-color: #fff;
+    .pathname {
+      display: flex;
+      font-weight: bold;
+      .home {
+        color: #7645D9;
+        font-weight: bold;
+      }
+      #groupPath {
+        display: flex;
+        padding-left: 20%;
+        .path {
+          margin-left: 20px;
+          color: #7645D9;
+          .active {
+            color: #5ABFBC;
+          }
+        }
+      }
+    }
+    .wallet {
+      margin-right: 10px;
+      .metamask {
+        margin-right: 5px;
+        margin-left: 5px;
+      }
+      .connect {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #7645D9;
+        border-radius: 10px;
+        color: #fff;
+        border: none;
+        padding: 5px 10px 5px 0px;
+      }
+    }
+  }

@@ -1,0 +1,98 @@
+#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F6FA;
+    height: 500px;
+    #text {
+      font-size: 48px;
+      font-weight: bold;
+      color: #7645D9;
+    }
+    #description {
+      color: #280D5F;
+    }
+    .button {
+      display: flex;
+      margin-top: 20px;
+      .wallet {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #7645D9;
+        border-radius: 50px;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        margin-right: 10px;
+      }
+      .map {
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #7645D9;
+        background-color: #fff;
+        border-radius: 50px;
+        color: #7645D9;
+        padding: 10px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  #auction {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #land {
+    height: 400px;
+    background: linear-gradient(0.25turn, #5ABFBC, #B4F5F3, #F1FFFF);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .land-box {
+      padding: 10px;
+      .title {
+        font-size: 32px;
+        font-weight: bold;
+      }
+      .text-description {
+        margin-top: 20px 0 20px 0;
+      }
+      .buy-land {
+        border: none;
+        padding: 10px;
+        border-radius: 50px;
+        background-color: #7645D9;
+        width: 150px;
+        color: #fff;
+        margin-top: 20px;
+      }
+    }
+  }
+  
+  @media screen and (max-width: 1024px) {
+    #home {
+      #description {
+        text-align: center;
+      }
+    }
+    #land {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .land-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .text-description {
+          text-align: center;
+        }
+      }
+    }
+  }
