@@ -110,15 +110,15 @@ export default function Map({ }: Props) {
                 //     context.save();
                 // })
 
-                // for (let x = 0; x < width; x+=20) {
-                //     for (let y = 0; y < height; y+=20) {
-                //         context.fillStyle = "#2AC161";
-                //         context.fillRect(x, y, box, box);
-                //         context.strokeStyle = "#323232";
-                //         context.strokeRect(x, y, box, box);
-                //         context.save();
-                //     }
-                // }
+                for (let x = 0; x < width; x+=20) {
+                    for (let y = 0; y < height; y+=20) {
+                        context.fillStyle = "#2AC161";
+                        context.fillRect(x, y, box, box);
+                        context.strokeStyle = "#323232";
+                        context.strokeRect(x, y, box, box);
+                        context.save();
+                    }
+                }
 
                 // // วาดเส้นแนวตั้ง
                 // for (let x = startLocation.x; x <= width + startLocation.x; x += box) {

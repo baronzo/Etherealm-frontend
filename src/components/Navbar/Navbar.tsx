@@ -12,7 +12,11 @@ export default function Navbar() {
         </div>
         <div id="groupPath">
           <div className="path">
+<<<<<<< HEAD
             <NavLink exact to={'/'} activeClassName="active">Home</NavLink>
+=======
+            <NavLink to={'/'} exact activeClassName="active">Home</NavLink>
+>>>>>>> c6c55c9fd06657b8c0e7fdf9a345f53ee4250206
           </div>
           <div className="path">
             <NavLink to={'/map'} activeClassName="active">Map</NavLink>
