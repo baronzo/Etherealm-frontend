@@ -1,0 +1,25 @@
+#mapMain {
+  $navBarHeight: 55px;
+  $minimapMarginTop: $navBarHeight + 10px;
+  width: 100vw;
+  height: 100vh;
+  #miniMapBox {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: $minimapMarginTop 0 0 10px;
+      width: 200px;
+      height: 200px;
+      background-color: #fff;
+      #minimap {
+          background-color: rgb(53, 53, 53);
+          width: 100%;
+          height: 100%;
+      }
+  }
+  #canvas {
+      background-color: #00B0FF;
+      width: 100%;
+      height: 100%;
+  }
+}

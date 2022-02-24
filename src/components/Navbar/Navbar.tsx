@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
 
 export default function Navbar() {
@@ -11,10 +12,10 @@ export default function Navbar() {
         </div>
         <div id="groupPath">
           <div className="path">
-           <div>Home</div>
+            <NavLink to={'/'} activeClassName="active">Home</NavLink>
           </div>
           <div className="path">
-            <div>Map</div>
+            <NavLink to={'/map'} activeClassName="active">Map</NavLink>
           </div>
           <div className="path">
             <div>Market</div>
