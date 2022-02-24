@@ -12,7 +12,7 @@ export default function Navbar() {
         </div>
         <div id="groupPath">
           <div className="path">
-            <NavLink to={'/'} activeClassName="active">Home</NavLink>
+            <NavLink to={'/'} exact activeClassName="active">Home</NavLink>
           </div>
           <div className="path">
             <NavLink to={'/map'} activeClassName="active">Map</NavLink>

@@ -12,6 +12,7 @@ export default function Layout(): ReactElement {
             <Switch>
                 <Route exact path='/' component={Home}/>
                 <Route exact path='/map' component={Map} />
+                <Route exact path='*' component={Home} />
             </Switch>
             
         </div>
