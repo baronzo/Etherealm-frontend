@@ -164,6 +164,9 @@
                         .textCard {
                             font-size: 18px;
                             font-weight: 500;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                             #textToken {
                                 color: #9A9A9A;
                                 font-size: 16px;

@@ -88,7 +88,7 @@ export default function Bid({ }: Props) {
                                     <label id='textCard'>X: 99, Y:199</label>
                                 </div>
                                 <div className='textCard'>
-                                    <label id='textToken'>0xcc896c2cdd10abaeas06...</label>
+                                    <label id='textToken'>0xcc896c2cdd10abaea84da606344x3455u8gh366989836778256dgh33</label>
                                 </div>
                             </div>
                             <div className='textBody'>
