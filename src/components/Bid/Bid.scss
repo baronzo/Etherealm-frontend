@@ -1,0 +1,164 @@
+#bidLayout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #FFFFFF;
+    height: 100%;
+    width: 100%;
+    padding-top: 3%;
+    padding-left: 5%;
+    .detailMain {
+        display: flex;
+        .imgMain {
+            #imgLand {
+                width: 320px;
+                height: 400px;
+                border-radius: 10px;
+            }
+        }
+        .landLayout {
+            padding-left: 30px;
+            font-weight: bold;
+            width: 500px;
+            .textMain {
+                color: #7645D9;
+                .textName {
+                    font-size: 24px;
+                }
+                .textTime {
+                    padding-top: 15px;
+                    font-size: 20px;
+                }
+                .textBox {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-top: 10px;
+                    font-size: 18px;
+                    .textLayout {
+                        display: flex;
+                        flex-direction: column;
+                        .text {
+                            padding-top: 5px;
+                            #textCount {
+                                color: #5ABFBC;
+                                padding-right: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .buttonLayout {
+            padding-top: 30px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            #bar {
+                display: flex;
+                justify-content: center;
+                width: 600px;
+                border: 1px solid #C4C4C4;
+            }
+            .buttonMain {
+                padding-top: 30px;
+                display: flex;
+                justify-content: space-around;
+                .buttoninput {
+                    #button1 {
+                        font-size: 18px;
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 4px;
+                        font-weight: bold;
+                        color: #ffff;
+                        background: #7645D9;
+                        border-radius: 4px 0px 0px 4px;
+                    }
+                    #button2 {
+                        font-size: 18px;
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 4px;
+                        font-weight: bold;
+                        color: #ffff;
+                        background: #7645D9;
+                        border-radius: 0px 4px 4px 0px;
+                    }
+                    #input {
+                        width: 100px;
+                        height: 45px;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                }
+                .buttonbid {
+                    #button {
+                        font-size: 18px;
+                        width: 150px;
+                        height: 45px;
+                        border-radius: 4px;
+                        font-weight: bold;
+                        color: #ffff;
+                        background: #7645D9;
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
+    }
+    .otherMain {
+        padding-top: 20px;
+        #text {
+            color: #7645D9;
+            font-weight: bold;
+            font-size: 20px;
+            
+        }
+        #bar {
+            display: flex;
+                justify-content: center;
+                width: 95%;
+                border: 1px solid #C4C4C4;
+        }
+        .slideMain {
+            padding-top: 10px;
+            padding-bottom: 15px;
+            width: 95%;
+            .cardMain {
+                .bodyCard {
+                    width: 225px;
+                    height: 300px;
+                    box-shadow: 0px 4px 7px 2px rgba(0, 0, 0, 0.25);
+                    border-radius: 10px;
+                    #img {
+                        width: 225px;
+                        height: 150px;
+                        background: #CACACA;
+                        border-radius: 10px 10px 0px 0px;
+                    }
+                    .detailMain {
+                        width: 225px;
+                        display: flex;
+                        flex-direction: column;
+                        padding-left: 10px;
+                        .textCard {
+                            font-size: 18px;
+                            font-weight: 500;
+                            #textToken {
+                                color: #9A9A9A;
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                    .textBody {
+                        color: #7645D9;
+                        font-weight: bold;
+                        padding: 30px 10px 0px 10px;
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+    }
+}
