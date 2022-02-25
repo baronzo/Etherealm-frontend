@@ -23,7 +23,7 @@ export default function Map({ }: Props) {
     const [cameraMouseFocus, setCameraMouseFocus] = useState({ x: 0, y: 0 })
     const [cameraOffSet, setCameraOffSet] = useState({x: 0, y: 0})
     let cameraZoom = 1;
-    let MAX_ZOOM = 1.5;
+    let MAX_ZOOM = 5;
     let MIN_ZOOM = 0.5;
     let SCROLL_SENSITIVITY = -0.0006;
 
@@ -92,20 +92,17 @@ export default function Map({ }: Props) {
         if (canvasMinimapViewportRef.current && canvasMinimapRef.current) {
             const minimapViewportContext = canvasMinimapViewportRef.current?.getContext("2d")
             if (minimapViewportContext) {
-
-                minimapViewportContext.translate(canvasMinimapViewportRef.current.width / 2, canvasMinimapViewportRef.current.height / 2)
-                minimapViewportContext.scale(cameraZoom, cameraZoom)
-                minimapViewportContext.translate(-canvasMinimapViewportRef.current.width / 2 + cameraOffSet.x, -canvasMinimapViewportRef.current.height / 2 + cameraOffSet.y)
-                
                 canvasMinimapViewportRef.current.width = canvasMinimapRef.current.width
                 canvasMinimapViewportRef.current.height = canvasMinimapRef.current.height
                 minimapViewportContext.fillStyle = "#00000033";
                 minimapViewportContext.fillRect(0, 0, canvasMinimapViewportRef.current.width, canvasMinimapViewportRef.current.height);
-                
                 context = canvasRef.current?.getContext("2d")
                 const rect = canvasRef?.current?.getBoundingClientRect()
-                // minimapViewportContext.clearRect(cameraOffSet.x / 5, cameraOffSet.y / 5, 50, 50)
-                minimapViewportContext.clearRect(0 - (cameraOffSet.x / 5), 0 - (cameraOffSet.y / 5), (rect?.width! / 5) , (rect?.height! / 5) )
+                minimapViewportContext.strokeStyle = "red";
+                let startX = (((rect?.width! / 5) / 2) - ((cameraOffSet.x) / 5)) - (((rect?.width! / 5) / cameraZoom) / 2)
+                let startY = (((rect?.height! / 5) / 2) - (cameraOffSet.y / 5)) - (((rect?.height! / 5) / cameraZoom) / 2)
+                minimapViewportContext.clearRect(startX, startY, (((rect?.width! / 5) / cameraZoom)) , (((rect?.height! / 5) / cameraZoom)))
+                minimapViewportContext.strokeRect(startX, startY, (((rect?.width! / 5) / cameraZoom)) , (((rect?.height! / 5) / cameraZoom)))
                 minimapViewportContext.save();
             }
         }
@@ -117,8 +114,6 @@ export default function Map({ }: Props) {
             const rect = canvasRef.current.getBoundingClientRect();
             canvasRef.current.width = window.innerWidth
             canvasRef.current.height = window.innerHeight - navbarSize
-            // console.log(rect)
-
             if (context) {
                 // context.translate(cameraMouseFocusRef.current.x, cameraMouseFocusRef.current.y);
                 // context.scale(cameraZoom, cameraZoom);
@@ -248,6 +243,7 @@ export default function Map({ }: Props) {
             cameraOffSet.x = getEventLocation(e)?.x / cameraZoom - dragStart.x
             cameraOffSet.y = getEventLocation(e)?.y / cameraZoom - dragStart.y
             isOnMouseDragging = true
+            console.log(cameraOffSet)
         }
         // console.log(getEventLocation(e)?.x / cameraZoom - dragStart.x, getEventLocation(e)?.y / cameraZoom - dragStart.y)
         currentTransformedCursor = getTransformedPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
@@ -298,6 +294,7 @@ export default function Map({ }: Props) {
         if (!isDragging) {
             if (zoomAmount) {
                 cameraZoom += zoomAmount
+                // console.log(cameraZoom)
             }
             else if (zoomFactor) {
                 cameraZoom = zoomFactor * lastZoom
