@@ -16,7 +16,7 @@ export default function Market() {
         <div className='topic-div'>
           <p className='topic-text'>NFTs Lands</p>
         </div>
-        <div className='auction-land-container'>
+        <div className='market-land-container'>
           <div className='land-card'>
             <div className='land-image-div'>
               <img className='land-image' src="/land.png" alt="" />
