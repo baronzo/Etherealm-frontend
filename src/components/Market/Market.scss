@@ -1,0 +1,46 @@
+#market {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  #menu {
+    padding: 5px;
+    display: flex;
+    width: 250px;
+    justify-content: space-around;
+    border: 1px solid #c4c4c4;
+    border-radius: 50px;
+    box-shadow: -5px 3px 19px -2px rgba(0,0,0,0.46);
+    .for-buy {
+      margin-right: 0px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #7645D9;
+      border-radius: 50px;
+      width: 120px;
+      text-align: center;
+      padding: 5px 0 5px 0;
+    }
+    .for-rent {
+      font-weight: bold;
+      color: #7645D9;
+      text-align: center;
+      padding: 5px 0 5px 0;
+      width: 120px;
+    }
+  }
+  #marketText {
+    color: #7645D9;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  #cardsBox {
+    display: flex;
+    #cards {
+      width: 225px;
+      background-color: #7645D9;
+      height: 300px;
+      border-radius: 10px;
+    }
+  }
+}
