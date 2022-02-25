@@ -1,12 +1,15 @@
 import React from 'react';
 import Layout from './components/Layout/Layout';
 import './App.scss';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
-    <React.Fragment>
-      <Layout />
-    </React.Fragment>
+    <BrowserRouter>
+      <React.Fragment>
+        <Layout />
+      </React.Fragment>
+    </BrowserRouter>
   );
 }
 

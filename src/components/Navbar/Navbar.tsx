@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
 
 export default function Navbar() {
@@ -7,14 +8,14 @@ export default function Navbar() {
     <div id="navbar">
       <div className="pathname">
         <div className="home">
-          <div>Etherealm</div>
+          <NavLink  exact to={'/'}>Etherealm</NavLink>
         </div>
         <div id="groupPath">
           <div className="path">
-           <div>Home</div>
+            <NavLink to={'/'} exact activeClassName="active">Home</NavLink>
           </div>
           <div className="path">
-            <div>Map</div>
+            <NavLink to={'/map'} activeClassName="active">Map</NavLink>
           </div>
           <div className="path">
             <div>Market</div>

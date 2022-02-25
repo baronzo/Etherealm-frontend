@@ -5,9 +5,9 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    // height: 55px;
+    height: 55px;
     box-shadow: -2px 4px 14px -4px rgba(0,0,0,0.53);
-    background-color: #fff;
+    background-color: #ffffff;
     .pathname {
       display: flex;
       font-weight: bold;
@@ -21,6 +21,9 @@
         .path {
           margin-left: 20px;
           color: #7645D9;
+          .linkText {
+            color: #7645D9;
+          }
           .active {
             color: #5ABFBC;
           }
