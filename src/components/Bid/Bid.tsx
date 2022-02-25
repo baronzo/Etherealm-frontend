@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { MdLocationOn } from 'react-icons/md'
+import { FaGavel } from 'react-icons/fa'
 import './Bid.scss'
 
 type Props = {}
 
 export default function Bid({ }: Props) {
+    const [count, setCount] = useState(0)
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    const addNumber = () => {
+        setCount(count+0.01)
+      }
+    const removeNumber = () => {
+        if(count === 0.01){
+            setIsDisabled(!isDisabled)
+        }
+        else if (count >= 0.01) {
+            setIsDisabled(isDisabled)
+            setCount(count-0.01)
+        }
+      }
     return (
         <div id="bidLayout">
             <div className='detailMain'>
@@ -42,9 +59,9 @@ export default function Bid({ }: Props) {
                             <div id='bar'></div>
                         <div className='buttonMain'>
                             <div className='buttoninput'>
-                                <button  id='button1' className='bidCount'>-</button>
-                                    <input id='input' className='bidCount' type="number" step="0.01" min="0.01"/>
-                                <button  id='button2' className='bidCount'>+</button>
+                                <button  id='button1' className='bidCount' disabled={isDisabled} onClick={removeNumber}>-</button>
+                                    <input id='input' className='bidCount' disabled={true} type="number" value={count.toFixed(2)} step="0.01" min="0.01"/>
+                                <button  id='button2' className='bidCount' onClick={addNumber}>+</button>
                             </div>
                             <div className='buttonbid'>
                                 <button id='button' className='bidAdd'>Bid</button>
@@ -67,6 +84,7 @@ export default function Bid({ }: Props) {
                                     <label id='textCard'>LAND (99, 199)</label>
                                 </div>
                                 <div className='textCard'>
+                                    <MdLocationOn className='location-icon' />
                                     <label id='textCard'>X: 99, Y:199</label>
                                 </div>
                                 <div className='textCard'>
@@ -78,6 +96,7 @@ export default function Bid({ }: Props) {
                                     <label id='textTime'>00:00:01</label>
                                 </div>
                                 <div className='textBid'>
+                                    <FaGavel className='gavel-icon' />
                                     <label id='textBid'>0.05 eth</label>
                                 </div>
                             </div>
