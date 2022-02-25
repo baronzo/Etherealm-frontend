@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './Map.scss'
 
 type Props = {}
@@ -18,6 +18,7 @@ export default function Map({ }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     let canvasMinimapRef = useRef<HTMLCanvasElement>(null)
     let canvasMinimapViewportRef = useRef<HTMLCanvasElement>(null)
+    let zoomRangeRef = useRef<HTMLInputElement>(null)
     let context: any = null
 
     const [cameraMouseFocus, setCameraMouseFocus] = useState({ x: 0, y: 0 })
@@ -25,7 +26,7 @@ export default function Map({ }: Props) {
     let cameraZoom = 1;
     let MAX_ZOOM = 5;
     let MIN_ZOOM = 0.5;
-    let SCROLL_SENSITIVITY = -0.0006;
+    let SCROLL_SENSITIVITY = -0.0005;
 
     let isDragging = false
     let isOnMouseDragging = false
@@ -45,6 +46,7 @@ export default function Map({ }: Props) {
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
         cameraZoom = cameraZoomRef.current
+        
         const update = () => {
             cameraZoomRef.current = drawboard()
             drawMinimap()
@@ -54,13 +56,10 @@ export default function Map({ }: Props) {
     })
 
     useEffect(() => {
-        // drawMinimap()
-        // setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
-        if (canvasRef.current) {
-            context = canvasRef.current?.getContext("2d")
-            const rect = canvasRef.current.getBoundingClientRect()
-            // setCameraOffSet({x: (rect.width / 2) - (width / 2), y: ((rect.height - navbarSize) / 2) - (height / 2)})
+        if (zoomRangeRef.current) {
+            zoomRangeRef.current.value = String(cameraZoom)
         }
+        setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
     }, [])
 
 
@@ -94,7 +93,7 @@ export default function Map({ }: Props) {
             if (minimapViewportContext) {
                 canvasMinimapViewportRef.current.width = canvasMinimapRef.current.width
                 canvasMinimapViewportRef.current.height = canvasMinimapRef.current.height
-                minimapViewportContext.fillStyle = "#00000033";
+                minimapViewportContext.fillStyle = "#0000006c";
                 minimapViewportContext.fillRect(0, 0, canvasMinimapViewportRef.current.width, canvasMinimapViewportRef.current.height);
                 context = canvasRef.current?.getContext("2d")
                 const rect = canvasRef?.current?.getBoundingClientRect()
@@ -162,9 +161,6 @@ export default function Map({ }: Props) {
                 //     context.fillStyle = "#2AC161";
                 //     context.fillRect(startLocation.x, startLocation.y, width, height);
                 // }
-
-                context.strokeStyle = "black";
-                context.stroke();
 
                 changeSelectedColor(xy?.x!, xy?.y!)
                 
@@ -243,7 +239,6 @@ export default function Map({ }: Props) {
             cameraOffSet.x = getEventLocation(e)?.x / cameraZoom - dragStart.x
             cameraOffSet.y = getEventLocation(e)?.y / cameraZoom - dragStart.y
             isOnMouseDragging = true
-            console.log(cameraOffSet)
         }
         // console.log(getEventLocation(e)?.x / cameraZoom - dragStart.x, getEventLocation(e)?.y / cameraZoom - dragStart.y)
         currentTransformedCursor = getTransformedPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
@@ -283,27 +278,39 @@ export default function Map({ }: Props) {
         }
     }
 
-    function adjustZoom(e: any, zoomFactor: any) {
+    function adjustZoom(e: any, zoomFactor: any, zoom: number | null = null) {
         // let currentTargetRect = zoomAmount.currentTarget.getBoundingClientRect();
         // const event_offsetX = zoomAmount.pageX - currentTargetRect.left,
         // event_offsetY = zoomAmount.pageY - currentTargetRect.top;
         // console.log(event_offsetX + cameraOffSet.x, event_offsetY + cameraOffSet.y)
         // cameraMouseFocusRef.current = {x: event_offsetX, y: event_offsetY}
 
-        let zoomAmount = e.deltaY * SCROLL_SENSITIVITY
         if (!isDragging) {
+            if (zoom) {
+                cameraZoom = zoom
+                return
+            }
+            let zoomAmount = e.deltaY * SCROLL_SENSITIVITY
             if (zoomAmount) {
                 cameraZoom += zoomAmount
-                // console.log(cameraZoom)
+                if (zoomRangeRef.current) {
+                    zoomRangeRef.current.value = String(cameraZoom)
+                }
             }
             else if (zoomFactor) {
                 cameraZoom = zoomFactor * lastZoom
             }
             cameraZoom = Math.min(cameraZoom, MAX_ZOOM)
             cameraZoom = Math.max(cameraZoom, MIN_ZOOM)
-            // cameraMouseFocusRef.current = {x: currentTransformedCursor.x + cameraOffSet.x, y: currentTransformedCursor.y + cameraOffSet.y}
-            // cameraMouseFocusRef.current = {x: event_offsetX + cameraOffSet.x, y: event_offsetY + cameraOffSet.y}
         }
+    }
+
+    function onInputRange(event: ChangeEvent<HTMLInputElement>) {
+        adjustZoom(null, null, Number(event.target.value))
+    }
+
+    function onDecreaseOrIncreaseZoom(value: number) {
+        adjustZoom(null, null, cameraZoom + (0.025 * value))
     }
     
     return (
@@ -311,6 +318,13 @@ export default function Map({ }: Props) {
         <div id="miniMapBox">
             <canvas id="minimap" ref={canvasMinimapRef}></canvas>
             <canvas id="minimapViewport" ref={canvasMinimapViewportRef}></canvas>
+            <div id="minimapZoomRangeBox">
+                <button className='zoom-button' onClick={() => onDecreaseOrIncreaseZoom(-1)}>-</button>
+                <input type="range" name="" id="zoomRange" min={MIN_ZOOM} max={MAX_ZOOM} step={Math.abs(SCROLL_SENSITIVITY)} ref={zoomRangeRef} 
+                    onInput={(event: ChangeEvent<HTMLInputElement>) => onInputRange(event)}
+                />
+                <button className='zoom-button' onClick={() => onDecreaseOrIncreaseZoom(1)}>+</button>
+            </div>
         </div>
         <canvas
             id="canvas"
