@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './Map.scss'
 
@@ -11,9 +12,11 @@ interface LocationModel {
 export default function Map({ }: Props) {
     const callbackKeyRef = useRef(-1);
 
-    const width = 1000;
-    const height = 1000;
+    const navbarSize: number = 55
+    const width = 2000;
+    const height = 2000;
     const box = 20
+    let viewScale = 5
     const [xy, setXy] = useState<LocationModel | null>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
     let canvasMinimapRef = useRef<HTMLCanvasElement>(null)
@@ -39,8 +42,9 @@ export default function Map({ }: Props) {
     
     const cameraZoomRef = useRef(cameraZoom)
     const cameraMouseFocusRef = useRef(cameraMouseFocus)
-    const mapPosition: any = []
-    const navbarSize: number = 55
+    const [mapPosition, setmapPosition] = useState([])
+    // const mapPosition: any = []
+
 
     
     useEffect(() => {
@@ -60,27 +64,37 @@ export default function Map({ }: Props) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
+        getMapDataFromApi()
     }, [])
 
-
-    async function getMapPosition() {
-
+    async function getMapDataFromApi() {
+        try {
+            let res = await axios.get('http://localhost:9999/map')
+            setmapPosition(res.data)
+        } catch (error) {
+            
+        }
     }
-    
+
     function drawMinimap() {
         if (canvasMinimapRef.current && canvasRef.current) {
             const minimapContext = canvasMinimapRef.current?.getContext("2d")
             if (minimapContext) {
-                let viewScale = 5
+                
                 canvasMinimapRef.current.width = width / viewScale
                 canvasMinimapRef.current.height = height / viewScale
-                for (let x = 0; x < canvasMinimapRef.current.width; x+=(box/viewScale)) {
-                    for (let y = 0; y < canvasMinimapRef.current.height; y+=(box/viewScale)) {
-                        minimapContext.fillStyle = "#2AC161";
-                        minimapContext.fillRect(x, y, box/viewScale, box/viewScale);
-                        minimapContext.save();
-                    }
-                }
+                // for (let x = 0; x < canvasMinimapRef.current.width; x+=(box/viewScale)) {
+                //     for (let y = 0; y < canvasMinimapRef.current.height; y+=(box/viewScale)) {
+                //         minimapContext.fillStyle = "#2AC161";
+                //         minimapContext.fillRect(x, y, box/viewScale, box/viewScale);
+                //         minimapContext.save();
+                //     }
+                // }
+                mapPosition.forEach(item => {
+                    minimapContext.fillStyle = "#2AC161";
+                    minimapContext.fillRect(item['start']['x'] / viewScale, item['start']['y'] / viewScale, (item['end']['x'] - item['start']['x']) / viewScale, (item['end']['y'] - item['start']['y']) / viewScale);
+                    minimapContext.save();
+                })
                 changeSelectedColorOnMinimap(xy?.x!, xy?.y!)
                 drawViewportOnMinimap()
             }
@@ -98,10 +112,10 @@ export default function Map({ }: Props) {
                 context = canvasRef.current?.getContext("2d")
                 const rect = canvasRef?.current?.getBoundingClientRect()
                 minimapViewportContext.strokeStyle = "red";
-                let startX = (((rect?.width! / 5) / 2) - ((cameraOffSet.x) / 5)) - (((rect?.width! / 5) / cameraZoom) / 2)
-                let startY = (((rect?.height! / 5) / 2) - (cameraOffSet.y / 5)) - (((rect?.height! / 5) / cameraZoom) / 2)
-                minimapViewportContext.clearRect(startX, startY, (((rect?.width! / 5) / cameraZoom)) , (((rect?.height! / 5) / cameraZoom)))
-                minimapViewportContext.strokeRect(startX, startY, (((rect?.width! / 5) / cameraZoom)) , (((rect?.height! / 5) / cameraZoom)))
+                let startX = (((rect?.width! / viewScale) / 2) - ((cameraOffSet.x) / viewScale)) - (((rect?.width! / viewScale) / cameraZoom) / 2)
+                let startY = (((rect?.height! / viewScale) / 2) - (cameraOffSet.y / viewScale)) - (((rect?.height! / viewScale) / cameraZoom) / 2)
+                minimapViewportContext.clearRect(startX, startY, (((rect?.width! / viewScale) / cameraZoom)) , (((rect?.height! / viewScale) / cameraZoom)))
+                minimapViewportContext.strokeRect(startX, startY, (((rect?.width! / viewScale) / cameraZoom)) , (((rect?.height! / viewScale) / cameraZoom)))
                 minimapViewportContext.save();
             }
         }
@@ -114,57 +128,27 @@ export default function Map({ }: Props) {
             canvasRef.current.width = window.innerWidth
             canvasRef.current.height = window.innerHeight - navbarSize
             if (context) {
-                // context.translate(cameraMouseFocusRef.current.x, cameraMouseFocusRef.current.y);
-                // context.scale(cameraZoom, cameraZoom);
-                // context.translate(-cameraMouseFocusRef.current.x + cameraOffSet.x, -cameraMouseFocusRef.current.y + cameraOffSet.y);
-
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)
                 context.translate(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
-                // console.log(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
-
-                // context.translate(cameraMouseFocusRef.current.x, cameraMouseFocusRef.current.y)
-                // context.scale(cameraZoom, cameraZoom)
-                // context.translate(-cameraMouseFocusRef.current.x + cameraOffSet.x, -cameraMouseFocusRef.current.y + cameraOffSet.y)
-
-
-                // mapPosition.forEach(item => {
-                //     context.fillStyle = "#2AC161";
-                //     context.fillRect(item.start.x, item.start.y, item.end.x - item.start.x, item.end.y - item.start.y);
-                //     context.strokeStyle = "#323232";
-                //     context.strokeRect(item.start.x, item.start.y, item.end.x - item.start.x, item.end.y - item.start.y);
-                //     context.save();
-                // })
-
-                for (let x = 0; x < width; x+=20) {
-                    for (let y = 0; y < height; y+=20) {
-                        context.fillStyle = "#2AC161";
-                        context.fillRect(x, y, box, box);
-                        context.strokeStyle = "#ffffff";
-                        context.strokeRect(x, y, box, box);
-                        context.save();
-                    }
-                }
-
-                // // วาดเส้นแนวตั้ง
-                // for (let x = startLocation.x; x <= width + startLocation.x; x += box) {
-                //     context.moveTo(x, startLocation.y)
-                //     context.lineTo(x, height + startLocation.y)
-                //     context.fillStyle = "#2AC161";
-                //     context.fillRect(startLocation.x, startLocation.y, width, height);
+                // for (let x = 0; x < width; x+=20) {
+                //     for (let y = 0; y < height; y+=20) {
+                //         context.fillStyle = "#2AC161";
+                //         context.fillRect(x, y, box, box);
+                //         context.strokeStyle = "#ffffff";
+                //         context.strokeRect(x, y, box, box);
+                //         context.save();
+                //     }
                 // }
-
-                // // วาดเส้นแนวนอน
-                // for (let y = startLocation.y; y <= height + startLocation.y; y += box) {
-                //     context.moveTo(startLocation.x, y)
-                //     context.lineTo(width + startLocation.x, y)
-                //     context.fillStyle = "#2AC161";
-                //     context.fillRect(startLocation.x, startLocation.y, width, height);
-                // }
+                mapPosition.forEach(item => {
+                    context.fillStyle = "#2AC161";
+                    context.fillRect(item['start']['x'], item['start']['y'], item['end']['x'] - item['start']['x'], item['end']['y'] - item['start']['y']);
+                    context.strokeStyle = "#ffffff";
+                    context.strokeRect(item['start']['x'], item['start']['y'], item['end']['x'] - item['start']['x'], item['end']['y'] - item['start']['y']);
+                    context.save();
+                })
 
                 changeSelectedColor(xy?.x!, xy?.y!)
-                
-
             }
         }
         return cameraZoom
@@ -196,9 +180,9 @@ export default function Map({ }: Props) {
         if (canvasMinimapRef.current) {
             const newContext = canvasMinimapRef.current?.getContext("2d");
             if (newContext) {
-                if (x <= width/(box/5) && x > 0 && y <= height/(box/5) && y > 0) {
+                if (x <= width/(box/viewScale) && x > 0 && y <= height/(box/viewScale) && y > 0) {
                     newContext.fillStyle = "#ED1E79";
-                    newContext.fillRect((x * (box/5) - (box/5)), (y * (box/5) - (box/5)), (box/5), (box/5))
+                    newContext.fillRect((x * (box/viewScale) - (box/viewScale)), (y * (box/viewScale) - (box/viewScale)), (box/viewScale), (box/viewScale))
                     newContext.save();
                 }
             }
@@ -213,8 +197,6 @@ export default function Map({ }: Props) {
                 const y = (currentTransformedCursor.y + navbarSize) - ((rect.top));
                 const cy = ((y) + (box - ((y) % box))) / box;
                 const cx = ((x) + (box - ((x) % box))) / box;
-                console.log(cameraOffSet)
-                console.log(rect)
                 setXy({x: cx, y: cy})
             }
             
@@ -240,7 +222,6 @@ export default function Map({ }: Props) {
             cameraOffSet.y = getEventLocation(e)?.y / cameraZoom - dragStart.y
             isOnMouseDragging = true
         }
-        // console.log(getEventLocation(e)?.x / cameraZoom - dragStart.x, getEventLocation(e)?.y / cameraZoom - dragStart.y)
         currentTransformedCursor = getTransformedPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
     }
 
@@ -282,9 +263,7 @@ export default function Map({ }: Props) {
         // let currentTargetRect = zoomAmount.currentTarget.getBoundingClientRect();
         // const event_offsetX = zoomAmount.pageX - currentTargetRect.left,
         // event_offsetY = zoomAmount.pageY - currentTargetRect.top;
-        // console.log(event_offsetX + cameraOffSet.x, event_offsetY + cameraOffSet.y)
         // cameraMouseFocusRef.current = {x: event_offsetX, y: event_offsetY}
-
         if (!isDragging) {
             if (zoom) {
                 cameraZoom = zoom
