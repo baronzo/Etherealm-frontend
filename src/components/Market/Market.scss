@@ -1,46 +1,182 @@
 #market {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  padding: 30px;
+  width: 100vw;
+  height: 100%;
+  padding: 60px 0 60px 0;
+  margin: 0;
   #menu {
+    width: 1060px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
     padding: 5px;
-    display: flex;
-    width: 250px;
-    justify-content: space-around;
-    border: 1px solid #c4c4c4;
-    border-radius: 50px;
-    box-shadow: -5px 3px 19px -2px rgba(0,0,0,0.46);
-    .for-buy {
-      margin-right: 0px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #7645D9;
+    #menuButton {
+      display: flex;
+      padding: 5px;
+      box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
       border-radius: 50px;
-      width: 120px;
-      text-align: center;
-      padding: 5px 0 5px 0;
-    }
-    .for-rent {
-      font-weight: bold;
-      color: #7645D9;
-      text-align: center;
-      padding: 5px 0 5px 0;
-      width: 120px;
+      .for-buy {
+        margin-right: 0px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #7645D9;
+        border-radius: 50px;
+        width: 120px;
+        text-align: center;
+        padding: 5px 0 5px 0;
+      }
+      .for-rent {
+        font-weight: bold;
+        color: #7645D9;
+        text-align: center;
+        padding: 5px 0 5px 0;
+        width: 120px;
+      }
     }
   }
-  #marketText {
-    color: #7645D9;
-    font-size: 32px;
-    font-weight: bold;
-  }
-  #cardsBox {
+  .show-land{
+    width: 1060px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    .topic-div {
+        margin: 0;
+        padding: 0;
+        .topic-text {
+            margin: 0;
+            color: #7645D9;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
+    .auction-land-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        column-gap: 15px;
+        row-gap: 15px;
+        margin: 0;
+        padding: 15px 0 0 0;
+        .land-card {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            height: 280px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
+            }
+            .land-image-div {
+                background-color: #b6ffff;
+                margin: 0;
+                padding: 0;
+                height: 150px;
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+                .land-image {
+                    margin: 0;
+                    height: 140px;
+                    width: 200px;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+            .land-detail {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                margin: 0;
+                padding: 10px ;
+                border-radius: 0 0 10px 10px;
+                width: 100%;
+                height: 130px;
+                .name-location{
+                    width: 100%;
+                    height: 70%;
+                    margin: 0;
+                    padding: 0;
+                    .land-name {
+                        margin: 0;
+                        padding: 0;
+                        .land-name-text {
+                            margin: 0;
+                            font-size: 17px;
+                            font-weight: bold;
+                            color: black;
+                        }
+                    }
+                    .location-div {
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        margin: 0;
+                        padding: 0;
+                        .location-icon {
+                            margin-right: 2px;
+                            font-size: 21px;
+                            color: #7645D9;
+                        }
+                        .location {
+                            margin: 0;
+                            font-size: 15px;
+                            color: black;
+                            font-weight: 500;
+                        }
+                    }
+                    .wallet-div {
+                        margin: 0;
+                        padding-top: 7px;
+                        .owner-wallet {
+                            width: 180px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            margin: 0;
+                            font-size: 14px;
+                            color: #9A9A9A;
+                            font-weight: 600;
+                        }
+                    }
+                }
+                .button {
+                  padding: 5px;
+                  background-color: #7645D9;
+                  border-radius: 10px;
+                  width: 180px;
+                  .button-buy {
+                    text-align: center;
+                    color: #fff;
+                    font-weight: bold
+                  }
+                }
+            }
+        }
+    }
+}
+.pagination-container {
     display: flex;
-    #cards {
-      width: 225px;
-      background-color: #7645D9;
-      height: 300px;
-      border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 1060px;
+    margin: 0;
+    padding: 0;
+    .pagination {
+        width: 700px;
+        height: 40px;
+        background-color: #b6ffff;
+        border-radius: 5px;
+        margin: 0;
+        padding: 0;
     }
-  }
+}
 }
