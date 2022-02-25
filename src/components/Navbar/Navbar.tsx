@@ -21,7 +21,7 @@ export default function Navbar() {
             <div>Market</div>
           </div>
           <div className="path">
-            <div>Auction</div>
+            <NavLink to={'/auction'} activeClassName="active">Auction</NavLink>
           </div>
           <div className="path">
             <div>About</div>
