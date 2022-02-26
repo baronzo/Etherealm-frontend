@@ -136,10 +136,16 @@
                 border: 1px solid #C4C4C4;
         }
         .slideMain {
-            padding-top: 10px;
+            padding-top: 25px;
             padding-bottom: 15px;
             width: 95%;
-            .cardMain {
+            .bidContainer {
+                display: grid;
+                grid-template-columns: repeat(9,1fr);
+                column-gap: 33px;
+                row-gap: 15px;
+                margin: 0 auto;
+                padding: 15px 0 0 0;
                 .bodyCard {
                     width: 225px;
                     height: 300px;

@@ -74,7 +74,7 @@ export default function Bid({ }: Props) {
                 <label id='text'>Other Auction items now :</label>
                     <div id='bar'></div>
                 <div className='slideMain'>
-                    <div className='cardMain'>
+                    <div className='bidContainer'>
                         <div className='bodyCard'>
                             <div className='imgCard'>
                                 <img id='img' src="https://gelending.com/wp-content/uploads/2021/08/the-sandbox.jpg" alt="img-land" />
@@ -101,6 +101,14 @@ export default function Bid({ }: Props) {
                                 </div>
                             </div>
                         </div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
+                        <div className='bodyCard'></div>
                     </div>
                 </div>
             </div>
