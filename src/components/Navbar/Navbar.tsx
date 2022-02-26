@@ -1,29 +1,24 @@
-import { ethers } from 'ethers'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
+import AuthStore from '../../store/auth'
+import { observer } from 'mobx-react'
 
-export default function Navbar() {
+export default observer(function Navbar() {
+  const authStore = useMemo(() => new AuthStore, [])
 
-  const [account, setaccount] = useState('')
-  const [balance, setbalance] = useState(0)
+  useEffect(() => {
+    authStore.checkLogin()
+  }, [])
 
-  async function getProvider() {
-    let eth = (window as any).ethereum
-    if (eth) {
-      let accounts = await eth.request({method: 'eth_requestAccounts'})
-      let resBalance = await eth.request({method: 'eth_getBalance', params: [accounts[0], 'latest']})
-      setbalance(Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4)))
-      setaccount(accounts[0])
-    } else {
-      console.error('Install Metamask')
-    }
+  async function onLogin(): Promise<void> {
+    await authStore.login()
   }
 
-  function logout() {
-    setaccount('')
+  function onLogout(): void {
+    authStore.logout()
   }
-  
+
   return (
     <div id="navbar">
       <div className="pathname">
@@ -48,15 +43,15 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {account ?
+      {authStore.account.tokenId ?
         <div id="account">
-          <div id="accountBalance">Balance: {balance} ETH |</div>
-          <div id="accountAddressToken" title='0x347Aa0FC3E7e4b06AF8515dd265a593410940E05'>0x347Aa0FC3E7e4b06AF8515dd265a593410940E05</div>
-          <button id='logoutBtn' onClick={() => logout()}>Logout</button>
+          <div id="accountBalance">Balance: {authStore.account.balance} ETH |</div>
+          <div id="accountAddressToken" title={authStore.account.tokenId}>{authStore.account.tokenId}</div>
+          <button id='logoutBtn' onClick={() => onLogout()}>Logout</button>
         </div>
       :
         <div className="wallet">
-          <button className="connect" onClick={() => getProvider()}>
+          <button className="connect" onClick={() => onLogin()}>
             <img className="metamask" src="https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png" width="25px" alt="metamask" />
             Connect to a wallet
           </button>
@@ -64,4 +59,4 @@ export default function Navbar() {
       }
     </div>
   )
-}
+})
