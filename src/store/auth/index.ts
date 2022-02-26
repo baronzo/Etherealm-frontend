@@ -7,6 +7,7 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this)
+    this.checkLogin()
   }
 
   @observable 

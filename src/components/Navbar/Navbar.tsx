@@ -3,13 +3,11 @@ import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
 import AuthStore from '../../store/auth'
 import { observer } from 'mobx-react'
+import ContractStore from '../../store/contract'
 
 export default observer(function Navbar() {
   const authStore = useMemo(() => new AuthStore, [])
-
-  useEffect(() => {
-    authStore.checkLogin()
-  }, [])
+  const contractStore = useMemo(() => new ContractStore, [])
 
   async function onLogin(): Promise<void> {
     await authStore.login()
