@@ -37,6 +37,11 @@ class AuthStore {
   }
 
   @action
+  public async accountChange(): Promise<void> {
+    this.account = await this.getAccount()
+  }
+
+  @action
   public async login(): Promise<AccountModel> {
     this.account = await this.getAccount()
     Cookies.set('is_login', 'true', {expires: 1})

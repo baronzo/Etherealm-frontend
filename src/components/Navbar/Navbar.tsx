@@ -19,6 +19,12 @@ export default observer(function Navbar() {
     authStore.logout()
   }
 
+  async function onAccountChangeHandler(): Promise<void> {
+    authStore.accountChange()
+  }
+
+  (window as any).ethereum.on('accountsChanged', onAccountChangeHandler)
+
   return (
     <div id="navbar">
       <div className="pathname">
