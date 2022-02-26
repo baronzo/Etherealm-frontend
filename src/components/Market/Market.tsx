@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
 import '../Market/Market.scss'
 
 export default function Market() {
+  
+  const [isTab, setIsTab] = useState(true)
+
+  function onChangeTab(isTab: boolean ) {
+    setIsTab(isTab)
+  }
+
   return (
     <div id='market'>
       <div id="menu">
         <div id="menuButton">
-        <div className='for-buy'>For Buy</div>
-        <div className='for-rent'>For Rent</div>
+        <div className={`for-buy ${isTab ? 'active' : ''}`} onClick={() => onChangeTab(true)}>For Buy</div>
+        <div className={`for-rent ${!isTab ? 'active' : ''}`} onClick={() => onChangeTab(false)}>For Rent</div>
         </div>
       </div>
       <div className='show-land'>
