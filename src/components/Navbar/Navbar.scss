@@ -31,20 +31,61 @@
       }
     }
     .wallet {
-      margin-right: 10px;
       .metamask {
         margin-right: 5px;
-        margin-left: 5px;
       }
       .connect {
+        width: 165px;
+        height: 35px;
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: #7645D9;
-        border-radius: 10px;
+        border-radius: 5px;
         color: #fff;
         border: none;
-        padding: 5px 10px 5px 0px;
+        padding: 5px 10px;
+        cursor: pointer;
+        &:hover {
+          background-color: #5b26c5;
+        }
+      }
+    }
+    #account {
+      display: flex;
+      flex-direction: row;
+      // width: 300px;
+      justify-content: flex-end;
+      align-items: center;
+      #logoutBtn {
+        height: 35px;
+        width: 80px;
+        background-color: #7645D9;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+        font-weight: bold;
+        &:hover {
+          background-color: #5b26c5;
+        }
+      }
+      #accountBalance {
+        font-weight: bold;
+        color: #7645D9;
+      }
+      #accountAddressToken {
+        margin: 0 10px;
+        width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        font-weight: bold;
+        color: rgb(170, 170, 170);
+        &:hover {
+          color: #5b26c5;
+        }
       }
     }
   }
