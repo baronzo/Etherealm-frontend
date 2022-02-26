@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useContext, useEffect, useMemo } from 'react'
 import Navbar from '../Navbar/Navbar'
 import Home from '../Home/Home'
 import Map from '../Map/Map'
@@ -7,7 +7,6 @@ import Market from '../Market/Market'
 import Auction from '../Auction/Auction'
 import '../Layout/Layout.scss'
 import { Switch, Route } from 'react-router-dom'
-
 
 export default function Layout(): ReactElement {
     return (

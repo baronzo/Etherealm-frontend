@@ -32,10 +32,11 @@
     }
     .wallet {
       .metamask {
-        margin-right: 5px;
+        margin-right: 10px;
+        width: 22px;
+        height: 22px;
       }
       .connect {
-        width: 165px;
         height: 35px;
         display: flex;
         justify-content: center;
@@ -46,6 +47,7 @@
         border: none;
         padding: 5px 10px;
         cursor: pointer;
+        font-weight: bold;
         &:hover {
           background-color: #5b26c5;
         }
@@ -54,7 +56,6 @@
     #account {
       display: flex;
       flex-direction: row;
-      // width: 300px;
       justify-content: flex-end;
       align-items: center;
       #logoutBtn {
