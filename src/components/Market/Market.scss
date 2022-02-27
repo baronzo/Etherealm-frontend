@@ -23,12 +23,16 @@
       .for-buy {
         margin-right: 0px;
         font-weight: bold;
-        color: #fff;
-        background-color: #7645D9;
+        color: #7645D9;
         border-radius: 50px;
         width: 120px;
         text-align: center;
         padding: 5px 0 5px 0;
+        cursor: pointer;
+        &.active {
+            background-color: #7645D9;
+            color: #fff;
+        }
       }
       .for-rent {
         font-weight: bold;
@@ -36,6 +40,12 @@
         text-align: center;
         padding: 5px 0 5px 0;
         width: 120px;
+        cursor: pointer;
+        border-radius: 50px;
+        &.active {
+            background-color: #7645D9;
+            color: #fff;
+        }
       }
     }
   }
@@ -54,7 +64,7 @@
             font-weight: bold;
         }
     }
-    .auction-land-container {
+    .market-land-container {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         column-gap: 15px;
