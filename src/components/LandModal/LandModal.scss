@@ -1,7 +1,7 @@
 #landModal {
   position: absolute;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.534);
   width: 100%;
   height: 100vh;
   top: 0;
@@ -9,7 +9,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.085s ease-out;
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s ease-out;
+  }
+  #landModelBackground {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
   #landBox {
+    position: absolute;
+    z-index: 3;
     width: 350px;
     background-color: #fff;
     border-radius: 10px;
@@ -17,22 +33,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px;
+      padding: 20px;
       #landName {
+        margin-top: 10px;
         font-size: 24px;
         font-weight: bold;
-      }
-      #landCoordinate {
-        display: flex;
-        width: 180px;
-        justify-content: flex-end;
-        .location-icon {
-          font-size: 20px;
-          color: #5ABFBC;
+        #landNameText {
+          width: fit-content;
         }
-        .x-y {
-          color: #5ABFBC;
-          font-weight: 500;
+        #landCoordinate {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-size: 16px;
+          .location-icon {
+            color: #5ABFBC;
+          }
+          .x-y {
+            color: #5ABFBC;
+            font-weight: 500;
+          }
         }
       }
       .land-image-div {
@@ -42,19 +62,37 @@
         }
       }
       .tags-land {
+        width: 165px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-top: 10px;
-        background-color: #FDBC14;
         padding: 5px;
         border-radius: 5px;
         color: #fff;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 16px;
+        &.listed {
+          background-color: #2AC161;
+        } 
+        &.un-listed {
+          background-color: #FDBC14;
+        }
+        &.no-owner {
+          background-color: #C2C2C2;
+        }
       }
       .land-description {
-        margin-top: 10px;
+        margin-top: 20px;
         text-align: center;
         color: #280D5F;
         font-weight: light;
+        width: 100%;
+        height: 100px;
+        text-align: left;
+        text-indent: 15px;
+        overflow-y: auto;
       }
       .option {
         padding-top: 20px;
