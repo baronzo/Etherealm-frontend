@@ -7,6 +7,7 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this)
+    this.checkLogin()
   }
 
   @observable 
@@ -34,6 +35,11 @@ class AuthStore {
       console.error('Please Install Metamask')
     }
     return result
+  }
+
+  @action
+  public async accountChange(): Promise<void> {
+    this.account = await this.getAccount()
   }
 
   @action
