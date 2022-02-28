@@ -29,8 +29,8 @@ export default function Map({ }: Props) {
     const [cameraMouseFocus, setCameraMouseFocus] = useState({ x: 0, y: 0 })
     const [cameraOffSet, setCameraOffSet] = useState({x: 0, y: 0})
     let cameraZoom = 1;
-    let MAX_ZOOM = 5;
-    let MIN_ZOOM = 0.5;
+    const [MAX_ZOOM, setMAX_ZOOM] = useState<number>(5)
+    const [MIN_ZOOM, setMIN_ZOOM] = useState<number>(0.5)
     let SCROLL_SENSITIVITY = -0.0005;
 
     let isDragging = false
@@ -50,7 +50,6 @@ export default function Map({ }: Props) {
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
         cameraZoom = cameraZoomRef.current
-        
         const update = () => {
             cameraZoomRef.current = drawboard()
             drawMinimap()
@@ -60,6 +59,7 @@ export default function Map({ }: Props) {
     })
 
     useEffect(() => {
+        calculateMinZoom()
         getMapDataFromApi()
         if (zoomRangeRef.current) {
             zoomRangeRef.current.value = String(cameraZoom)
@@ -74,6 +74,15 @@ export default function Map({ }: Props) {
             setLands(response.data)
         } catch (error) {
             
+        }
+    }
+
+    function calculateMinZoom(): void {
+        if (canvasRef.current) {
+            if (!isOnMouseDragging) {
+                const rect = canvasRef.current.getBoundingClientRect()
+                setMIN_ZOOM(rect.height / width)
+            }
         }
     }
 
