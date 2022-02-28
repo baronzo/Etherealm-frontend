@@ -146,12 +146,21 @@
                 row-gap: 15px;
                 margin: 0 auto;
                 padding: 15px 0 0 0;
+                .arrow {
+                    font-size: 48px;
+                    color: #7645D9;
+                    cursor: pointer;
+                    display: flex;
+                }
                 .bodyCard {
                     width: 225px;
                     height: 300px;
                     border-radius: 10px;
                     box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
                     box-sizing: border-box;
+                    &.active {
+                        box-shadow: 0.5px 0.5px 3px 2px #7645d9af; 
+                    }
                     &:hover {
                         cursor: pointer;
                         box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
