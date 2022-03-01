@@ -43,6 +43,9 @@ export default observer(function Navbar() {
             <NavLink to={'/auction'} activeClassName="active">Auction</NavLink>
           </div>
           <div className="path">
+            <NavLink to={'/profile'} activeClassName="active">Profile</NavLink>
+          </div>
+          <div className="path">
             <div>About</div>
           </div>
         </div>
