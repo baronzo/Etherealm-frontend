@@ -10,7 +10,7 @@ export default function EditLand() {
         </div>
         <div id="editDetail">
           <div className="image-section">
-            <img src="./land.png" alt="" width='200' height='200' />
+            <img id="landImage" src="./land.png" alt=""/>
             <div id="changeImage">
               <button className='button'>Change Image</button>
             </div>
