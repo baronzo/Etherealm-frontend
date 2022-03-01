@@ -15,15 +15,15 @@ class ContractStore {
   @observable 
   public contract: any = null
   
-  private contractAddress = '0xdfC21A652fAD49C6Dc1b52391D22F3b1404c9994'
+  private contractAddress = '0x27aF246550457a60Df7B5Bae9c82341a72AbcE98'
   
   constructor() {
     makeAutoObservable(this)
-    this.getData()
+    this.getContract()
   }
 
   @action
-  public async getData(): Promise<void> {
+  public async getContract(): Promise<void> {
     let eth = (window as any).ethereum
     if (eth) {
       let tempProvider = new ethers.providers.Web3Provider(eth)
@@ -36,11 +36,26 @@ class ContractStore {
   }
 
   @action
-  public async getBalance(tokenId: string): Promise<void> {
+  public async getBalance(userTokenId: string): Promise<void> {
     if (this.contract) {
-      let balance = await this.contract.balanceOf(tokenId)
+      let balance = await this.contract.balanceOf(userTokenId)
       console.log(ethers.utils.formatUnits(balance, 0))
     }
+  }
+
+  @action
+  public async purchaseLand(landTokenId: string): Promise<boolean> {
+    if (this.contract) {
+      try {
+        console.log(landTokenId)
+        let uri: string = `http://etherealm.ddns.net/api/lands/${landTokenId}`
+        await this.contract.create(landTokenId, uri)
+        return true
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return false
   }
 }
 

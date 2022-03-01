@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
+import LandService from '../../services/lands/LandService'
+import ContractStore from '../../store/contract'
 import './LandModal.scss'
 
 interface IProps {
-  land: LandModel
+  land: LandModel,
+  onLandChange: (land: LandModel) => void
 }
 
 export default function LandModal(props: IProps) {
   const [land, setLand] = useState<LandModel>(new LandModel)
+  const contractStore = useMemo(() => new ContractStore, [])
+  const landService: LandService = new LandService
 
   useEffect(() => {
     setLand(props.land)
@@ -30,6 +35,40 @@ export default function LandModal(props: IProps) {
         return 'no-owner'
     }
   }
+
+  function mapOptionByLandStatus(): JSX.Element {
+    switch (land.landStatus.landStatusId) {
+      case 1:
+        return (
+          <div className="option">Offer this land</div>
+        )
+      case 2:
+        return (
+          <div className="option">Offer this land</div>
+        )
+      case 3:
+        return (
+          <div className="option">
+            <button id="hirePurchase">Hire Purchase</button>
+            <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
+          </div>
+        )
+      default:
+        break;
+    }
+    return (
+      <div className="option">Offer this land</div>
+    )
+  }
+
+  async function onPurchaseClick() {
+    let isSuccess: boolean = await contractStore.purchaseLand(land.landTokenId)
+    if (isSuccess) {
+      let result: LandModel = await landService.purchaseLand(land.landTokenId)
+      setLand(result)
+      props.onLandChange(result)
+    }
+  }
   
   return (
     <div id='landModal' className={!land.landTokenId ? 'hide' : ''}>
@@ -41,7 +80,7 @@ export default function LandModal(props: IProps) {
             <div id="landCoordinate">
               <MdLocationOn className='location-icon' />
               <div className="x-y">
-                X:{land.landLocation.split(',')[0]}, Y: {land.landLocation.split(',')[1]}
+                X:{land.landLocation.x}, Y: {land.landLocation.y}
               </div>
             </div>
           </div>
@@ -52,7 +91,7 @@ export default function LandModal(props: IProps) {
           <div className="land-description">
             {land.landDescription}
           </div>
-          <div className="option">Offer this land</div>
+          {mapOptionByLandStatus()}
         </div>
       </div>
     </div>

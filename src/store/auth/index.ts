@@ -3,15 +3,19 @@ import AccountModel from '../../models/auth/AccountModel'
 import { ethers } from 'ethers'
 import Cookies from 'js-cookie'
 import { createContext } from 'react'
+import UserService from '../../services/user/UserService'
+import UserModel from '../../models/auth/UserModel'
 class AuthStore {
+
+  @observable 
+  public account: AccountModel = new AccountModel
+
+  private userService = new UserService
 
   constructor() {
     makeAutoObservable(this)
     this.checkLogin()
   }
-
-  @observable 
-  public account: AccountModel = new AccountModel
 
   @action
   public checkLogin(): void {
@@ -27,9 +31,13 @@ class AuthStore {
     if (eth) {
       let accounts = await eth.request({method: 'eth_requestAccounts'})
       let resBalance = await eth.request({method: 'eth_getBalance', params: [accounts[0], 'latest']})
+      let userDetails: UserModel = await this.userService.createUser(accounts[0])
       result = {
-        tokenId: accounts[0],
-        balance: Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4))
+        userTokenId: accounts[0],
+        balance: Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4)),
+        userName: userDetails.userName,
+        userDescription: userDetails.userDescription,
+        userProfilePic: userDetails.userProfilePic
       }
     } else {
       console.error('Please Install Metamask')
