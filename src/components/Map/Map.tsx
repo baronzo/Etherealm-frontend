@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import CoordinatesModel from '../../models/lands/CoordinatesModel';
 import LandModel from '../../models/lands/LandModel';
+import LandService from '../../services/lands/LandService';
 import LandModal from '../LandModal/LandModal';
 import './Map.scss'
 
@@ -12,6 +14,7 @@ interface LocationModel {
 }
 
 export default function Map({ }: Props) {
+    const landService: LandService = new LandService
     const callbackKeyRef = useRef(-1);
 
     const navbarSize: number = 55
@@ -70,8 +73,8 @@ export default function Map({ }: Props) {
 
     async function getMapDataFromApi() {
         try {
-            let response: AxiosResponse<Array<LandModel>> = await axios.get('http://etherealm.ddns.net:5000/api/lands')
-            setLands(response.data)
+            let response: Array<LandModel> = await landService.getLands()
+            setLands(response)
         } catch (error) {
             
         }
@@ -93,13 +96,11 @@ export default function Map({ }: Props) {
                 canvasMinimapRef.current.width = width / viewScale
                 canvasMinimapRef.current.height = height / viewScale
                 lands.forEach(item => {
-                    let position: Array<number> = item.landPosition.split(',').map(item => Number(item)) // index 0 = x | index 1 = y
                     minimapContext.fillStyle = "#2AC161";
-                    minimapContext.fillRect(position[0] / viewScale, position[1] / viewScale, ((position[0] + item.landSize.landSize) - position[0]) / viewScale, ((position[1] + item.landSize.landSize) - position[1]) / viewScale)
+                    minimapContext.fillRect(item.landPosition.x / viewScale, item.landPosition.y / viewScale, ((item.landPosition.x + item.landSize.landSize) - item.landPosition.x) / viewScale, ((item.landPosition.y + item.landSize.landSize) - item.landPosition.y) / viewScale)
                     minimapContext.save();
                 })
-                let location: Array<number> = selectedLand.landLocation.split(',').map(item => Number(item))
-                changeSelectedColorOnMinimap(location[0], location[1])
+                changeSelectedColorOnMinimap(selectedLand.landLocation.x, selectedLand.landLocation.y)
                 drawViewportOnMinimap()
             }
         }
@@ -136,15 +137,13 @@ export default function Map({ }: Props) {
                 context.scale(cameraZoom, cameraZoom)
                 context.translate(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
                 lands.forEach(item => {
-                    let position: Array<number> = item.landPosition.split(',').map(item => Number(item)) // index 0 = x | index 1 = y
                     context.fillStyle = "#2AC161";
-                    context.fillRect(position[0], position[1], (position[0] + item.landSize.landSize) - position[0], (position[1] + item.landSize.landSize) - position[1])
+                    context.fillRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
                     context.strokeStyle = "#ffffff";
-                    context.strokeRect(position[0], position[1], (position[0] + item.landSize.landSize) - position[0], (position[1] + item.landSize.landSize) - position[1])
+                    context.strokeRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
                     context.save();
                 })
-                let location: Array<number> = selectedLand.landLocation.split(',').map(item => Number(item))
-                changeSelectedColor(location[0], location[1])
+                changeSelectedColor(selectedLand.landLocation.x, selectedLand.landLocation.y)
             }
         }
         return cameraZoom
@@ -193,8 +192,8 @@ export default function Map({ }: Props) {
                 const y = (currentTransformedCursor.y + navbarSize) - ((rect.top));
                 const cy = ((y) + (box - ((y) % box))) / box;
                 const cx = ((x) + (box - ((x) % box))) / box;
-                let selectedLocation: string = `${cx},${cy}`
-                let result: Array<LandModel> = lands.filter(item => item.landLocation === selectedLocation)
+                let selectedLocation: CoordinatesModel = {x: cx, y: cy}
+                let result: Array<LandModel> = lands.filter(item => JSON.stringify(item.landLocation) === JSON.stringify(selectedLocation))
                 if (result.length) {
                     setselectedLand(result[0])
                 }
@@ -291,10 +290,19 @@ export default function Map({ }: Props) {
     function onDecreaseOrIncreaseZoom(value: number) {
         adjustZoom(null, null, cameraZoom + (0.025 * value))
     }
+
+    function onLandChangeFromModel(land: LandModel) {
+        let newLands: Array<LandModel> = [...lands]
+        let index: number = lands.findIndex(x => x.landTokenId === land.landTokenId)
+        if (index != -1) {
+            newLands[index] = land
+            setLands(newLands)
+        }
+    }
     
     return (
     <div id="mapMain">
-        <LandModal land={selectedLand}/>
+        <LandModal land={selectedLand} onLandChange={(value) => onLandChangeFromModel(value)}/>
         <div id="miniMapBox">
             <canvas id="minimap" ref={canvasMinimapRef}></canvas>
             <canvas id="minimapViewport" ref={canvasMinimapViewportRef}></canvas>
