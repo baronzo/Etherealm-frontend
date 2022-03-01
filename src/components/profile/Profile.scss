@@ -236,7 +236,6 @@
                 margin: 0;
                 padding: 0;
                 width: 200px;
-                height: 280px;
                 background-color: white;
                 border-radius: 10px;
                 box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
@@ -269,11 +268,10 @@
                     padding: 10px ;
                     border-radius: 0 0 10px 10px;
                     width: 100%;
-                    height: 130px;
                     .name-location{
                         width: 100%;
                         margin: 0;
-                        padding-bottom: 5px;
+                        padding-bottom: 10px;
                         .land-name {
                             margin: 0;
                             padding: 0;
@@ -332,8 +330,8 @@
                         display: flex;
                         justify-content: flex-end;
                         align-items: flex-end;
-                        margin: 0;
-                        padding-top: 8px;
+                        margin-top: 5px;
+                        padding-top: 5px;
                         width: 100%;
                         border-top: 1.5px solid #C4C4C4;
                         .offer-text {
