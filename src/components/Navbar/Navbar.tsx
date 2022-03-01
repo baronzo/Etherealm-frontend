@@ -50,10 +50,10 @@ export default observer(function Navbar() {
           </div>
         </div>
       </div>
-      {authStore.account.tokenId ?
+      {authStore.account.userTokenId ?
         <div id="account">
           <div id="accountBalance">Balance: {authStore.account.balance} ETH |</div>
-          <div id="accountAddressToken" title={authStore.account.tokenId}>{authStore.account.tokenId}</div>
+          <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div>
           <button id='logoutBtn' onClick={() => onLogout()}>Logout</button>
         </div>
       :
