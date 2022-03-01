@@ -7,6 +7,7 @@ import Market from '../Market/Market'
 import Auction from '../Auction/Auction'
 import '../Layout/Layout.scss'
 import { Switch, Route } from 'react-router-dom'
+import Profile from '../profile/Profile'
 
 export default function Layout(): ReactElement {
     return (
@@ -18,6 +19,7 @@ export default function Layout(): ReactElement {
                 <Route exact path='/market' component={Market} />
                 <Route exact path='/auction' component={Auction}/>
                 <Route exact path='/bid' component={Bid} />
+                <Route exact path='/profile' component={Profile} />
                 <Route exact path='*' component={Home} />
             </Switch>
         </div>
