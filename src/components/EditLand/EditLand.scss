@@ -33,6 +33,9 @@
         #changeImage {
           margin-top: 10px;
           width: 100%;
+          #uploadInput {
+            display: none;
+          }
           .button {
             width: 100%;
             height: 30px;
@@ -62,20 +65,27 @@
             margin-bottom: 3px;
           }
           .input {
+            padding: 0 10px;
             width: 100%;
-            height: 25px;
+            height: 30px;
             border-radius: 5px;
             outline: none;
             border: 1px solid #BFBFBF;
-            box-shadow: 0.5px 0.5px 3px 2px #8b5de845;
+            &:focus {
+              box-shadow: 0.5px 0.5px 3px 2px #8b5de845;
+            }
           }
           .input-description {
+            padding: 10px;
             width: 100%;
-            height: 60px;
+            height: 80px;
             border-radius: 5px;
             outline: none;
             border: 1px solid #BFBFBF;
-            box-shadow: 0.5px 0.5px 3px 2px #8b5de845;
+            resize: none;
+            &:focus {
+              box-shadow: 0.5px 0.5px 3px 2px #8b5de845;
+            }
           }
         }
         .button-section {
