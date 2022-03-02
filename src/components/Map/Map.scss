@@ -5,6 +5,7 @@
   height: calc(100vh - #{$navBarHeight});
   #miniMapBox {
       position: absolute;
+      z-index: 1;
       left: 0;
       top: 0;
       margin: $minimapMarginTop 0 0 10px;

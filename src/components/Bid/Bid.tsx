@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import './Bid.scss'
 
 type Props = {}
@@ -8,10 +9,17 @@ type Props = {}
 export default function Bid({ }: Props) {
     const [count, setCount] = useState(0)
     const [isDisabled, setIsDisabled] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [mockImage, setMockImage] = useState(['1', '2', '3', '4'])
+
+    useEffect(() => {
+        setCurrentIndex(0)
+    }, [])
 
     const addNumber = () => {
         setCount(count+0.01)
-      }
+    }
+
     const removeNumber = () => {
         if(count === 0.01){
             setIsDisabled(!isDisabled)
@@ -20,8 +28,26 @@ export default function Bid({ }: Props) {
             setIsDisabled(isDisabled)
             setCount(count-0.01)
         }
-      }
+    }
 
+    const nextSlide = () => {
+        if (currentIndex === mockImage.length - 1) {
+            setCurrentIndex(0)
+        } else {
+            setCurrentIndex(currentIndex + 1)
+        }
+        console.log(currentIndex)
+    }
+
+    const prevSlide = () => {
+        if (currentIndex === 0) {
+            setCurrentIndex(mockImage.length - 1)
+        } else {
+            setCurrentIndex(currentIndex - 1)
+        }
+        console.log(currentIndex)
+    }
+    
     return (
         <div id="bidLayout">
             <div className='detailMain'>
@@ -76,40 +102,38 @@ export default function Bid({ }: Props) {
                     <div id='bar'></div>
                 <div className='slideMain'>
                     <div className='bidContainer'>
-                        <div className='bodyCard'>
-                            <div className='imgCard'>
-                                <img id='img' src="https://gelending.com/wp-content/uploads/2021/08/the-sandbox.jpg" alt="img-land" />
-                            </div>
-                            <div className='detailMain'>
-                                <div className='textCard'>
-                                    <label id='textCard'>LAND (99, 199)</label>
+                    <AiOutlineLeft className='arrow' onClick={prevSlide} />
+                     {mockImage.map((item, index) => {
+                         return (
+                            <div className={`bodyCard ${index === currentIndex ? 'active' : ''}`} key={index}>
+                                    <div className='imgCard'>
+                                    <img id='img' src="https://gelending.com/wp-content/uploads/2021/08/the-sandbox.jpg" alt="img-land" />
                                 </div>
-                                <div className='textCard'>
-                                    <MdLocationOn className='location-icon' />
-                                    <label id='textCard'>X: 99, Y:199</label>
+                                <div className='detailMain'>
+                                    <div className='textCard'>
+                                        <label id='textCard'>LAND (99, 199)</label>
+                                    </div>
+                                    <div className='textCard'>
+                                        <MdLocationOn className='location-icon' />
+                                        <label id='textCard'>X: 99, Y:199</label>
+                                    </div>
+                                    <div className='textCard'>
+                                        <label id='textToken'>0xcc896c2cdd10abaea84da606344x3455u8gh366989836778256dgh33</label>
+                                    </div>
                                 </div>
-                                <div className='textCard'>
-                                    <label id='textToken'>0xcc896c2cdd10abaea84da606344x3455u8gh366989836778256dgh33</label>
+                                <div className='textBody'>
+                                    <div className='textTime'>
+                                        <label id='textTime'>00:00:01</label>
+                                    </div>
+                                    <div className='textBid'>
+                                        <FaGavel className='gavel-icon' />
+                                        <label id='textBid'>0.05 eth</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='textBody'>
-                                <div className='textTime'>
-                                    <label id='textTime'>00:00:01</label>
-                                </div>
-                                <div className='textBid'>
-                                    <FaGavel className='gavel-icon' />
-                                    <label id='textBid'>0.05 eth</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
-                        <div className='bodyCard'></div>
+                            </div> 
+                         )
+                     })}      
+                        <AiOutlineRight className='arrow' onClick={nextSlide} />
                     </div>
                 </div>
             </div>

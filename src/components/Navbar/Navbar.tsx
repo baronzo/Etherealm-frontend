@@ -3,13 +3,11 @@ import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
 import AuthStore from '../../store/auth'
 import { observer } from 'mobx-react'
+import ContractStore from '../../store/contract'
 
 export default observer(function Navbar() {
   const authStore = useMemo(() => new AuthStore, [])
-
-  useEffect(() => {
-    authStore.checkLogin()
-  }, [])
+  const contractStore = useMemo(() => new ContractStore, [])
 
   async function onLogin(): Promise<void> {
     await authStore.login()
@@ -18,6 +16,12 @@ export default observer(function Navbar() {
   function onLogout(): void {
     authStore.logout()
   }
+
+  async function onAccountChangeHandler(): Promise<void> {
+    authStore.accountChange()
+  }
+
+  (window as any).ethereum.on('accountsChanged', onAccountChangeHandler)
 
   return (
     <div id="navbar">
@@ -39,14 +43,17 @@ export default observer(function Navbar() {
             <NavLink to={'/auction'} activeClassName="active">Auction</NavLink>
           </div>
           <div className="path">
+            <NavLink to={'/profile'} activeClassName="active">Profile</NavLink>
+          </div>
+          <div className="path">
             <div>About</div>
           </div>
         </div>
       </div>
-      {authStore.account.tokenId ?
+      {authStore.account.userTokenId ?
         <div id="account">
           <div id="accountBalance">Balance: {authStore.account.balance} ETH |</div>
-          <div id="accountAddressToken" title={authStore.account.tokenId}>{authStore.account.tokenId}</div>
+          <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div>
           <button id='logoutBtn' onClick={() => onLogout()}>Logout</button>
         </div>
       :

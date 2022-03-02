@@ -1,5 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import CoordinatesModel from '../../models/lands/CoordinatesModel';
+import LandModel from '../../models/lands/LandModel';
+import LandService from '../../services/lands/LandService';
+import LandModal from '../LandModal/LandModal';
 import './Map.scss'
 
 type Props = {}
@@ -10,6 +14,7 @@ interface LocationModel {
 }
 
 export default function Map({ }: Props) {
+    const landService: LandService = new LandService
     const callbackKeyRef = useRef(-1);
 
     const navbarSize: number = 55
@@ -27,8 +32,8 @@ export default function Map({ }: Props) {
     const [cameraMouseFocus, setCameraMouseFocus] = useState({ x: 0, y: 0 })
     const [cameraOffSet, setCameraOffSet] = useState({x: 0, y: 0})
     let cameraZoom = 1;
-    let MAX_ZOOM = 5;
-    let MIN_ZOOM = 0.5;
+    const [MAX_ZOOM, setMAX_ZOOM] = useState<number>(5)
+    const [MIN_ZOOM, setMIN_ZOOM] = useState<number>(0.5)
     let SCROLL_SENSITIVITY = -0.0005;
 
     let isDragging = false
@@ -42,15 +47,12 @@ export default function Map({ }: Props) {
     
     const cameraZoomRef = useRef(cameraZoom)
     const cameraMouseFocusRef = useRef(cameraMouseFocus)
-    const [mapPosition, setmapPosition] = useState([])
-    // const mapPosition: any = []
-
-
+    const [lands, setLands] = useState<Array<LandModel>>([])
+    const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
         cameraZoom = cameraZoomRef.current
-        
         const update = () => {
             cameraZoomRef.current = drawboard()
             drawMinimap()
@@ -60,6 +62,8 @@ export default function Map({ }: Props) {
     })
 
     useEffect(() => {
+        calculateMinZoom()
+        getMapDataFromApi()
         if (zoomRangeRef.current) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
@@ -69,10 +73,19 @@ export default function Map({ }: Props) {
 
     async function getMapDataFromApi() {
         try {
-            let res = await axios.get('http://localhost:9999/map')
-            setmapPosition(res.data)
+            let response: Array<LandModel> = await landService.getLands()
+            setLands(response)
         } catch (error) {
             
+        }
+    }
+
+    function calculateMinZoom(): void {
+        if (canvasRef.current) {
+            if (!isOnMouseDragging) {
+                const rect = canvasRef.current.getBoundingClientRect()
+                setMIN_ZOOM(rect.height / width)
+            }
         }
     }
 
@@ -80,22 +93,14 @@ export default function Map({ }: Props) {
         if (canvasMinimapRef.current && canvasRef.current) {
             const minimapContext = canvasMinimapRef.current?.getContext("2d")
             if (minimapContext) {
-                
                 canvasMinimapRef.current.width = width / viewScale
                 canvasMinimapRef.current.height = height / viewScale
-                // for (let x = 0; x < canvasMinimapRef.current.width; x+=(box/viewScale)) {
-                //     for (let y = 0; y < canvasMinimapRef.current.height; y+=(box/viewScale)) {
-                //         minimapContext.fillStyle = "#2AC161";
-                //         minimapContext.fillRect(x, y, box/viewScale, box/viewScale);
-                //         minimapContext.save();
-                //     }
-                // }
-                mapPosition.forEach(item => {
+                lands.forEach(item => {
                     minimapContext.fillStyle = "#2AC161";
-                    minimapContext.fillRect(item['start']['x'] / viewScale, item['start']['y'] / viewScale, (item['end']['x'] - item['start']['x']) / viewScale, (item['end']['y'] - item['start']['y']) / viewScale);
+                    minimapContext.fillRect(item.landPosition.x / viewScale, item.landPosition.y / viewScale, ((item.landPosition.x + item.landSize.landSize) - item.landPosition.x) / viewScale, ((item.landPosition.y + item.landSize.landSize) - item.landPosition.y) / viewScale)
                     minimapContext.save();
                 })
-                changeSelectedColorOnMinimap(xy?.x!, xy?.y!)
+                changeSelectedColorOnMinimap(selectedLand.landLocation.x, selectedLand.landLocation.y)
                 drawViewportOnMinimap()
             }
         }
@@ -131,24 +136,14 @@ export default function Map({ }: Props) {
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)
                 context.translate(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
-                // for (let x = 0; x < width; x+=20) {
-                //     for (let y = 0; y < height; y+=20) {
-                //         context.fillStyle = "#2AC161";
-                //         context.fillRect(x, y, box, box);
-                //         context.strokeStyle = "#ffffff";
-                //         context.strokeRect(x, y, box, box);
-                //         context.save();
-                //     }
-                // }
-                mapPosition.forEach(item => {
+                lands.forEach(item => {
                     context.fillStyle = "#2AC161";
-                    context.fillRect(item['start']['x'], item['start']['y'], item['end']['x'] - item['start']['x'], item['end']['y'] - item['start']['y']);
+                    context.fillRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
                     context.strokeStyle = "#ffffff";
-                    context.strokeRect(item['start']['x'], item['start']['y'], item['end']['x'] - item['start']['x'], item['end']['y'] - item['start']['y']);
+                    context.strokeRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
                     context.save();
                 })
-
-                changeSelectedColor(xy?.x!, xy?.y!)
+                changeSelectedColor(selectedLand.landLocation.x, selectedLand.landLocation.y)
             }
         }
         return cameraZoom
@@ -197,7 +192,11 @@ export default function Map({ }: Props) {
                 const y = (currentTransformedCursor.y + navbarSize) - ((rect.top));
                 const cy = ((y) + (box - ((y) % box))) / box;
                 const cx = ((x) + (box - ((x) % box))) / box;
-                setXy({x: cx, y: cy})
+                let selectedLocation: CoordinatesModel = {x: cx, y: cy}
+                let result: Array<LandModel> = lands.filter(item => JSON.stringify(item.landLocation) === JSON.stringify(selectedLocation))
+                if (result.length) {
+                    setselectedLand(result[0])
+                }
             }
             
         }
@@ -291,9 +290,19 @@ export default function Map({ }: Props) {
     function onDecreaseOrIncreaseZoom(value: number) {
         adjustZoom(null, null, cameraZoom + (0.025 * value))
     }
+
+    function onLandChangeFromModel(land: LandModel) {
+        let newLands: Array<LandModel> = [...lands]
+        let index: number = lands.findIndex(x => x.landTokenId === land.landTokenId)
+        if (index != -1) {
+            newLands[index] = land
+            setLands(newLands)
+        }
+    }
     
     return (
     <div id="mapMain">
+        <LandModal land={selectedLand} onLandChange={(value) => onLandChangeFromModel(value)}/>
         <div id="miniMapBox">
             <canvas id="minimap" ref={canvasMinimapRef}></canvas>
             <canvas id="minimapViewport" ref={canvasMinimapViewportRef}></canvas>
