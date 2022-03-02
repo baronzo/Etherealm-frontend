@@ -141,8 +141,10 @@
             padding-bottom: 15px;
             width: 95%;
             .bidContainer {
+                white-space: nowrap;
+                align-items: center;
                 display: grid;
-                grid-template-columns: repeat(5,1fr);
+                grid-template-columns: repeat(7,1fr);
                 column-gap: 10px;
                 row-gap: 15px;
                 margin: 0 auto;
