@@ -9,10 +9,11 @@
     padding-left: 5%;
     .detailMain {
         display: flex;
+        justify-content: center;
         .imgMain {
             #imgLand {
-                width: 320px;
-                height: 400px;
+                width: 275px;
+                height: 335px;
                 border-radius: 10px;
             }
         }
@@ -141,8 +142,8 @@
             width: 95%;
             .bidContainer {
                 display: grid;
-                grid-template-columns: repeat(9,1fr);
-                column-gap: 33px;
+                grid-template-columns: repeat(5,1fr);
+                column-gap: 10px;
                 row-gap: 15px;
                 margin: 0 auto;
                 padding: 15px 0 0 0;

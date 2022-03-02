@@ -21,6 +21,7 @@ export default function Bid({ }: Props) {
             setCount(count-0.01)
         }
       }
+
     return (
         <div id="bidLayout">
             <div className='detailMain'>
