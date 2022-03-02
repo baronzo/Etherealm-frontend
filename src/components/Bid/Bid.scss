@@ -143,12 +143,14 @@
             .bidContainer {
                 white-space: nowrap;
                 align-items: center;
-                display: grid;
-                grid-template-columns: repeat(7,1fr);
-                column-gap: 10px;
-                row-gap: 15px;
+                display: flex;
+                justify-content: space-around;
+                // display: grid;
+                // grid-template-columns: repeat(7,1fr);
+                // column-gap: 10px;
+                // row-gap: 15px;
                 margin: 0 auto;
-                padding: 15px 0 0 0;
+                // padding: 15px 0 0 0;
                 .arrow {
                     font-size: 48px;
                     color: #7645D9;
