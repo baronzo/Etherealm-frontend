@@ -32,7 +32,7 @@ export default function Map({ }: Props) {
     const [cameraMouseFocus, setCameraMouseFocus] = useState({ x: 0, y: 0 })
     const [cameraOffSet, setCameraOffSet] = useState({x: 0, y: 0})
     let cameraZoom = 1;
-    const [MAX_ZOOM, setMAX_ZOOM] = useState<number>(5)
+    const [MAX_ZOOM, setMAX_ZOOM] = useState<number>(6)
     const [MIN_ZOOM, setMIN_ZOOM] = useState<number>(0.5)
     let SCROLL_SENSITIVITY = -0.0005;
 
@@ -136,14 +136,20 @@ export default function Map({ }: Props) {
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)
                 context.translate(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
-                lands.forEach(item => {
+                for (const item of lands) {
                     context.fillStyle = "#2AC161";
                     context.fillRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
                     context.strokeStyle = "#ffffff";
                     context.strokeRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
-                    context.save();
-                })
-                changeSelectedColor(selectedLand.landLocation.x, selectedLand.landLocation.y)
+                    context.save()
+                    
+                    if (item.landAssets) {
+                        let image = new Image()
+                        image.src = item.landAssets
+                        context.drawImage(image, item.landPosition.x, item.landPosition.y, 20, 20)
+                    }
+                }
+                changeSelectedColor()
             }
         }
         return cameraZoom
@@ -158,13 +164,18 @@ export default function Map({ }: Props) {
         }
     }
 
-    function changeSelectedColor(x: number, y: number) {
+    function changeSelectedColor() {
         if (canvasRef.current) {
             const context = canvasRef.current?.getContext("2d");
             if (context) {
-                if (x <= width/box && x > 0 && y <= height/box && y > 0) {
-                    context.fillStyle = "#ED1E79";
-                    context.fillRect((x * box - box), (y * box - box), box, box)
+                if (selectedLand.landLocation.x <= width/box && selectedLand.landLocation.x > 0 && selectedLand.landLocation.y <= height/box && selectedLand.landLocation.y > 0) {
+                    if (selectedLand.landAssets) {
+                        context.strokeStyle = "#ED1E79";
+                        context.strokeRect(selectedLand.landPosition.x, selectedLand.landPosition.y, (selectedLand.landPosition.x + selectedLand.landSize.landSize) - selectedLand.landPosition.x, (selectedLand.landPosition.y + selectedLand.landSize.landSize) - selectedLand.landPosition.y)
+                    } else {
+                        context.fillStyle = "#ED1E79";
+                        context.fillRect((selectedLand.landLocation.x * box - box), (selectedLand.landLocation.y * box - box), box, box)
+                    }
                     context.save();
                 }
             }
@@ -198,7 +209,6 @@ export default function Map({ }: Props) {
                     setselectedLand(result[0])
                 }
             }
-            
         }
     }
 

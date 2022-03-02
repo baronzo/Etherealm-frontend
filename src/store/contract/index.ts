@@ -48,7 +48,7 @@ class ContractStore {
     if (this.contract) {
       try {
         console.log(landTokenId)
-        let uri: string = `http://etherealm.ddns.net/api/lands/${landTokenId}`
+        let uri: string = `http://etherealm.ddns.net/api/lands/land/${landTokenId}`
         await this.contract.create(landTokenId, uri)
         return true
       } catch (error) {

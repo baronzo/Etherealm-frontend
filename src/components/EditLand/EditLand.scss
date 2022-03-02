@@ -100,6 +100,10 @@
             padding: 8px;
             color: #fff;
             font-weight: bolder;
+            cursor: pointer;
+            &:hover {
+              background-color: #5b26c5;
+            }
           }
         }
       }

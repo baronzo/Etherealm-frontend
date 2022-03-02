@@ -22,7 +22,7 @@ export default function Layout(): ReactElement {
                 <Route exact path='/auction' component={Auction}/>
                 <Route exact path='/bid' component={Bid} />
                 <Route exact path='/profile' component={Profile} />
-                <Route exact path='/edit' component={EditLand} />
+                <Route exact path='/:landTokenId/edit' component={EditLand} />
                 <Route exact path='/detail' component={LandDetail} />
                 <Route exact path='*' component={Home} />
             </Switch>
