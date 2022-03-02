@@ -3,6 +3,7 @@ import { MdLocationOn } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
 import LandService from '../../services/lands/LandService'
 import ContractStore from '../../store/contract'
+import ModalLoading from '../Loading/ModalLoading'
 import './LandModal.scss'
 
 interface IProps {
@@ -11,9 +12,10 @@ interface IProps {
 }
 
 export default function LandModal(props: IProps) {
-  const [land, setLand] = useState<LandModel>(new LandModel)
   const contractStore = useMemo(() => new ContractStore, [])
   const landService: LandService = new LandService
+  const [land, setLand] = useState<LandModel>(new LandModel)
+  const [isLoading, setisLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setLand(props.land)
@@ -49,7 +51,7 @@ export default function LandModal(props: IProps) {
       case 3:
         return (
           <div className="option">
-            <button id="hirePurchase">Hire Purchase</button>
+            <button id="hirePurchase" className={isLoading ? 'disabled' : ''}>Hire Purchase</button>
             <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
           </div>
         )
@@ -62,11 +64,13 @@ export default function LandModal(props: IProps) {
   }
 
   async function onPurchaseClick() {
+    setisLoading(true)
     let isSuccess: boolean = await contractStore.purchaseLand(land.landTokenId)
     if (isSuccess) {
       let result: LandModel = await landService.purchaseLand(land.landTokenId)
       setLand(result)
       props.onLandChange(result)
+      setisLoading(false)
     }
   }
   
@@ -74,6 +78,7 @@ export default function LandModal(props: IProps) {
     <div id='landModal' className={!land.landTokenId ? 'hide' : ''}>
       <div id="landModelBackground" onClick={onBackgroundClick}></div>
       <div id="landBox">
+        <ModalLoading isLoading={isLoading}/>
         <div id="landDetail">
           <div id="landName">
             <div id="landNameText">{land.landName}</div>
