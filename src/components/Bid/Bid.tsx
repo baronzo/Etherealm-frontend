@@ -102,13 +102,10 @@ export default function Bid({ }: Props) {
                     <div id='bar'></div>
                 <div className='slideMain'>
                     <div className='bidContainer'>
-                    <AiOutlineLeft className='arrow' onClick={prevSlide} />
                      {mockImage.map((item, index) => {
                          return (
                             <div className={`bodyCard ${index === currentIndex ? 'active' : ''}`} key={index}>
-                                    <div className='imgCard'>
                                     <img id='img' src="https://gelending.com/wp-content/uploads/2021/08/the-sandbox.jpg" alt="img-land" />
-                                </div>
                                 <div className='detailMain'>
                                     <div className='textCard'>
                                         <label id='textCard'>LAND (99, 199)</label>
@@ -132,8 +129,11 @@ export default function Bid({ }: Props) {
                                 </div>
                             </div> 
                          )
-                     })}      
-                        <AiOutlineRight className='arrow' onClick={nextSlide} />
+                     })}    
+                        <div className='buttons-wrapper'>
+                            <AiOutlineLeft className='arrow' onClick={prevSlide} />
+                            <AiOutlineRight className='arrow' onClick={nextSlide} />
+                        </div>  
                     </div>
                 </div>
             </div>

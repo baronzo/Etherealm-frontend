@@ -145,18 +145,21 @@
                 align-items: center;
                 display: flex;
                 justify-content: space-around;
-                // display: grid;
-                // grid-template-columns: repeat(7,1fr);
-                // column-gap: 10px;
-                // row-gap: 15px;
                 margin: 0 auto;
-                // padding: 15px 0 0 0;
-                .arrow {
-                    font-size: 48px;
-                    color: #7645D9;
-                    cursor: pointer;
+                .buttons-wrapper {
+                    width: 100%;
                     display: flex;
-                }
+                    justify-content: space-between;
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -15px;
+                    .arrow {
+                        font-size: 48px;
+                        color: #7645D9;
+                        cursor: pointer;
+                        display: flex;
+                    }
+                  }
                 .bodyCard {
                     width: 225px;
                     height: 300px;
