@@ -10,7 +10,7 @@ export default function Bid({ }: Props) {
     const [count, setCount] = useState(0)
     const [isDisabled, setIsDisabled] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [mockImage, setMockImage] = useState(['1', '2', '3', '4'])
+    const [mockImage, setMockImage] = useState(['1', '2', '3', '4', '5'])
 
     useEffect(() => {
         setCurrentIndex(0)
