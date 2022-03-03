@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'r
 import { MdLocationOn } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
 import LandService from '../../services/lands/LandService'
+import AuthStore from '../../store/auth'
 import ContractStore from '../../store/contract'
 import ModalLoading from '../Loading/ModalLoading'
 import './LandModal.scss'
@@ -12,6 +13,7 @@ interface IProps {
 }
 
 export default function LandModal(props: IProps) {
+  const authStore = useMemo(() => new AuthStore, [])
   const contractStore = useMemo(() => new ContractStore, [])
   const landService: LandService = new LandService
   const [land, setLand] = useState<LandModel>(new LandModel)
@@ -66,6 +68,7 @@ export default function LandModal(props: IProps) {
   async function onPurchaseClick() {
     setisLoading(true)
     let isSuccess: boolean = await contractStore.purchaseLand(land.landTokenId)
+    await authStore.updateAccountData()
     if (isSuccess) {
       let result: LandModel = await landService.purchaseLand(land.landTokenId)
       setLand(result)
