@@ -10,7 +10,7 @@ export default function Bid({ }: Props) {
     const [count, setCount] = useState(0)
     const [isDisabled, setIsDisabled] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [mockImage, setMockImage] = useState(['1', '2', '3', '4', '5'])
+    const [mockImage, setMockImage] = useState(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'])
 
     useEffect(() => {
         setCurrentIndex(0)
@@ -101,10 +101,10 @@ export default function Bid({ }: Props) {
                 <label id='text'>Other Auction items now :</label>
                     <div id='bar'></div>
                 <div className='slideMain'>
-                    <div className='bidContainer'>
+                    <div id='bidScroll' className='bidContainer'>
                      {mockImage.map((item, index) => {
                          return (
-                            <div className={`bodyCard ${index === currentIndex ? 'active' : ''}`} key={index}>
+                            <div id='cardScroll' className={`bodyCard ${index === currentIndex ? 'active' : ''}`} key={index}>
                                     <img id='img' src="https://gelending.com/wp-content/uploads/2021/08/the-sandbox.jpg" alt="img-land" />
                                 <div className='detailMain'>
                                     <div className='textCard'>
@@ -130,11 +130,11 @@ export default function Bid({ }: Props) {
                             </div> 
                          )
                      })}    
-                        <div className='buttons-wrapper'>
-                            <AiOutlineLeft className='arrow' onClick={prevSlide} />
-                            <AiOutlineRight className='arrow' onClick={nextSlide} />
-                        </div>  
                     </div>
+                    <div className='buttons-wrapper'>
+                        <AiOutlineLeft className='arrow' onClick={prevSlide} />
+                        <AiOutlineRight className='arrow' onClick={nextSlide} />
+                    </div>  
                 </div>
             </div>
         </div>
