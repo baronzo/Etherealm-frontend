@@ -9,7 +9,8 @@ import EditLand from '../EditLand/EditLand'
 import LandDetail from '../LandDetail/LandDetail'
 import '../Layout/Layout.scss'
 import { Switch, Route } from 'react-router-dom'
-import Profile from '../profile/Profile'
+import OwnerProfile from '../profile/ownerProfile/OwnerProfile'
+import OthersProfile from '../profile/othersProfile/OthersProfile'
 
 export default function Layout(): ReactElement {
     return (
@@ -21,7 +22,8 @@ export default function Layout(): ReactElement {
                 <Route exact path='/market' component={Market} />
                 <Route exact path='/auction' component={Auction}/>
                 <Route exact path='/bid' component={Bid} />
-                <Route exact path='/profile' component={Profile} />
+                <Route exact path='/profile' component={OwnerProfile}/>
+                <Route exact path='/profile/1' component={OthersProfile}/>
                 <Route exact path='/:landTokenId/edit' component={EditLand} />
                 <Route exact path='/detail' component={LandDetail} />
                 <Route exact path='*' component={Home} />

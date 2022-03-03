@@ -1,7 +1,7 @@
 import React from 'react'
-import './Profile.scss'
+import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
-import { MdLocationOn } from 'react-icons/md'
+import ShowLands from '../showLands/ShowLands'
 
 type Props = {}
 
@@ -55,35 +55,7 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <div className='topic-my-land-div'>
-                    <p className='topic-my-land-text'>My Lands</p>
-                </div>
-                <div className='show-my-land'>
-                    <div className='land-card'>
-                        <div className='land-image-div'>
-                            <img className='land-image' src="/land.png" alt="" />
-                        </div>
-                        <div className='land-detail'>
-                            <div className='name-location'>
-                                <div className='land-name'>
-                                    <p className='land-name-text'>LAND (99, 199)</p>
-                                </div>
-                                <div className='location-div'>
-                                    <MdLocationOn className='location-icon' />
-                                    <p className='location'>X: 99, Y: 199</p>
-                                </div>
-                            </div>
-                            <div className='status-div'>
-                                <div className='status'>
-                                    <p className='status-text'>Unlisted on market</p>
-                                </div>
-                            </div>
-                            <div className='offer-div'>
-                                <p className='offer-text'>Best Offer : 0.15 ETH</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ShowLands/>
             </div>
         </div>
     )
