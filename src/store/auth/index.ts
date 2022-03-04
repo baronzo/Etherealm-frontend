@@ -18,9 +18,9 @@ class AuthStore {
   }
 
   @action
-  public checkLogin(): void {
+  public async checkLogin(): Promise<void> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
-      this.account = JSON.parse(window.localStorage.getItem('account')!)
+      await this.login()
     }
   }
 
@@ -43,6 +43,11 @@ class AuthStore {
       console.error('Please Install Metamask')
     }
     return result
+  }
+
+  @action
+  public async updateAccountData(): Promise<void> {
+    await this.login()
   }
 
   @action

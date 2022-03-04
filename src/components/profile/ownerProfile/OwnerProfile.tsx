@@ -1,13 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import './OwnerProfile.scss'
+import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
 import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
-import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
+import LandService from '../../../services/lands/LandService'
+import LandModel from '../../../models/lands/LandModel'
+import AuthStore from '../../../store/auth'
+import AccountModel from '../../../models/auth/AccountModel'
 
 type Props = {}
 
 export default function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
+    const landService: LandService = new LandService
+    const authStore: AuthStore = new AuthStore
+    const [account, setaccount] = useState<AccountModel>(new AccountModel)
+    const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+
+    useEffect(() => {
+        getAccountData()
+        getLandByOwnerTokenId()
+    }, [])
+
+    async function getAccountData(): Promise<void> {
+        const data: AccountModel = await authStore.getAccount()
+        setaccount(data)
+    }
+
+    async function getLandByOwnerTokenId(): Promise<void> {
+        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(account.userTokenId)
+        setownedLand(result)
+    }
+
     return (
         <div id='profileMain'>
             <div className='profile-and-log'>
@@ -57,7 +82,7 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands/>
+                <ShowLands lands={ownedLand} />
             </div>
             {isShowModalListOnMarket && <ModalListOnMarket/>}
         </div>

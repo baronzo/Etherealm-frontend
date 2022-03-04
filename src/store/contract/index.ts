@@ -49,11 +49,20 @@ class ContractStore {
       try {
         console.log(landTokenId)
         let uri: string = `http://etherealm.ddns.net/api/lands/land/${landTokenId}`
-        await this.contract.create(landTokenId, uri)
-        return true
+        let tx = await this.contract.create(landTokenId, uri)
+        return this.waitTransactionConfirm(tx)
       } catch (error) {
         console.error(error)
       }
+    }
+    return false
+  }
+
+  private async waitTransactionConfirm(tx: any): Promise<boolean> {
+    let receipt = await tx.wait()
+    if (receipt.status) {
+      console.log(receipt)
+      return true
     }
     return false
   }
