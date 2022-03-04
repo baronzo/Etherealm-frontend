@@ -24,8 +24,8 @@ export default function Layout(): ReactElement {
                 <Route exact path='/bid' component={Bid} />
                 <Route exact path='/profile' component={OwnerProfile}/>
                 <Route exact path='/profile/1' component={OthersProfile}/>
-                <Route exact path='/:landTokenId/edit' component={EditLand} />
-                <Route exact path='/detail' component={LandDetail} />
+                <Route exact path='/lands/:landTokenId/edit' component={EditLand} />
+                <Route exact path='/lands/:landTokenId/details' component={LandDetail} />
                 <Route exact path='*' component={Home} />
             </Switch>
         </div>

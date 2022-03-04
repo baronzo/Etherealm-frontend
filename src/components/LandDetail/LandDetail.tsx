@@ -1,14 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaCopy } from 'react-icons/fa'
 import './LandDetail.scss'
+import { useParams } from 'react-router-dom'
+import LandService from '../../services/lands/LandService'
+import LandModel from '../../models/lands/LandModel'
+import UserService from '../../services/user/UserService'
+import UserModel from '../../models/auth/UserModel'
+
+interface IParams {
+  landTokenId: string
+}
 
 export default function LandDetail() {
+  const params: IParams = useParams()
+  const landService: LandService = new LandService
+  const userService: UserService = new UserService
+  const [landDetails, setlandDetails] = useState<LandModel>(new LandModel)
+  const [ownerDetails, setownerDetails] = useState<UserModel>(new UserModel)
+  
+  useEffect(() => {
+    getLandDetailsFromApi()
+  }, [])
+
+  async function getLandDetailsFromApi(): Promise<void> {
+    const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
+    setlandDetails(result)
+    getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
+  }
+
+  async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
+    const result: UserModel = await userService.getUserDetailsByTokenId(ownerTokenId)
+    setownerDetails(result)
+  }
+
   return (
     <div id='landDetail'>
       <div id="detailBox">
         <div id="header">
-          <div className="title-text">Ham traco Land</div>
+          <div className="title-text">{landDetails.landName}</div>
           <div className="tags">Unlisted on market</div>
         </div>
         <div id="detailSection">
@@ -18,7 +48,7 @@ export default function LandDetail() {
           <div className="detail-section">
             <div className="detail">
               <div className="text-title">Description</div>
-              <div className="text-description">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</div>
+              <div className="text-description">{landDetails.landDescription}</div>
             </div>
             <div className="detail">
               <div className="text-title">URL</div>
@@ -30,7 +60,7 @@ export default function LandDetail() {
               <button className='button-coord'>
                 <div className="group">
                   <MdLocationOn className='location-icon' />
-                  <div className="x-y">X:15, Y: 399</div>
+                  <div className="x-y">X:{landDetails.landLocation.x}, Y:{landDetails.landLocation.y}</div>
                 </div>
               </button>
             </div>
@@ -42,7 +72,7 @@ export default function LandDetail() {
                 <div className="detail-profile">
                   <div className="name">Anicha</div>
                   <div className="box">
-                    <div className="token-id">0xcc896c2cdd10aasderhdfgsdf...</div>
+                    <div className="token-id">{ownerDetails.userTokenId}</div>
                     <button className="copy">
                       <FaCopy className='copy-icon' />
                     </button>

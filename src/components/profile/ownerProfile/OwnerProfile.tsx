@@ -16,7 +16,7 @@ export default function Profile({ }: Props) {
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
 
     useEffect(() => {
-        getAccountData()
+        // getAccountData()
         getLandByOwnerTokenId()
     }, [])
 
@@ -26,7 +26,8 @@ export default function Profile({ }: Props) {
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
-        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(account.userTokenId)
+        const result: Array<LandModel> = await landService.getLandByOwnerTokenId('0x347Aa0FC3E7e4b06AF8515dd265a593410940E05')
+        console.log(result)
         setownedLand(result)
     }
 
