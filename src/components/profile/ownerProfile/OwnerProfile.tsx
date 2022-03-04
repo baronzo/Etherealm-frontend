@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
+import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
 
 type Props = {}
 
 export default function Profile({ }: Props) {
+    const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     return (
         <div id='profileMain'>
             <div className='profile-and-log'>
@@ -57,6 +59,7 @@ export default function Profile({ }: Props) {
             <div className='my-land'>
                 <ShowLands/>
             </div>
+            {isShowModalListOnMarket && <ModalListOnMarket/>}
         </div>
     )
 }
