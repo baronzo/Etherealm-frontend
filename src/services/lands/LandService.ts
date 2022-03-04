@@ -19,8 +19,8 @@ class LandService {
     return lands.data
   }
 
-  public async getLandByOwnerTokenId(ownerTokenId: string): Promise<LandModel> {
-    let lands: AxiosResponse<LandModel> = await axios.get(`${this.host}/lands/ownerTokenId?ownerTokenId=${ownerTokenId}`)
+  public async getLandByOwnerTokenId(ownerTokenId: string): Promise<Array<LandModel>> {
+    let lands: AxiosResponse<Array<LandModel>> = await axios.get(`${this.host}/lands/ownerTokenId?ownerTokenId=${ownerTokenId}`)
     return lands.data
   }
 

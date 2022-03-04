@@ -30,11 +30,11 @@ export default function LandModal(props: IProps) {
   function mapStatusToClassName(statusId: number): string {
     switch (statusId) {
       case 1:
-          return 'listed'
+          return 'no-owner'
       case 2:
         return 'un-listed'
       case 3:
-        return 'no-owner'
+        return 'listed'
       default:
         return 'no-owner'
     }
@@ -44,7 +44,10 @@ export default function LandModal(props: IProps) {
     switch (land.landStatus.landStatusId) {
       case 1:
         return (
-          <div className="option">Offer this land</div>
+          <div className="option">
+            <button id="hirePurchase" className={isLoading ? 'disabled' : ''}>Hire Purchase</button>
+            <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
+          </div>
         )
       case 2:
         return (
@@ -52,10 +55,7 @@ export default function LandModal(props: IProps) {
         )
       case 3:
         return (
-          <div className="option">
-            <button id="hirePurchase" className={isLoading ? 'disabled' : ''}>Hire Purchase</button>
-            <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
-          </div>
+          <div className="option">Offer this land</div>
         )
       default:
         break;

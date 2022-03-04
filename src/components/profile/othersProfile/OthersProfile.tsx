@@ -32,7 +32,7 @@ export default function OthersProfile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands />
+                {/* <ShowLands /> */}
             </div>
         </div>
     )

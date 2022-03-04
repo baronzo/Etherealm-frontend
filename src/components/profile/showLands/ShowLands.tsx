@@ -1,10 +1,13 @@
 import React from 'react'
 import { MdLocationOn } from 'react-icons/md'
+import LandModel from '../../../models/lands/LandModel'
 import './ShowLands.scss'
 
-type Props = {}
+type Props = {
+    lands: Array<LandModel>
+}
 
-export default function ShowLands({ }: Props) {
+export default function ShowLands(props: Props) {
     return (
         <>
             <div id='ShowLandsMain'>
