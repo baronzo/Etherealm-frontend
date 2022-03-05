@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './OwnerProfile.scss'
+import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
+import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
 import LandService from '../../../services/lands/LandService'
@@ -10,6 +12,7 @@ import AccountModel from '../../../models/auth/AccountModel'
 type Props = {}
 
 export default function Profile({ }: Props) {
+    const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const landService: LandService = new LandService
     const authStore: AuthStore = new AuthStore
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
@@ -79,8 +82,9 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands lands={ownedLand} />
+                <ShowLands lands={ownedLand} setIsShowModalListOnMarket={setIsShowModalListOnMarket}/>
             </div>
+            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
         </div>
     )
 }
