@@ -8,11 +8,13 @@ import LandService from '../../../services/lands/LandService'
 import LandModel from '../../../models/lands/LandModel'
 import AuthStore from '../../../store/auth'
 import AccountModel from '../../../models/auth/AccountModel'
+import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 
 type Props = {}
 
 export default function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
+    const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(true)
     const landService: LandService = new LandService
     const authStore: AuthStore = new AuthStore
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
@@ -82,9 +84,13 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands lands={ownedLand} setIsShowModalListOnMarket={setIsShowModalListOnMarket}/>
+                <ShowLands lands={ownedLand}
+                    setIsShowModalListOnMarket={setIsShowModalListOnMarket}
+                    setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                />
             </div>
             {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
+            {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
         </div>
     )
 }
