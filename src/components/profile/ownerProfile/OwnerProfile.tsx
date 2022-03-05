@@ -82,9 +82,9 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands lands={ownedLand} />
+                <ShowLands lands={ownedLand} setIsShowModalListOnMarket={setIsShowModalListOnMarket}/>
             </div>
-            {isShowModalListOnMarket && <ModalListOnMarket/>}
+            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
         </div>
     )
 }

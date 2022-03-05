@@ -5,6 +5,7 @@ import './ShowLands.scss'
 
 type Props = {
     lands: Array<LandModel>
+    setIsShowModalListOnMarket: any
 }
 
 export default function ShowLands(props: Props) {
@@ -34,7 +35,7 @@ export default function ShowLands(props: Props) {
                                     <p className='button-text-detail'>Land Detail</p>
                                 </div>
                                 <div className='list-to-market'>
-                                    <p className='button-text-list'>List to Market</p>
+                                    <p className='button-text-list' onClick={() => {props.setIsShowModalListOnMarket(true)}}>List to Market</p>
                                 </div>
                             </div>
                             <div className='offer-div'>
