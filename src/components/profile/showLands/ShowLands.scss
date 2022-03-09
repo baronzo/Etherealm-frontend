@@ -1,0 +1,168 @@
+#ShowLandsMain {
+    margin: 0;
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
+    .topic-my-land-div {
+        width: 100%;
+        display: flex;
+        margin: 0;
+        padding-top: 15px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #d2cddd;
+        .topic-my-land-text {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #7645D9;
+        }
+    }
+    .show-my-land {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        column-gap: 15px;
+        row-gap: 15px;
+        margin: 0;
+        padding: 15px 0 0 0;
+        .land-card {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            height: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            &:hover {
+                box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
+            }
+            .land-image-div {
+                background-color: #b6ffff;
+                margin: 0;
+                padding: 0;
+                height: 140px;
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+                .land-image {
+                    margin: 0;
+                    height: 140px;
+                    width: 200px;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 10px 10px 0 0;
+                }
+            }
+            .land-detail {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                margin: 0;
+                padding: 10px ;
+                border-radius: 0 0 10px 10px;
+                width: 100%;
+                .name-location{
+                    width: 100%;
+                    margin: 0;
+                    padding-bottom: 5px;
+                    .land-name {
+                        margin: 0;
+                        padding: 0;
+                        .land-name-text {
+                            margin: 0;
+                            font-size: 17px;
+                            font-weight: bold;
+                            color: black;
+                        }
+                    }
+                    .location-div {
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        margin: 0;
+                        padding: 0;
+                        .location-icon {
+                            margin-right: 2px;
+                            font-size: 18px;
+                            color: #7645D9;
+                        }
+                        .location {
+                            margin: 0;
+                            font-size: 12px;
+                            color: #999999;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                .status-div {
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0;
+                    padding: 5px 0 5px 0;
+                    height: 65px;
+                    .view-detail {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0;
+                        padding: 0;
+                        height: 25px;
+                        width: 180px;
+                        background-color: #3FD2CE;
+                        border-radius: 5px;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #0fb3ad;
+                        }
+                        .button-text-detail {
+                            margin: 0;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                    }
+                    .list-to-market {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 4px 0 0 0;
+                        padding: 0;
+                        height: 25px;
+                        width: 180px;
+                        background-color: #ffcc4b;
+                        border-radius: 5px;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #e9a700;
+                        }
+                        .button-text-list {
+                            margin: 0;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                .offer-div {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: flex-end;
+                    margin-top: 5px;
+                    padding-top: 10px;
+                    width: 100%;
+                    border-top: 1.5px solid #C4C4C4;
+                    .offer-text {
+                        margin: 0;
+                        color: #7645D9;
+                        font-size: 13px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

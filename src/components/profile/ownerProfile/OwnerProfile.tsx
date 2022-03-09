@@ -1,11 +1,40 @@
-import React from 'react'
-import './Profile.scss'
+import React, { useEffect, useState } from 'react'
+import './OwnerProfile.scss'
+import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
+import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
-import { MdLocationOn } from 'react-icons/md'
+import ShowLands from '../showLands/ShowLands'
+import LandService from '../../../services/lands/LandService'
+import LandModel from '../../../models/lands/LandModel'
+import AuthStore from '../../../store/auth'
+import AccountModel from '../../../models/auth/AccountModel'
+import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 
 type Props = {}
 
 export default function Profile({ }: Props) {
+    const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
+    const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(true)
+    const landService: LandService = new LandService
+    const authStore: AuthStore = new AuthStore
+    const [account, setaccount] = useState<AccountModel>(new AccountModel)
+    const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+
+    useEffect(() => {
+        getAccountData()
+        getLandByOwnerTokenId()
+    }, [])
+
+    async function getAccountData(): Promise<void> {
+        const data: AccountModel = await authStore.getAccount()
+        setaccount(data)
+    }
+
+    async function getLandByOwnerTokenId(): Promise<void> {
+        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(account.userTokenId)
+        setownedLand(result)
+    }
+
     return (
         <div id='profileMain'>
             <div className='profile-and-log'>
@@ -55,36 +84,13 @@ export default function Profile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <div className='topic-my-land-div'>
-                    <p className='topic-my-land-text'>My Lands</p>
-                </div>
-                <div className='show-my-land'>
-                    <div className='land-card'>
-                        <div className='land-image-div'>
-                            <img className='land-image' src="/land.png" alt="" />
-                        </div>
-                        <div className='land-detail'>
-                            <div className='name-location'>
-                                <div className='land-name'>
-                                    <p className='land-name-text'>LAND (99, 199)</p>
-                                </div>
-                                <div className='location-div'>
-                                    <MdLocationOn className='location-icon' />
-                                    <p className='location'>X: 99, Y: 199</p>
-                                </div>
-                            </div>
-                            <div className='status-div'>
-                                <div className='status'>
-                                    <p className='status-text'>Unlisted on market</p>
-                                </div>
-                            </div>
-                            <div className='offer-div'>
-                                <p className='offer-text'>Best Offer : 0.15 ETH</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ShowLands lands={ownedLand}
+                    setIsShowModalListOnMarket={setIsShowModalListOnMarket}
+                    setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                />
             </div>
+            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
+            {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
         </div>
     )
 }
