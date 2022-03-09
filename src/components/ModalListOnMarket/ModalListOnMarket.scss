@@ -1,0 +1,371 @@
+%fee-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    .fee-item {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        .fee-label {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 70%;
+            margin: 0;
+            padding: 0;
+            .fee-label-text {
+                margin: 0;
+                font-size: 14px;
+                font-weight: normal;
+                color: #494949;
+            }
+        }
+        .fee-value {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 30%;
+            margin: 0;
+            padding: 0;
+            .fee-value-text {
+                margin: 0;
+                font-size: 14px;
+                font-weight: normal;
+                color: #494949;
+            }
+        }
+    }
+}
+
+%button {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    .button-sell {
+        width: 100%;
+        height: 32px;
+        border-radius: 30px;
+        border: none;
+        font-size: 15px;
+        font-weight: bold;
+        color: white;
+        background-color: #7645D9;
+        margin: 0;
+        padding: 0;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #6c43be;
+        }
+    }
+}
+
+#modalListOnMarket {
+    position: fixed;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.534);
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    #detailBox {
+        width: 700px;
+        height: 410px;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
+        border-radius: 13px;
+        background-color: white;
+        #header {
+            display: flex;
+            background-color: #7645D9;
+            height: 55px;
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+            margin: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            .title-div {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                width: 90%;
+                .title-text {
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 0;
+                }
+            }
+            .close-div {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                width: 10%;
+                .close-icon {
+                    color: white;
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 0;
+
+                    &:hover {
+                        color: #c3b1e7;
+                        cursor: pointer;
+                    }
+                }
+            }
+            
+        }
+        #detailSection {
+            display: flex;
+            padding: 20px;
+            margin: 0;
+            .image-section {
+                margin: 0;
+                padding: 0;
+                .land-image  {
+                    width: 280px;
+                    height: 280px;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 10px;
+                }
+                .land-name {
+                    display: flex;
+                    margin: 0;
+                    padding: 0;
+                    align-items: center;
+                    justify-content: center;
+                    .land-name-text {
+                        margin: 0 5px 0 0;
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: #7645D9;
+                    }
+                    .icon-info {
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #9A9A9A;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            .detail-section {
+                width: 380px;
+                margin: 0;
+                padding: 0 0 0 20px;
+                .toggle-sell-rent {
+                    display: flex;
+                    width: 100%;
+                    height: 35px;
+                    border: 4px solid white;
+                    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
+                    border-radius: 30px;
+                    background-color: white;
+                    margin: 0;
+                    padding: 0;
+                    .button-sell {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 31px;
+                        width: 50%;
+                        height: 100%;
+                        margin: 0;
+                        padding: 0;
+                        color: #7645D9;
+                        background-color: white;
+                        font-size: 15px;
+                        font-weight: bold;
+                        cursor: pointer;
+
+                        &.active {
+                            cursor: pointer;
+                            color: white;
+                            background-color: #7645D9;
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #6c43be;
+                            }
+                        }
+                    }
+                    .button-rent {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 30px;
+                        width: 50%;
+                        height: 100%;
+                        margin: 0;
+                        padding: 0;
+                        color: #7645D9;
+                        background-color: white;
+                        font-size: 15px;
+                        font-weight: bold;
+                        cursor: pointer;
+
+                        &.active {
+                            cursor: pointer;
+                            color: white;
+                            background-color: #7645D9;
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #6c43be;
+                            }
+                        }
+                    }
+                }
+                .detail-sell {
+                    display: flex;
+                    flex-direction: column;
+                    margin: 0;
+                    padding: 20px 10px 0 10px;
+                    height: 246px;
+                    .price-div {
+                        height: 30%;
+                        margin: 0;
+                        padding: 0;
+                        .text-price {
+                            width: 100%;
+                            margin: 0;
+                            padding-bottom: 7px;
+                            color: #7645D9;
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                        .input-price-div {
+                            margin: 0;
+                            padding: 0;
+                            .input-price {
+                                margin: 0;
+                                padding-left: 10px;
+                                color:black ;
+                                font-size: 14px;
+                                font-weight: regular;
+                                width: 340px;
+                                height: 30px;
+                                border-radius: 5px;
+                                border: 1px solid #c3b1e7;
+                                outline: none;
+    
+                                &:focus {
+                                    border: 1px solid #c3b1e7;
+                                    box-sizing: border-box;
+                                    box-shadow: 0px 0px 4px 1px rgba(174, 134, 255, 0.5);
+                                }
+                            }
+                        }
+                    }
+                    .fee-div {
+                        height: 50%;
+                        @extend %fee-container;
+                    }
+                    .button-sell-div {
+                        height: 20%;
+                        @extend %button;
+                    }
+                }
+                .detail-rent {
+                    display: flex;
+                    flex-direction: column;
+                    margin: 0;
+                    padding: 20px 10px 0 10px;
+                    height: 246px;
+                    .price-div {
+                        height: 55%;
+                        margin: 0;
+                        padding: 0;
+                        .text-price {
+                            width: 100%;
+                            margin: 0;
+                            padding-bottom: 7px;
+                            color: #7645D9;
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                        .input-price-div {
+                            margin: 0;
+                            padding: 0;
+                            .input-price {
+                                margin: 0;
+                                padding-left: 10px;
+                                color:black ;
+                                font-size: 14px;
+                                font-weight: regular;
+                                width: 340px;
+                                height: 30px;
+                                border-radius: 5px;
+                                border: 1px solid #c3b1e7;
+                                outline: none;
+    
+                                &:focus {
+                                    border: 1px solid #c3b1e7;
+                                    box-sizing: border-box;
+                                    box-shadow: 0px 0px 4px 1px rgba(174, 134, 255, 0.5);
+                                }
+                            }
+                        }
+                        .text-period {
+                            width: 100%;
+                            margin: 0;
+                            padding-top: 8px;
+                            padding-bottom: 7px;
+                            color: #7645D9;
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                        .input-period-div {
+                            margin: 0;
+                            padding: 0;
+                            .input-period {
+                                margin: 0;
+                                padding-left: 10px;
+                                color:black ;
+                                font-size: 14px;
+                                font-weight: regular;
+                                width: 340px;
+                                height: 30px;
+                                border-radius: 5px;
+                                border: 1px solid #c3b1e7;
+                                outline: none;
+    
+                                &:focus {
+                                    border: 1px solid #c3b1e7;
+                                    box-sizing: border-box;
+                                    box-shadow: 0px 0px 4px 1px rgba(174, 134, 255, 0.5);
+                                }
+                            }
+                        }
+                    }
+                    .fee-div {
+                        height: 30%;
+                        @extend %fee-container;
+                    }
+                    .button-rent-div {
+                        height: 15%;
+                        @extend %button;
+                    }
+                }
+            }
+        }
+    }
+}
