@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
@@ -11,6 +11,7 @@ export default function Bid({ }: Props) {
     const [isDisabled, setIsDisabled] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0)
     const [mockImage, setMockImage] = useState(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'])
+    const slideRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setCurrentIndex(0)
@@ -32,8 +33,14 @@ export default function Bid({ }: Props) {
 
     const nextSlide = () => {
         if (currentIndex === mockImage.length - 1) {
+            if (slideRef.current) {
+                slideRef.current.scrollLeft = 0;
+            }
             setCurrentIndex(0)
         } else {
+            if (slideRef.current) {
+                slideRef.current.scrollLeft = slideRef.current.scrollLeft + 245;
+            }
             setCurrentIndex(currentIndex + 1)
         }
         console.log(currentIndex)
@@ -41,13 +48,19 @@ export default function Bid({ }: Props) {
 
     const prevSlide = () => {
         if (currentIndex === 0) {
+            if (slideRef.current) {
+                slideRef.current.scrollLeft = 245 * mockImage.length - 1;
+            }
             setCurrentIndex(mockImage.length - 1)
         } else {
+            if (slideRef.current) {
+                slideRef.current.scrollLeft = slideRef.current?.scrollLeft - 245;
+            }
             setCurrentIndex(currentIndex - 1)
         }
         console.log(currentIndex)
     }
-    
+
     return (
         <div id="bidLayout">
             <div className='detailMain'>
@@ -101,7 +114,7 @@ export default function Bid({ }: Props) {
                 <label id='text'>Other Auction items now :</label>
                     <div id='bar'></div>
                 <div className='slideMain'>
-                    <div id='bidScroll' className='bidContainer'>
+                    <div id='bidScroll' className='bidContainer' ref={slideRef} >
                      {mockImage.map((item, index) => {
                          return (
                             <div id='cardScroll' className={`bodyCard ${index === currentIndex ? 'active' : ''}`} key={index}>
