@@ -25,9 +25,15 @@ class AuthStore {
   }
 
   @action
-  public getAccountInCookies(): AccountModel {
+  public async getAccountInCookies(): Promise<AccountModel> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
-     return JSON.parse(window.localStorage.getItem('account')!)
+      const storeAccount: AccountModel = JSON.parse(window.localStorage.getItem('account')!)
+      const currentAccount: AccountModel = await this.login()
+      if (storeAccount.userTokenId === currentAccount.userTokenId) {
+        return currentAccount
+      } else {
+        this.logout()
+      }
     }
     return new AccountModel
   }
@@ -40,12 +46,14 @@ class AuthStore {
       let accounts = await eth.request({method: 'eth_requestAccounts'})
       let resBalance = await eth.request({method: 'eth_getBalance', params: [accounts[0], 'latest']})
       let userDetails: UserModel = await this.userService.createUser(accounts[0])
-      result = {
-        userTokenId: accounts[0],
-        balance: Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4)),
-        userName: userDetails.userName,
-        userDescription: userDetails.userDescription,
-        userProfilePic: userDetails.userProfilePic
+      if (userDetails.userTokenId) {
+        result = {
+          userTokenId: accounts[0],
+          balance: Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4)),
+          userName: userDetails.userName,
+          userDescription: userDetails.userDescription,
+          userProfilePic: userDetails.userProfilePic
+        }
       }
     } else {
       console.error('Please Install Metamask')

@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
+import React, { Children, ReactComponentElement, ReactElement, useContext, useEffect, useMemo, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
 import Home from '../Home/Home'
 import Map from '../Map/Map'
@@ -15,23 +15,19 @@ import { observer } from 'mobx-react'
 import AuthStore from '../../store/auth'
 import AccountModel from '../../models/auth/AccountModel'
 
-export default observer(function Layout(): ReactElement {
+interface IProps {
+    children: React.FunctionComponent
+}
+
+export default observer(function Layout(props: IProps): ReactElement {
+
+    useEffect(() => {
+    }, [props.children])
 
     return (
         <div id='layout' >
             <Navbar/>
-            <Switch>
-                <Route exact path='/' component={Home}/>
-                <Route exact path='/map' component={Map} />
-                <Route exact path='/market' component={Market} />
-                <Route exact path='/auction' component={Auction}/>
-                <Route exact path='/bid' component={Bid} />
-                <Route exact path='/profile' component={OwnerProfile}/>
-                <Route exact path='/profile/1' component={OthersProfile}/>
-                <Route exact path='/lands/:landTokenId/edit' component={EditLand} />
-                <Route exact path='/lands/:landTokenId/details' component={LandDetail} />
-                <Route exact path='*' component={Home} />
-            </Switch>
+            <props.children/>
         </div>
     )
 })

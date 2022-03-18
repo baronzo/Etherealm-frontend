@@ -29,9 +29,7 @@ export default observer(function Profile({ }: Props) {
     }
     
     async function getLandByOwnerTokenId(): Promise<void> {
-        const data: AccountModel = authStore.getAccountInCookies()
-        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(data.userTokenId)
-        setaccount(data)
+        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(authStore.account.userTokenId)
         setownedLand(result)
     }
 

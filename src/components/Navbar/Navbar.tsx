@@ -17,6 +17,9 @@ export default observer(function Navbar(props: IProps) {
 
   async function onLogin(): Promise<void> {
     const accountResponse = await authStore.login()
+    if (accountResponse.userTokenId) {
+      // alert error
+    }
   }
 
   function onLogout(): void {
