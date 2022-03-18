@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useMemo } from 'react'
+import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
 import Home from '../Home/Home'
 import Map from '../Map/Map'
@@ -11,11 +11,15 @@ import '../Layout/Layout.scss'
 import { Switch, Route } from 'react-router-dom'
 import OwnerProfile from '../profile/ownerProfile/OwnerProfile'
 import OthersProfile from '../profile/othersProfile/OthersProfile'
+import { observer } from 'mobx-react'
+import AuthStore from '../../store/auth'
+import AccountModel from '../../models/auth/AccountModel'
 
-export default function Layout(): ReactElement {
+export default observer(function Layout(): ReactElement {
+
     return (
         <div id='layout' >
-            <Navbar />
+            <Navbar/>
             <Switch>
                 <Route exact path='/' component={Home}/>
                 <Route exact path='/map' component={Map} />
@@ -30,4 +34,4 @@ export default function Layout(): ReactElement {
             </Switch>
         </div>
     )
-}
+})

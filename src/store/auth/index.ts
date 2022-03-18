@@ -20,8 +20,16 @@ class AuthStore {
   @action
   public async checkLogin(): Promise<void> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
-      await this.login()
+      this.account = JSON.parse(window.localStorage.getItem('account')!)
     }
+  }
+
+  @action
+  public getAccountInCookies(): AccountModel {
+    if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
+     return JSON.parse(window.localStorage.getItem('account')!)
+    }
+    return new AccountModel
   }
 
   @action
@@ -77,7 +85,5 @@ class AuthStore {
 
 }
 
-export const AuthStoreContext = createContext(new AuthStore())
 const authStore: AuthStore = new AuthStore()
-export type AuthStoreType = typeof authStore
-export default AuthStore
+export default authStore

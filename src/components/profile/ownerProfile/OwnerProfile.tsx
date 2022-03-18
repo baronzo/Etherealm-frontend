@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import './OwnerProfile.scss'
 import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
 import './OwnerProfile.scss'
@@ -6,33 +6,32 @@ import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
 import LandService from '../../../services/lands/LandService'
 import LandModel from '../../../models/lands/LandModel'
-import AuthStore from '../../../store/auth'
 import AccountModel from '../../../models/auth/AccountModel'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
+import { observer } from 'mobx-react'
+import authStore from '../../../store/auth'
 
 type Props = {}
 
-export default function Profile({ }: Props) {
+export default observer(function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(true)
     const landService: LandService = new LandService
-    const authStore: AuthStore = new AuthStore
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
 
     useEffect(() => {
-        // getAccountData()
-        getLandByOwnerTokenId()
+        getDataFromAPI()
     }, [])
 
-    async function getAccountData(): Promise<void> {
-        const data: AccountModel = await authStore.getAccount()
-        setaccount(data)
+    async function getDataFromAPI(): Promise<void> {
+        await getLandByOwnerTokenId()
     }
-
+    
     async function getLandByOwnerTokenId(): Promise<void> {
-        const result: Array<LandModel> = await landService.getLandByOwnerTokenId('0x347Aa0FC3E7e4b06AF8515dd265a593410940E05')
-        console.log(result)
+        const data: AccountModel = authStore.getAccountInCookies()
+        const result: Array<LandModel> = await landService.getLandByOwnerTokenId(data.userTokenId)
+        setaccount(data)
         setownedLand(result)
     }
 
@@ -94,4 +93,4 @@ export default function Profile({ }: Props) {
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
         </div>
     )
-}
+})

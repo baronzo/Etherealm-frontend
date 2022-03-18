@@ -3,6 +3,7 @@ import AccountModel from "../../models/auth/AccountModel"
 import LandModel from "../../models/lands/LandModel"
 import LandRequestModel from "../../models/lands/LandRequestModel"
 import PurchaseLandRequestModel from "../../models/lands/PurchaseLandRequestModel"
+import authStore from "../../store/auth"
 import AuthStore from "../../store/auth"
 import Host from "../Host"
 
@@ -25,7 +26,7 @@ class LandService {
   }
 
   public async purchaseLand(landTokenId: string): Promise<LandModel> {
-    let account: AccountModel = await new AuthStore().getAccount()
+    let account: AccountModel = await authStore.getAccount()
     let body: PurchaseLandRequestModel = {
       landTokenId: landTokenId,
       ownerTokenId: account.userTokenId

@@ -23,44 +23,44 @@ export default function ShowLands(props: Props) {
         const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 2)
         return (
             <>
-                {data.map((item: LandModel) => {
-                    return (
-                        <div id='ShowLandsMain' key={item.landTokenId}>
-                            <div className='topic-my-land-div'>
-                                <p className='topic-my-land-text'>Owned Lands</p>
-                            </div>
-                            <div className='show-my-land'>
-                                <div className='land-card'>
-                                    <div className='land-image-div'>
-                                        <img className='land-image' src="/map.jpg" alt="" />
+                <div id='ShowLandsMain'>
+                    <div className='topic-my-land-div'>
+                        <p className='topic-my-land-text'>Owned Lands</p>
+                    </div>
+                    <div className='show-my-land'>
+                    {data.map((item: LandModel) => {
+                        return (
+                            <div className='land-card' key={item.landTokenId}>
+                                <div className='land-image-div'>
+                                    <img className='land-image' src="/map.jpg" alt="" />
+                                </div>
+                                <div className='land-detail'>
+                                    <div className='name-location'>
+                                        <div className='land-name'>
+                                            <p className='land-name-text'>{item.landName}</p>
+                                        </div>
+                                        <div className='location-div'>
+                                            <MdLocationOn className='location-icon' />
+                                            <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
+                                        </div>
                                     </div>
-                                    <div className='land-detail'>
-                                        <div className='name-location'>
-                                            <div className='land-name'>
-                                                <p className='land-name-text'>{item.landName}</p>
-                                            </div>
-                                            <div className='location-div'>
-                                                <MdLocationOn className='location-icon' />
-                                                <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
-                                            </div>
+                                    <div className='status-div'>
+                                        <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
+                                            <p className='button-text-detail'>Land Detail</p>
                                         </div>
-                                        <div className='status-div'>
-                                            <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                                <p className='button-text-detail'>Land Detail</p>
-                                            </div>
-                                            <div className='list-to-market'>
-                                                <p className='button-text-list'>List to Market</p>
-                                            </div>
+                                        <div className='list-to-market'>
+                                            <p className='button-text-list'>List to Market</p>
                                         </div>
-                                        <div className='offer-div'>
-                                            <p className='offer-text'>Best Offer : 0.15 ETH</p>
-                                        </div>
+                                    </div>
+                                    <div className='offer-div'>
+                                        <p className='offer-text'>Best Offer : 0.15 ETH</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                    </div>
+                </div>
             </>
             
         )
