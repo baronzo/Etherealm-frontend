@@ -6,7 +6,6 @@ import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
 import LandService from '../../../services/lands/LandService'
 import LandModel from '../../../models/lands/LandModel'
-import AccountModel from '../../../models/auth/AccountModel'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import { observer } from 'mobx-react'
 import authStore from '../../../store/auth'
@@ -16,8 +15,9 @@ type Props = {}
 export default observer(function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
-    const landService: LandService = new LandService
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+    const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
+    const landService: LandService = new LandService
 
     useEffect(() => {
         getDataFromAPI()
@@ -57,7 +57,7 @@ export default observer(function Profile({ }: Props) {
                         </div>
                         <div className='user-description-div'>
                             <div className='user-description'>
-                                <p className='text-description'>{authStore.account.userDescription || '...'}</p>
+                                <p className='text-description'>{authStore.account.userDescription || 'No description'}</p>
                             </div>
                         </div>
                     </div>
@@ -82,11 +82,12 @@ export default observer(function Profile({ }: Props) {
             </div>
             <div className='my-land'>
                 <ShowLands lands={ownedLand}
+                    setselectedLand={setselectedLand}
                     setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                 />
             </div>
-            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
+            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand}/>}
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
         </div>
     )

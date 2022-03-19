@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import './ModalListOnMarket.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
+import LandModel from '../../models/lands/LandModel'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
+    land: LandModel
 }
 
 interface Status {
@@ -12,7 +14,7 @@ interface Status {
     rent: boolean
 }
 
-export default function ModalListOnMarket({ setIsShowModalListOnMarket }: Props) {
+export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState({ sell: true, rent: false })
 
     return (
@@ -23,14 +25,14 @@ export default function ModalListOnMarket({ setIsShowModalListOnMarket }: Props)
                         <p className="title-text">List on Market</p>
                     </div>
                     <div className='close-div'>
-                        <MdClose className='close-icon' onClick={() => setIsShowModalListOnMarket(false)}/>
+                        <MdClose className='close-icon' onClick={() => props.setIsShowModalListOnMarket(false)}/>
                     </div>
                 </div>
                 <div id="detailSection">
                     <div className="image-section">
                         <img className='land-image' src="./map.jpg" alt="" />
                         <div className='land-name'>
-                            <p className='land-name-text'>Anicha Land</p>
+                            <p className='land-name-text'>{props.land.landName}</p>
                             <FaInfoCircle className='icon-info' />
                         </div>
                     </div>
