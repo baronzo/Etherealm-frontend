@@ -1,16 +1,25 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.scss'
-import AuthStore from '../../store/auth'
 import { observer } from 'mobx-react'
 import ContractStore from '../../store/contract'
+import AccountModel from '../../models/auth/AccountModel'
+import authStore from '../../store/auth'
 
-export default observer(function Navbar() {
-  const authStore = useMemo(() => new AuthStore, [])
+interface IProps {
+
+}
+
+export default observer(function Navbar(props: IProps) {
   const contractStore = useMemo(() => new ContractStore, [])
+  
+
 
   async function onLogin(): Promise<void> {
-    await authStore.login()
+    const accountResponse = await authStore.login()
+    if (accountResponse.userTokenId) {
+      // alert error
+    }
   }
 
   function onLogout(): void {
