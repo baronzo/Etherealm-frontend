@@ -66,11 +66,12 @@
                         justify-content: center;
                         background-color: #494949;
                         min-width: 80px;
-                        max-width: 190px;
+                        // max-width: 190px;
                         height: 25px;
                         margin: 0;
-                        padding: 0;
+                        padding: 0 5px;
                         border-radius: 5px;
+                        cursor: default;
                         .eth-icon {
                             margin: 0 3px 0 0;
                             font-size: 12px;
@@ -100,7 +101,7 @@
                         color: #9A9A9A;
                         font-weight: 600;
                     }
-                    .copy-buuton {
+                    .copy-buton {
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -112,6 +113,7 @@
                         padding: 0;
                         &:hover {
                             cursor: pointer;
+                            background-color: #5b26c5;
                         }
                         .copy-icon{
                             margin: 0;
@@ -131,6 +133,7 @@
                         background-color: #E9E9E9;
                         border-radius: 5px;
                         .text-description {
+                            color: #636363;
                             word-wrap: break-word;
                             margin: 0;
                             font-size: 12px;
