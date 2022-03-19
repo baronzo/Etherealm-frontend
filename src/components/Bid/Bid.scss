@@ -66,6 +66,8 @@
                 justify-content: space-around;
                 .buttoninput {
                     #button1 {
+                        outline: none;
+                        border: none;
                         font-size: 18px;
                         width: 45px;
                         height: 45px;
@@ -81,6 +83,8 @@
                         }
                     }
                     #button2 {
+                        outline: none;
+                        border: none;
                         font-size: 18px;
                         width: 45px;
                         height: 45px;
@@ -104,6 +108,8 @@
                 }
                 .buttonbid {
                     #button {
+                        outline: none;
+                        border: none;
                         font-size: 18px;
                         width: 150px;
                         height: 45px;
