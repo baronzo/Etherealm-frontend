@@ -100,7 +100,7 @@
                         color: #9A9A9A;
                         font-weight: 600;
                     }
-                    .copy-buuton {
+                    .copy-buton {
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -112,6 +112,7 @@
                         padding: 0;
                         &:hover {
                             cursor: pointer;
+                            background-color: #5b26c5;
                         }
                         .copy-icon{
                             margin: 0;
