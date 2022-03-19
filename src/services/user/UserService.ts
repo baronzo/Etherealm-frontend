@@ -7,8 +7,23 @@ class UserService {
   private readonly host: string = new Host().host
 
   public async createUser(userTokenId: string): Promise<UserModel> {
-    let user: AxiosResponse<UserModel> = await axios.post(`${this.host}/users/create?userTokenId=${userTokenId}`)
-    return user.data
+    try {
+      const user: AxiosResponse<UserModel> = await axios.post(`${this.host}/users/create?userTokenId=${userTokenId}`)
+      return user.data
+    } catch (error) {
+      console.error(error)
+      return new UserModel 
+    }
+  }
+
+  public async getUserDetailsByTokenId(userTokenId: string): Promise<UserModel> {
+    try {
+      const user: AxiosResponse<UserModel> = await axios.get(`${this.host}/users/user/${userTokenId}`)
+      return user.data
+    } catch (error) {
+      console.error(error)
+      return new UserModel
+    }
   }
 }
 
