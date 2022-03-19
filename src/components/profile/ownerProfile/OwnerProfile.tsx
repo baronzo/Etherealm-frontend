@@ -14,7 +14,7 @@ type Props = {}
 
 export default function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
-    const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(true)
+    const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
     const landService: LandService = new LandService
     const authStore: AuthStore = new AuthStore
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
