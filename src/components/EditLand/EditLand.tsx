@@ -95,7 +95,7 @@ export default function EditLand() {
     <div id='editLand'>
       <div id="editBox">
         <div id="title">
-          Edit a Land
+          <p className='text-edit'>Edit a Land</p>
         </div>
         <div id="editDetail">
           <div className="image-section">

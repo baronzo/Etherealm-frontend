@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
+import { FaEthereum, FaCopy } from 'react-icons/fa'
 import './Navbar.scss'
 import { observer } from 'mobx-react'
 import ContractStore from '../../store/contract'
@@ -61,8 +62,11 @@ export default observer(function Navbar(props: IProps) {
       </div>
       {authStore.account.userTokenId ?
         <div id="account">
-          <div id="accountBalance">Balance: {authStore.account.balance} ETH |</div>
-          <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div>
+          {/* <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div> */}
+          <div id='profileBalance'>
+            <div className='profile'><img className='profile-img' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" /></div>
+            <div className="accountBalance"><FaEthereum className='eth-icon'/><p className='value'>{authStore.account.balance} ETH</p></div>
+          </div>
           <button id='logoutBtn' onClick={() => onLogout()}>Logout</button>
         </div>
       :

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import './OwnerProfile.scss'
 import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
 import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
@@ -9,15 +8,17 @@ import LandModel from '../../../models/lands/LandModel'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import { observer } from 'mobx-react'
 import authStore from '../../../store/auth'
+import AccountModel from '../../../models/auth/AccountModel'
 
 type Props = {}
 
 export default observer(function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
+    const landService: LandService = new LandService
+    const [account, setaccount] = useState<AccountModel>(new AccountModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
-    const landService: LandService = new LandService
 
     useEffect(() => {
         getDataFromAPI()
