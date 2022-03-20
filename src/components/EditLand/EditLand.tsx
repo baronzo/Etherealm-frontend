@@ -17,6 +17,9 @@ export default function EditLand() {
   const [land, setLand] = useState<LandModel>(new LandModel)
   const [base64Image, setbase64Image] = useState<string>('')
   const params: IParams = useParams()
+  const [isTab, setIsTab] = useState(true)
+  const [linkImage, setLinkImage] = useState<string>('')
+  const [prevImage, setPrevImage] = useState<string>('')
 
 
   useEffect(() => {
@@ -25,6 +28,7 @@ export default function EditLand() {
 
   async function getLandFromTokenId(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
+    setPrevImage(result.landAssets)
     setLand(result)
   }
 
@@ -59,7 +63,10 @@ export default function EditLand() {
   }
 
   async function onSaveClick(): Promise<void> {
-    let imagePath: string = await imageService.postImageApi(base64Image)
+    let imagePath: string = ''
+    if (!linkImage) {
+      imagePath = await imageService.postImageApi(base64Image)
+    }
     let body: LandRequestModel = {
       landTokenId: land.landTokenId,
       landName: land.landName,
@@ -67,13 +74,21 @@ export default function EditLand() {
       landLocation: `${land.landLocation.x},${land.landLocation.y}`,
       landPosition: `${land.landPosition.x},${land.landPosition.y}`,
       landOwnerTokenId: land.landOwnerTokenId,
-      landAssets: imagePath,
+      landAssets: linkImage ? linkImage : imagePath,
       landSize: land.landSize.landSizeId,
       landStatus: land.landStatus.landStatusId,
       onRecommend: land.onRecommend
     }
     let result: LandModel = await landService.updateLand(body)
     setLand(result)
+  }
+
+  function onChangeTab(isTab: boolean ) {
+    let newLand = land
+    newLand.landAssets = prevImage
+    setLinkImage('')
+    setLand(newLand)
+    setIsTab(isTab)
   }
 
   return (
@@ -84,11 +99,23 @@ export default function EditLand() {
         </div>
         <div id="editDetail">
           <div className="image-section">
-            <img id="landImage" src={land.landAssets ? land.landAssets : './land.png'} alt=""/>
-            <div id="changeImage">
-              <input type="file" ref={inputImage} name="" id="uploadInput" onChange={e => onImageSelected(e.target)} accept="image/png, image/jpeg" />
-              <button className='button' onClick={onChangeImageClick}>Change Image</button>
+            <div className="menu">
+              <div className="menu-button">
+                <div className={`upload-image ${isTab ? 'active' : ''}`} onClick={() => onChangeTab(true)}>Uplaod Image</div>
+                <div className={`link-image ${!isTab ? 'active' : ''}`} onClick={() => onChangeTab(false)}>Link Image</div>
+              </div>
             </div>
+            <img id="landImage" src={linkImage ? linkImage : land.landAssets} alt=""/>
+            { isTab ? 
+              <div id="changeImage">
+                <input type="file" ref={inputImage} name="" id="uploadInput" onChange={e => onImageSelected(e.target)} accept="image/png, image/jpeg" />
+                <button className='button' onClick={onChangeImageClick}>Change Image</button>
+              </div> 
+              :
+              <div className='link'>
+                <input type="text" className='link-input' value={linkImage} placeholder='Enter your link image' onChange={(e) => setLinkImage(e.target.value)}/>
+              </div>
+            }
           </div>
           <div className="edit-section">
             <div className="input-box">
