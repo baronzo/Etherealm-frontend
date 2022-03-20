@@ -5,10 +5,10 @@ import { FaEthereum, FaCopy } from 'react-icons/fa'
 import ShowLands from '../showLands/ShowLands'
 import LandService from '../../../services/lands/LandService'
 import LandModel from '../../../models/lands/LandModel'
-import AccountModel from '../../../models/auth/AccountModel'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import { observer } from 'mobx-react'
 import authStore from '../../../store/auth'
+import AccountModel from '../../../models/auth/AccountModel'
 
 type Props = {}
 
@@ -18,6 +18,7 @@ export default observer(function Profile({ }: Props) {
     const landService: LandService = new LandService
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+    const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
 
     useEffect(() => {
         getDataFromAPI()
@@ -41,23 +42,23 @@ export default observer(function Profile({ }: Props) {
                             <img className='profle-image' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" />
                         </div>
                         <div className='name-div'>
-                            <p className='name'>Anicha</p>
+                            <p className='name'>{authStore.account.userName || '-'}</p>
                         </div>
                         <div className='value-div'>
                             <div className='value-button'>
                                 <FaEthereum className='eth-icon' />
-                                <p className='value'>3.28 ETH</p>
+                                <p className='value'>{authStore.account.balance.toFixed(2)} ETH</p>
                             </div>
                         </div>
                         <div className='wallet-div'>
-                            <p className='addreess'>0xcc896c2cdd10abafdgfbfbea84dabjhgjfdjf</p>
-                            <div className='copy-buuton'>
+                            <p className='addreess'>{authStore.account.userTokenId}</p>
+                            <div className='copy-buton' onClick={() => {navigator.clipboard.writeText(authStore.account.userTokenId)}}>
                                 <FaCopy className='copy-icon' />
                             </div>
                         </div>
                         <div className='user-description-div'>
                             <div className='user-description'>
-                                <p className='text-description'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+                                <p className='text-description'>{authStore.account.userDescription || 'No description'}</p>
                             </div>
                         </div>
                     </div>
@@ -82,11 +83,12 @@ export default observer(function Profile({ }: Props) {
             </div>
             <div className='my-land'>
                 <ShowLands lands={ownedLand}
+                    setselectedLand={setselectedLand}
                     setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                 />
             </div>
-            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} />}
+            {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand}/>}
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
         </div>
     )

@@ -9,6 +9,7 @@ type Props = {
     lands: Array<LandModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
+    setselectedLand: (land: LandModel) => void
 }
 
 export default function ShowLands(props: Props) {
@@ -17,6 +18,11 @@ export default function ShowLands(props: Props) {
 
     function goToDetailsPage(landTokenId: string) {
         history.push(`/lands/${landTokenId}/details`)
+    }
+
+    function onClickListOnMarket(selectedLand: LandModel): void {
+        props.setselectedLand(selectedLand)
+        props.setIsShowModalListOnMarket(true)
     }
 
     function mapOwnedLands(): JSX.Element {
@@ -46,9 +52,9 @@ export default function ShowLands(props: Props) {
                                     </div>
                                     <div className='status-div'>
                                         <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                            <p className='button-text-detail'>Land Detail</p>
+                                            <p className='button-text-detail'>Land Details</p>
                                         </div>
-                                        <div className='list-to-market'>
+                                        <div className='list-to-market' onClick={() => onClickListOnMarket(item)}>
                                             <p className='button-text-list'>List to Market</p>
                                         </div>
                                     </div>
