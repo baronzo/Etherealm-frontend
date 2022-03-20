@@ -80,11 +80,11 @@ export default function EditLand() {
     <div id='editLand'>
       <div id="editBox">
         <div id="title">
-          Edit a Land
+          <p className='text-edit'>Edit a Land</p>
         </div>
         <div id="editDetail">
           <div className="image-section">
-            <img id="landImage" src={land.landAssets ? land.landAssets : './land.png'} alt=""/>
+            <img id="landImage" src={land.landAssets ? land.landAssets : '/map.jpg'} alt=""/>
             <div id="changeImage">
               <input type="file" ref={inputImage} name="" id="uploadInput" onChange={e => onImageSelected(e.target)} accept="image/png, image/jpeg" />
               <button className='button' onClick={onChangeImageClick}>Change Image</button>

@@ -16,7 +16,7 @@
         height: 410px;
         margin: 0;
         padding: 0;
-        box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
+        box-shadow: 0.5px 0.5px 3px 2px rgba(100, 100, 100, 0.25);
         border-radius: 13px;
         background-color: white;
         #header {
@@ -54,7 +54,6 @@
                     font-size: 24px;
                     font-weight: bold;
                     margin: 0;
-
                     &:hover {
                         color: #c3b1e7;
                         cursor: pointer;

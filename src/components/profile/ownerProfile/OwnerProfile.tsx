@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import './OwnerProfile.scss'
 import ModalListOnMarket from '../../ModalListOnMarket/ModalListOnMarket'
 import './OwnerProfile.scss'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
