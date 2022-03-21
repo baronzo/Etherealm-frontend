@@ -8,92 +8,176 @@
     width: 700px;
     margin-top: 20px;
     box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    border-radius: 10px;
     #header {
       display: flex;
+      justify-content: center;
+      align-items: center;
       justify-content: space-between;
-      background-color: #8B5DE8;
-      padding: 10px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      color: #fff;
-      font-weight: bold;
-      font-size: 14px;
+      background-color: #7645D9;
+      height: 55px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
       .title-text {
-        display: flex;
-        align-items: center;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
       }
-      .tags {
-        text-align: center;
-        width: 200px;
-        padding: 5px;
-        background-color: #FDBC14;
-        border-radius: 5px;
-        outline-style: solid;
-        outline-color: #fff;
-        outline-width: medium;
+      .edit-and-tag {
+        display: flex;
+        margin: 0;
+        margin: 0;
+        .edit-land {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 30px;
+          width: 130px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #494949;
+          background-color: white;
+          border-radius: 5px;
+          border: 1px solid #A87CFF;
+          padding: 0;
+          margin: 0 5px 0 0;
+          .edit-icon {
+            margin: 0 5px 0 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #3FD2CE;
+          }
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        .tags {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 30px;
+          width: 170px;
+          font-size: 14px;
+          font-weight: 500;
+          color: white;
+          padding: 5px;
+          background-color: #2AC161;
+          border-radius: 5px;
+          border: 1px solid white;
+        }
       }
     }
     #detailSection {
       display: flex;
-      padding: 10px;
+      padding: 20px;
+      height: 350px;
+      margin: 0;
       .image-section {
-        margin-top: 10px;
-        margin-right: 20px;
+        width: 300px;
+        height: 300px;
+        margin: 0;
+        padding: 0;
+        .image-land {
+          border-radius: 10px;
+          width: 300px;
+          height: 300px;
+          padding: 0;
+          margin: 0;
+        }
       }
       .detail-section {
-        .detail {
-          padding: 10px;
+        width: 320px;
+        height: 300px;
+        margin: 0;
+        padding-left: 25px;
+        .detail-desc {
+          height: 25%;
+          padding: 0;
+          margin: 0;
           .text-title {
-            color: #7645D9;
+            margin: 0;
             font-size: 16px;
             font-weight: bold;
+            color: #7645D9;
           }
           .text-description {
-            margin-top: 5px;
+            margin: 0;
             color: #787878;
-            font-size: 16px;
-            font-weight: regular;
+            font-size: 14px;
+            font-weight: normal;
           }
           .text-url {
             margin-top: 5px;
             color: #787878;
+            font-size: 14px;
+            font-weight: normal;
+          }
+        }
+        .detail-url {
+          height: 15%;
+          padding: 0;
+          margin: 0;
+          .text-title {
+            margin: 0;
             font-size: 16px;
             font-weight: bold;
+            color: #7645D9;
+          }
+          .text-url {
+            margin-top: 5px 0 0 0;
+            color: #787878;
+            font-size: 14px;
+            font-weight: normal;
           }
         }
         .button-section {
           display: flex;
-          justify-content: center ;
+          justify-content: flex-start ;
           align-items: center;
+          height: 15%;
+          margin: 0;
+          padding: 0;
           .button-size {
             background-color: #3FD2CE;
-            width: 100px;
+            height: 28px;
+            width: 80px;
             border: none;
             padding: 10px;
+            font-size: 12px;
             border-radius: 5px;
             color: #fff;
-            font-weight: bold;
+            font-weight: 600;
+            margin-right: 10px;
+            padding: 0;
           }
           .button-parcel {
             background-color: #3FD2CE;
-            width: 100px;
+            height: 28px;
+            width: 80px;
             border: none;
             padding: 10px;
             border-radius: 5px;
+            font-size: 12px;
             color: #fff;
-            font-weight: bold;
-            margin-left: 10px;
+            font-weight: 600;
+            margin-right: 10px;
+            padding: 0;
           }
           .button-coord {
             background-color: #7645D9;
             border: none;
-            width: 120px;
+            height: 28px;
+            width: 100px;
             padding: 10px;
             border-radius: 5px;
             color: #fff;
-            font-weight: bold;
-            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
+            padding: 0;
             .group {
               display: flex;
               justify-content: center;
@@ -102,26 +186,45 @@
           }
         }
         #profile {
-          margin-top: 20px;
-          background-color: #F6F6F6;
-          width: 350px;
-          border-radius: 10px;
-          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          height: 30%;
+          margin: 0;
+          padding: 0;
           .profile-box {
             display: flex;
-            white-space: normal;
-           .image-box {
-             .profile-image {
-              width: 60px;
-              height: 60px;
-              object-fit: cover;
-              object-position: center;
-              border-radius: 50%;
-             }
-           }
-           .detail-profile {
-              white-space: normal;
-              padding: 10px;
+            align-items: center;
+            justify-content: center;
+            background-color: #F6F6F6;
+            height: 70px;
+            width: 320px;
+            border-radius: 10px;
+            padding: 0;
+            margin: 0;
+            .image-box {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0;
+              padding: 0;
+              .profile-image {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                object-position: center;
+                border-radius: 50%;
+                margin: 0;
+                padding: 0;
+              }
+            }
+            .detail-profile {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              justify-content: center;
+              margin: 0;
+              padding-left: 5px;
               .name {
                 color: #7645D9;
                 font-weight: bold;
@@ -140,17 +243,18 @@
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  margin-left: 10px;
+                  margin: 0 5px 0 0;
                   border: none;
                   background-color: #7645D9;
                   border-radius: 5px;
                   padding: 5px;
                   width: 20px;
+                  height: 20px;
                   &:hover {
                     cursor: pointer;
                   }
                   .copy-icon {
-                    color: #fff;
+                    color: #ffff;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -162,16 +266,33 @@
         }
         .offer {
           display: flex;
-          justify-content: flex-end;
-          padding: 10px;
+          justify-content: center;
+          align-items: flex-end;
+          height: 15%;
+          padding: 0;
+          margin: 0;
           .button-offer {
             background-color: #1080E4;
             border-radius: 5px;
-            padding: 10px;
-            color: #fff;
+            color: #ffff;
             font-weight: bold;
             border: none;
+            height: 30px;
             width: 100px;
+            margin: 0;
+          }
+          .button-price-land {
+            background-color: #7645D9;
+            border-radius: 20px;
+            color: #ffff;
+            font-weight: bold;
+            border: none;
+            height: 30px;
+            width: 250px;
+            margin: 0;
+            &:hover {
+              cursor: pointer;
+            }
           }
         }
       }
