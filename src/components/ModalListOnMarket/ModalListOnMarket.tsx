@@ -3,6 +3,7 @@ import './ModalListOnMarket.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
+import financeStore from '../../store/finance'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -16,6 +17,7 @@ interface Status {
 
 export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState({ sell: true, rent: false })
+    const [price, setprice] = useState(0)
 
     return (
         <div id='modalListOnMarket'>
@@ -48,17 +50,17 @@ export default function ModalListOnMarket(props: Props) {
                                 <div className='price-div'>
                                     <div className="text-price">Price (ETH)</div>
                                     <div className="input-price-div">
-                                        <input type="text" className='input-price' />
+                                        <input type="text" className='input-price' onChange={event => setprice(Number(event.target.value))}/>
                                     </div>
                                 </div>
                                 <div className='fee-div'>
                                     <div className='fee-item'>
-                                        <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%) 0.0 ETH</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
+                                        <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%)</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{(price * financeStore.fee).toFixed(2)} ETH</p></div>
                                     </div>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>You will receive</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{price - (price * financeStore.fee)} ETH</p></div>
                                     </div>
                                 </div>
                                 <div className='button-sell-div'><button className='button-sell'>Sell</button></div>
