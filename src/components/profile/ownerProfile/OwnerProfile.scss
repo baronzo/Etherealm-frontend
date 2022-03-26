@@ -20,6 +20,7 @@
             margin: 0;
             padding: 0;
             .profile {
+                position: relative;
                 margin: 0;
                 padding: 15px;
                 background-color: white;
@@ -27,6 +28,20 @@
                 height: 400px;
                 border-radius: 10px;
                 box-shadow: 0px 0px 9px 3px rgba(125, 125, 125, 0.2);
+                .edit-icon {
+                    position: absolute;
+                    top : 10px;
+                    right: 10px;
+                    font-size: 20px;
+                    margin: 0;
+                    font-weight: bold;
+                    color: #9A9A9A;
+
+                    &:hover {
+                        cursor: pointer;
+                        color: #6b6b6b;
+                    }
+                }
                 .profile-image-div {
                     display: flex;
                     align-content: center;

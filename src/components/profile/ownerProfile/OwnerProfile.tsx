@@ -9,12 +9,15 @@ import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import { observer } from 'mobx-react'
 import authStore from '../../../store/auth'
 import AccountModel from '../../../models/auth/AccountModel'
+import ModalEditProfile from '../../ModalEditProfile/ModalEditProfile'
+import { BsFillGearFill } from 'react-icons/bs'
 
 type Props = {}
 
 export default observer(function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
+    const [isShowModalEditProfile, setIsShowModalEditProfile] = useState<boolean>(false)
     const landService: LandService = new LandService
     const [account, setaccount] = useState<AccountModel>(new AccountModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
@@ -38,6 +41,7 @@ export default observer(function Profile({ }: Props) {
             <div className='profile-and-log'>
                 <div className='profile-container'>
                     <div className='profile'>
+                        <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)}/>
                         <div className='profile-image-div'>
                             <img className='profle-image' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" />
                         </div>
@@ -76,7 +80,6 @@ export default observer(function Profile({ }: Props) {
                     </div>
                     <div className='transactions-container'>
                         <div className='transactions'>
-
                         </div>
                     </div>
                 </div>
@@ -90,6 +93,7 @@ export default observer(function Profile({ }: Props) {
             </div>
             {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand}/>}
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
+            {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile}/>}
         </div>
     )
 })
