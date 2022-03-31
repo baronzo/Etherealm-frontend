@@ -59,7 +59,7 @@ export default function LandDetail() {
     <div id="landDetail">
       <div id="detailBox">
         <div id="header">
-          <BiArrowBack className="icon-back"/>
+          <BiArrowBack className="icon-back" onClick={history.goBack}/>
           <div className="title-text">{landDetails.landName}</div>
           <div className="edit-and-tag">
             {isOwner &&  <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon"/> Edit this land</div>}
