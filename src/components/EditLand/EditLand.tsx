@@ -5,6 +5,7 @@ import LandRequestModel from '../../models/lands/LandRequestModel'
 import ImageService from '../../services/imgbb/ImageService'
 import LandService from '../../services/lands/LandService'
 import './EditLand.scss'
+import { BiArrowBack } from 'react-icons/bi'
 
 interface IParams {
   landTokenId: string
@@ -95,6 +96,7 @@ export default function EditLand() {
     <div id='editLand'>
       <div id="editBox">
         <div id="title">
+          <BiArrowBack className="icon-back"/>
           <p className='text-edit'>Edit a Land</p>
         </div>
         <div id="editDetail">
