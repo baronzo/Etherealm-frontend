@@ -11,23 +11,35 @@
     border-radius: 10px;
     #header {
       display: flex;
-      justify-content: center;
       align-items: center;
-      justify-content: space-between;
       background-color: #7645D9;
       height: 55px;
-      padding-left: 20px;
-      padding-right: 20px;
+      padding-left: 10px;
+      padding-right: 15px;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      .icon-back {
+        width: 5%;
+        margin: 0;
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+        &:hover {
+          color: #3FD2CE;
+          cursor: pointer;
+        }
+      }
       .title-text {
+        width: 48%;
         color: white;
         font-size: 18px;
         font-weight: bold;
         margin: 0;
       }
       .edit-and-tag {
+        width: 47%;
         display: flex;
+        justify-content: flex-end;
         margin: 0;
         margin: 0;
         .edit-land {

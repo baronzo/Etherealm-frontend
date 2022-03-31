@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaCopy } from 'react-icons/fa'
 import { BsFillGearFill } from 'react-icons/bs'
+import { BiArrowBack } from 'react-icons/bi'
 import './LandDetail.scss'
 import { useHistory, useParams } from 'react-router-dom'
 import LandService from '../../services/lands/LandService'
@@ -58,6 +59,7 @@ export default function LandDetail() {
     <div id="landDetail">
       <div id="detailBox">
         <div id="header">
+          <BiArrowBack className="icon-back"/>
           <div className="title-text">{landDetails.landName}</div>
           <div className="edit-and-tag">
             {isOwner &&  <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon"/> Edit this land</div>}

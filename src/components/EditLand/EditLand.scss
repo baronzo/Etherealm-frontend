@@ -16,7 +16,18 @@
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       margin: 0;
-      padding-left: 20px;
+      padding-left: 10px;
+      .icon-back {
+        width: 5%;
+        margin: 0 5px 0 0;
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+        &:hover {
+          color: #3FD2CE;
+          cursor: pointer;
+        }
+      }
       .text-edit {
         color: white;
         font-size: 18px;
