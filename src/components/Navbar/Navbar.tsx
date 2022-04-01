@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { NavLink, useHistory } from 'react-router-dom'
 import { FaEthereum, FaCopy } from 'react-icons/fa'
 import './Navbar.scss'
 import { observer } from 'mobx-react'
@@ -13,8 +13,9 @@ interface IProps {
 
 export default observer(function Navbar(props: IProps) {
   const contractStore = useMemo(() => new ContractStore, [])
-  
+  const [isShowModalMenu, setIsShowModalMenu] = useState<boolean>(false)
 
+  const history = useHistory()
 
   async function onLogin(): Promise<void> {
     const accountResponse = await authStore.login()
@@ -25,10 +26,20 @@ export default observer(function Navbar(props: IProps) {
 
   function onLogout(): void {
     authStore.logout()
+    setIsShowModalMenu(false)
   }
 
   async function onAccountChangeHandler(): Promise<void> {
     authStore.accountChange()
+  }
+
+  function goToProfilePage() {
+    history.push('/profile')
+    setIsShowModalMenu(false)
+  }
+
+  function showProfileMenu() {
+    setIsShowModalMenu(!isShowModalMenu)
   }
 
   (window as any).ethereum.on('accountsChanged', onAccountChangeHandler)
@@ -37,7 +48,7 @@ export default observer(function Navbar(props: IProps) {
     <div id="navbar">
       <div className="pathname">
         <div className="home">
-          <NavLink  exact to={'/'}>Etherealm</NavLink>
+          <NavLink exact to={'/'}>Etherealm</NavLink>
         </div>
         <div id="groupPath">
           <div className="path">
@@ -53,9 +64,6 @@ export default observer(function Navbar(props: IProps) {
             <NavLink to={'/auction'} activeClassName="active">Auction</NavLink>
           </div>
           <div className="path">
-            <NavLink to={'/profile'} activeClassName="active">Profile</NavLink>
-          </div>
-          <div className="path">
             <div>About</div>
           </div>
         </div>
@@ -63,13 +71,24 @@ export default observer(function Navbar(props: IProps) {
       {authStore.account.userTokenId ?
         <div id="account">
           {/* <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div> */}
-          <div id='profileBalance'>
+          <div id='profileBalance' onClick={() => showProfileMenu()}>
             <div className='profile'><img className='profile-img' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" /></div>
-            <div className="accountBalance"><FaEthereum className='eth-icon'/><p className='value'>{authStore.account.balance} ETH</p></div>
+            <div className="accountBalance"><FaEthereum className='eth-icon' /><p className='value'>{authStore.account.balance} ETH</p></div>
+            {isShowModalMenu &&
+              <div id='profile-menu'>
+                <div className='menu-profile' onClick={() => goToProfilePage()}>
+                  <p className='menu-text'>Profile</p>
+                </div>
+                <div className='menu-log-out' onClick={() => onLogout()}>
+                  <p className='menu-text'>Log out</p>
+                </div>
+              </div>
+            }
           </div>
-          <button id='logoutBtn' onClick={() => onLogout()}>Logout</button>
+
+          {/* <button id='logoutBtn' onClick={() => onLogout()}>Logout</button> */}
         </div>
-      :
+        :
         <div className="wallet">
           <button className="connect" onClick={() => onLogin()}>
             <img className="metamask" src="https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png" width="25px" alt="metamask" />

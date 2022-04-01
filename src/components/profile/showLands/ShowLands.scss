@@ -1,3 +1,55 @@
+#typeOfLand {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+
+    .button-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        width: auto;
+        height: 35px;
+        border-radius: 5px;
+        border: 1px solid #7645D9;
+        margin: 15px 10px 10px 0;
+        padding: 0;
+
+        &.active {
+            cursor: pointer;
+            background-color: #7645D9;
+            .type-text {
+                color: white;
+            }
+            &:hover {
+                cursor: pointer;
+                background-color: #865bdd;
+                .type-text {
+                    color: white;
+                }
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: #7645D9;
+            .type-text {
+                color: white;
+            }
+        }
+
+        .type-text {
+            color: #7645D9;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0 10px 0 10px;
+        }
+    }
+}
+
 #ShowLandsMain {
     margin: 0;
     padding-top: 10px;

@@ -15,7 +15,7 @@ interface Status {
 }
 
 export default function ModalListOnMarket(props: Props) {
-    const [isActiveToggle, setIsActiveToggle] = useState({ sell: true, rent: false })
+    const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
 
     return (
         <div id='modalListOnMarket'>
