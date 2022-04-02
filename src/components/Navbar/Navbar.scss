@@ -55,8 +55,8 @@
     }
     #account {
       display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
+      flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
       margin: 0;
       padding: 0;
@@ -68,11 +68,13 @@
         border-radius: 5px;
         height: 35px;
         width: 140px;
-        margin: 0 10px 0 0;
+        margin: 0 15px 0 0;
         padding: 0;
+
         &:hover {
           cursor: pointer;
         }
+
         .profile {
           width: 35px;
           height: 35px;
@@ -90,10 +92,11 @@
         .accountBalance {
           width: 105px;
           display: flex;
-          justify-content: flex-start;
+          justify-content: flex-end;
           align-items: center;
           margin: 0;
           padding-left: 5px;
+          padding-right: 6px;
           .eth-icon {
             font-size: 16px;
             color: #7645D9;
@@ -107,20 +110,87 @@
           }
         }
       }
-      #logoutBtn {
-        height: 35px;
-        width: 80px;
-        background-color: #7645D9;
-        border: none;
-        outline: none;
+      #profile-menu {
+        width: 140px;
+        height: 80px;
+        top: 52px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
         border-radius: 5px;
-        color: #ffffff;
-        cursor: pointer;
-        font-weight: bold;
-        &:hover {
-          background-color: #5b26c5;
+        position: absolute;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        .menu-profile {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          height: 50%;
+          margin: 0;
+          padding: 5px 5px 5px 10px;
+          border-bottom: 1px solid #7645D9;
+          &:hover {
+            cursor: pointer;
+            background-color: #6c43be;
+            border-radius: 5px 5px 0 0;
+            .menu-text {
+              color: #ffffff;
+            }
+          }
+
+          .menu-text {
+            font-size: 14px;
+            color: #7645D9;
+            font-weight: bold;
+            margin: 0;
+          }
+        }
+        .menu-log-out {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          height: 50%;
+          margin: 0;
+          padding: 5px 5px 5px 10px;
+
+          &:hover {
+            cursor: pointer;
+            background-color: #6c43be;
+            border-radius: 0 0 5px 5px;
+            .menu-text {
+              color: #ffffff;
+            }
+          }
+
+          &.active {
+            cursor: pointer;
+            color: white;
+            background-color: #7645D9;
+          }
+
+          .menu-text {
+            font-size: 14px;
+            color: #7645D9;
+            font-weight: bold;
+            margin: 0;
+          }
         }
       }
+      // #logoutBtn {
+      //   height: 35px;
+      //   width: 80px;
+      //   background-color: #7645D9;
+      //   border: none;
+      //   outline: none;
+      //   border-radius: 5px;
+      //   color: #ffffff;
+      //   cursor: pointer;
+      //   font-weight: bold;
+      //   &:hover {
+      //     background-color: #5b26c5;
+      //   }
+      // }
       // #accountAddressToken {
       //   margin: 0 10px;
       //   width: 200px;
