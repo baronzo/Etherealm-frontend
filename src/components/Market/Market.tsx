@@ -1,14 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
+import LandMarketService from '../../services/market/LandMarketService'
+import LandModel from '../../models/lands/LandModel'
 import '../Market/Market.scss'
 
 export default function Market() {
   
   const [isTab, setIsTab] = useState(true)
+  const landMarketService:LandMarketService = new LandMarketService
+
+  useEffect(() => {
+    get()
+  }, [])
+
+  async function get() {
+    await landMarketService.get()
+  }
 
   function onChangeTab(isTab: boolean ) {
     setIsTab(isTab)
+  }
+
+  async function buyLandOnMarket(): Promise<void> {
+    const result: LandModel = await landMarketService.buyLandOnMarket()
+    console.log(result)
   }
 
   return (
@@ -42,7 +58,7 @@ export default function Market() {
                 </div>
               </div>
               <div className="button">
-                <div className='button-buy'>Buy 0.5 eth</div>
+                <div className='button-buy' onClick={() => buyLandOnMarket()}>Buy 0.5 eth</div>
               </div>
             </div>
           </div>
