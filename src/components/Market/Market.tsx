@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
 import LandModel from '../../models/lands/LandModel'
+import BuyLandOnMarketRequestModel from '../../models/lands/BuyLandOnMarketRequestModel'
 import '../Market/Market.scss'
 import LandMarketModel from '../../models/lands/LandMarketModel'
 import LandMarketService from '../../services/market/LandMarketService'
+import authStore from '../../store/auth'
 
 export default function Market() {
   const [isTab, setIsTab] = useState<boolean>(true)
@@ -20,8 +22,13 @@ export default function Market() {
     setIsTab(isTab)
   }
 
-  async function buyLandOnMarket(): Promise<void> {
-    const result: LandModel = await landMarketService.buyLandOnMarket()
+  async function buyLandOnMarketFromApi(index: number): Promise<void> {
+    const body: BuyLandOnMarketRequestModel = {
+      fromUserTokenId: landsMarket[index].ownerUserTokenId.userTokenId,
+      toUserTokenId: authStore.account.userTokenId,
+      landTokenId: landsMarket[index].landTokenId.landTokenId
+    }
+    const result: LandModel = await landMarketService.buyLandOnMarket(body)
     console.log(result)
   }
 
@@ -44,7 +51,7 @@ export default function Market() {
           <p className='topic-text'>NFTs Lands</p>
         </div>
         <div className='market-land-container'>
-          {landsMarket.map((item: LandMarketModel) => {
+          {landsMarket.map((item: LandMarketModel, index:number) => {
             console.log(item)
             return(
               <div className='land-card' key={item.landMarketId}>
@@ -65,7 +72,7 @@ export default function Market() {
                     </div>
                   </div>
                   <div className="button">
-                    <div className='button-buy'>{item.price}</div>
+                    <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>{item.price}</div>
                   </div>
                 </div>
               </div>

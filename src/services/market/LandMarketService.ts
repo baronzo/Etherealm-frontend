@@ -15,15 +15,8 @@ class LandMarketService {
     return landsMarket.data
 }
 
-  public async buyLandOnMarket(): Promise<LandModel> {
-    let landMarket = await axios.get(`${this.host}/market/land`)
-    let account: AccountModel = await authStore.getAccount()
-    let body: BuyLandOnMarketRequestModel = {
-      fromUserTokenId: landMarket.data.landTokenId.landOwnerTokenId,
-      toUserTokenId: account.userTokenId,
-      landTokenId: landMarket.data.landTokenId.landTokenId
-    }
-    let buy: AxiosResponse<LandModel> = await axios.post(`${this.host}/market/land/buy`, body)
+  public async buyLandOnMarket(buyLandRequest: BuyLandOnMarketRequestModel): Promise<LandModel> {
+    let buy: AxiosResponse<LandModel> = await axios.post(`${this.host}/market/land/buy`, buyLandRequest)
     return buy.data
   }
 }
