@@ -44,49 +44,46 @@ export default function ShowLands(props: Props) {
 
     function mapOwnedLands(): JSX.Element {
         const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 2)
+        console.log(data)
         return (
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Owned Lands</p>
                     </div>
-                    {data ?
-                        <div className='show-my-land'>
-                            {data.map((item: LandModel) => {
-                                return (
-                                    <div className='land-card' key={item.landTokenId}>
-                                        <div className='land-image-div'>
-                                            <img className='land-image' src="/map.jpg" alt="" />
+                    <div className='show-my-land'>
+                        {data.map((item: LandModel) => {
+                            return (
+                                <div className='land-card' key={item.landTokenId}>
+                                    <div className='land-image-div'>
+                                        <img className='land-image' src="/map.jpg" alt="" />
+                                    </div>
+                                    <div className='land-detail'>
+                                        <div className='name-location'>
+                                            <div className='land-name'>
+                                                <p className='land-name-text'>{item.landName}</p>
+                                            </div>
+                                            <div className='location-div'>
+                                                <MdLocationOn className='location-icon' />
+                                                <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
+                                            </div>
                                         </div>
-                                        <div className='land-detail'>
-                                            <div className='name-location'>
-                                                <div className='land-name'>
-                                                    <p className='land-name-text'>{item.landName}</p>
-                                                </div>
-                                                <div className='location-div'>
-                                                    <MdLocationOn className='location-icon' />
-                                                    <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
-                                                </div>
+                                        <div className='status-div'>
+                                            <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
+                                                <p className='button-text-detail'>Land Details</p>
                                             </div>
-                                            <div className='status-div'>
-                                                <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                                    <p className='button-text-detail'>Land Details</p>
-                                                </div>
-                                                <div className='list-to-market' onClick={() => onClickListOnMarket(item)}>
-                                                    <p className='button-text-list'>List to Market</p>
-                                                </div>
+                                            <div className='list-to-market' onClick={() => onClickListOnMarket(item)}>
+                                                <p className='button-text-list'>List to Market</p>
                                             </div>
-                                            <div className='offer-div'>
-                                                <p className='offer-text'>Best Offer : 0.15 ETH</p>
-                                            </div>
+                                        </div>
+                                        <div className='offer-div'>
+                                            <p className='offer-text'>Best Offer : 0.15 ETH</p>
                                         </div>
                                     </div>
-                                )
-                            })}
-                        </div>
-                        :
-                        landIsEmpty()
-                    }
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </>
 
@@ -302,9 +299,15 @@ export default function ShowLands(props: Props) {
 
     function landIsEmpty(): JSX.Element {
         return (
-            <div>
-                <p>There are no items in this category</p>
+            <div id='ShowLandsMain'>
+                <div className='topic-my-land-div'>
+                    <p className='topic-my-land-text'>Owned Lands</p>
+                </div>
+                <div>
+                    <p>There are no items in this category</p>
+                </div>
             </div>
+
         )
     }
 
