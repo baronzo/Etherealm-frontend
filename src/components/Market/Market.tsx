@@ -29,7 +29,6 @@ export default function Market() {
       landTokenId: landsMarket[index].landTokenId.landTokenId
     }
     const result: LandModel = await landMarketService.buyLandOnMarket(body)
-    console.log(result)
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
