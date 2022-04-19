@@ -21,7 +21,6 @@ interface Status {
 export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
     const landMarketService = new LandMarketService()
-    const [bodyListLandOnMarket, setBodyListLandOnMarket] = useState<Array<ListLandOnMarketRequestModel>>([])
     const [price, setPrice] = useState<number>(0)
 
     async function postListLandOnMarket(): Promise<void> {

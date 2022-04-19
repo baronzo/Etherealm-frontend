@@ -59,7 +59,7 @@ export default function Market() {
                     </div>
                   </div>
                   <div className="button">
-                    <div className='button-buy'>{item.price}</div>
+                    <div className='button-buy'>Buy {item.price} eth</div>
                   </div>
                 </div>
               </div>
