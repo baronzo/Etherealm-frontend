@@ -6,5 +6,5 @@ export default class LandTokenIdModel {
     public landLocation: string = String();
     public landPosition: string = String();
     public landAssets: string = String();
-    public onRecommend: boolean = false;
+    public onRecommend: boolean = Boolean();
 }

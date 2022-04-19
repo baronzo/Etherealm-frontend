@@ -3,6 +3,10 @@ import './ModalListOnMarket.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
+import ListLandOnMarketRequestModel from '../../models/lands/ListLandOnMarketRequestModel'
+import LandMarketService from '../../services/market/LandMarketService'
+import authStore from '../../store/auth'
+import ListOnMarketResponseModel from '../../models/lands/ListOnMarketResponseModel'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -16,6 +20,20 @@ interface Status {
 
 export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
+    const landMarketService = new LandMarketService()
+    const [bodyListLandOnMarket, setBodyListLandOnMarket] = useState<Array<ListLandOnMarketRequestModel>>([])
+    const [price, setPrice] = useState<number>(0)
+
+    async function postListLandOnMarket(): Promise<void> {
+        let bodyListLandOnMarket: ListLandOnMarketRequestModel = { 
+            landTokenId: props.land.landTokenId,
+            ownerUserTokenId: authStore.account.userTokenId,
+            marketType: 1,
+            price: price,
+            period: null
+        }
+        const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
+    }
 
     return (
         <div id='modalListOnMarket'>
@@ -48,7 +66,8 @@ export default function ModalListOnMarket(props: Props) {
                                 <div className='price-div'>
                                     <div className="text-price">Price (ETH)</div>
                                     <div className="input-price-div">
-                                        <input type="text" className='input-price' />
+                                        <input type="number" className='input-price' 
+                                        onChange={e => {setPrice(Number(e.target.value))}}/>
                                     </div>
                                 </div>
                                 <div className='fee-div'>
@@ -61,7 +80,7 @@ export default function ModalListOnMarket(props: Props) {
                                         <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
                                     </div>
                                 </div>
-                                <div className='button-sell-div'><button className='button-sell'>Sell</button></div>
+                                <div className='button-sell-div'><button className='button-sell' onClick={() => postListLandOnMarket()}>Sell</button></div>
                             </div>
                         }
                         {isActiveToggle.rent &&
