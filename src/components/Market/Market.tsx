@@ -24,7 +24,8 @@ export default function Market() {
     setIsTab(isTab)
   }
 
-  async function buyLandOnMarketFromApi(index: number): Promise<void> {
+  async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
+    e.stopPropagation()
     const body: BuyLandOnMarketRequestModel = {
       fromUserTokenId: landsMarket[index].ownerUserTokenId.userTokenId,
       toUserTokenId: authStore.account.userTokenId,
@@ -74,14 +75,14 @@ export default function Market() {
                     </div>
                     <div className='location-div'>
                       <MdLocationOn className='location-icon' />
-                      <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[0]}</p>
+                      <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[1]}</p>
                     </div>
                     <div className='wallet-div'>
                       <p className='owner-wallet'>{item.landTokenId.landOwnerTokenId}</p>
                     </div>
                   </div>
-                    <div className={`button ${!item.isActive ? 'owner' : ''}`}>
-                      <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>Buy {item.price} eth</div>
+                    <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => buyLandOnMarketFromApi(e, index)}>
+                      <div className='button-buy'>Buy {item.price} eth</div>
                     </div>
                 </div>
               </div>
