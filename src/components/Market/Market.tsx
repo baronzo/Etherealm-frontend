@@ -28,12 +28,17 @@ export default function Market() {
       toUserTokenId: authStore.account.userTokenId,
       landTokenId: landsMarket[index].landTokenId.landTokenId
     }
-    const result: LandModel = await landMarketService.buyLandOnMarket(body)
+    if(authStore.account.userTokenId !== landsMarket[index].ownerUserTokenId.userTokenId) {
+      const result: LandModel = await landMarketService.buyLandOnMarket(body)
+    }
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
     const result: Array<LandMarketModel> = await landMarketService.getLandsOnMarket()
-    console.log(result)
+    result.map((item) => {
+      item.isActive = false
+      item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? item.isActive = false : item.isActive = true
+    })
     setLandsMarket(result)
   }
 
@@ -51,7 +56,6 @@ export default function Market() {
         </div>
         <div className='market-land-container'>
           {landsMarket.map((item: LandMarketModel, index:number) => {
-            console.log(item)
             return(
               <div className='land-card' key={item.landMarketId}>
                 <div className='land-image-div'>
@@ -70,9 +74,9 @@ export default function Market() {
                       <p className='owner-wallet'>{item.landTokenId.landOwnerTokenId}</p>
                     </div>
                   </div>
-                  <div className="button">
-                    <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>{item.price}</div>
-                  </div>
+                    <div className={`button ${!item.isActive ? 'owner' : ''}`}>
+                      <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>{item.price}</div>
+                    </div>
                 </div>
               </div>
             )

@@ -11,6 +11,7 @@ class LandMarketModel {
     public landTokenId: LandTokenIdModel = new LandTokenIdModel();
     public ownerUserTokenId: OwnerUserTokenIdModel = new OwnerUserTokenIdModel();
     public marketType: MarketTypeModel = new MarketTypeModel();
+    public isActive: boolean = false
 }
 
 export default LandMarketModel

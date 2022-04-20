@@ -161,10 +161,14 @@
                   background-color: #7645D9;
                   border-radius: 10px;
                   width: 180px;
+                  &.owner {
+                    background-color: #7645d9b7;
+                    cursor: no-drop;
+                  }
                   .button-buy {
                     text-align: center;
                     color: #fff;
-                    font-weight: bold
+                    font-weight: bold;
                   }
                 }
             }
