@@ -12,7 +12,7 @@ class LandMarketService {
   public async getLandsOnMarket(): Promise<Array<LandMarketModel>> {
     let landsMarket: AxiosResponse<Array<LandMarketModel>> = await axios.get(`${this.host}/market/land`)
     return landsMarket.data
-}
+  }
 
   public async buyLandOnMarket(buyLandRequest: BuyLandOnMarketRequestModel): Promise<LandModel> {
     let buy: AxiosResponse<LandModel> = await axios.post(`${this.host}/market/land/buy`, buyLandRequest)
