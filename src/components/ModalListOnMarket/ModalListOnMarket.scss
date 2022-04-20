@@ -12,7 +12,7 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            width: 70%;
+            width: 50%;
             margin: 0;
             padding: 0;
             .fee-label-text {
@@ -26,7 +26,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            width: 30%;
+            width: 50%;
             margin: 0;
             padding: 0;
             .fee-value-text {
@@ -258,6 +258,7 @@
                             .input-price {
                                 margin: 0;
                                 padding-left: 10px;
+                                padding-right: 10px;
                                 color:black ;
                                 font-size: 14px;
                                 font-weight: regular;
@@ -308,6 +309,7 @@
                             .input-price {
                                 margin: 0;
                                 padding-left: 10px;
+                                padding-right: 10px;
                                 color:black ;
                                 font-size: 14px;
                                 font-weight: regular;

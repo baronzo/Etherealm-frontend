@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
@@ -56,7 +56,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.landTokenId}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src="/map.jpg" alt="" />
+                                        <img className='land-image' src={item.landAssets ? item.landAssets : '/map.jpg'} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>

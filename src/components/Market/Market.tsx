@@ -7,11 +7,13 @@ import '../Market/Market.scss'
 import LandMarketModel from '../../models/lands/LandMarketModel'
 import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
+import { useHistory } from 'react-router-dom'
 
 export default function Market() {
   const [isTab, setIsTab] = useState<boolean>(true)
   const landMarketService: LandMarketService = new LandMarketService()
   const [landsMarket, setLandsMarket] = useState<Array<LandMarketModel>>([])
+  const history = useHistory()
 
   useEffect(() => {
     getLandOnMarketFromAPI()
@@ -37,6 +39,10 @@ export default function Market() {
     setLandsMarket(result)
   }
 
+  const goToLandDetail = (landToketId: string) => {
+    history.push(`/lands/${landToketId}/details`)
+  }
+
   return (
     <div id='market'>
       <div id="menu">
@@ -52,10 +58,11 @@ export default function Market() {
         <div className='market-land-container'>
           {landsMarket.map((item: LandMarketModel, index:number) => {
             console.log(item)
+            
             return(
-              <div className='land-card' key={item.landMarketId}>
+              <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                 <div className='land-image-div'>
-                  <img className='land-image' src={item.landTokenId.landAssets} alt="" />
+                  <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/map.jpg'} alt="" />
                 </div>
                 <div className='land-detail'>
                   <div className='name-location'>
@@ -64,14 +71,14 @@ export default function Market() {
                     </div>
                     <div className='location-div'>
                       <MdLocationOn className='location-icon' />
-                      <p className='location'>{item.landTokenId.landLocation}</p>
+                      <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[0]}</p>
                     </div>
                     <div className='wallet-div'>
                       <p className='owner-wallet'>{item.landTokenId.landOwnerTokenId}</p>
                     </div>
                   </div>
                   <div className="button">
-                    <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>{item.price}</div>
+                    <div className='button-buy' onClick={() => buyLandOnMarketFromApi(index)}>Buy {item.price} eth</div>
                   </div>
                 </div>
               </div>
