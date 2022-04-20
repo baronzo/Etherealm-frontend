@@ -173,6 +173,15 @@
                         font-size: 14px;
                         margin: 0;
                     }
+                    &.owner {
+                        background-color: #7645d9b7;
+                        cursor: no-drop;
+                    }
+                    .button-buy {
+                        text-align: center;
+                        color: #fff;
+                        font-weight: bold;
+                    }
                 }
             }
         }
