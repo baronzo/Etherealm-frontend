@@ -33,17 +33,14 @@ export default observer(function Profile({ }: Props) {
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
     const history = useHistory()
     const params: IParams = useParams()
-    const [land, setLand] = useState<Array<LandModel>>([])
 
     useEffect(() => {
-        console.log(params.userTokenId)
         getDataFromAPI()
     }, [])
 
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
-        await getAllLands()
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
@@ -54,11 +51,6 @@ export default observer(function Profile({ }: Props) {
     async function getNotificationAPI(): Promise<void> {
         const result: Array<NotificationsResponseModel> = await notificationService.getNotification()
         setNotifications(result)
-    }
-    
-    async function getAllLands(): Promise<void> {
-        const result: Array<LandModel> = await landService.getLands()
-        setLand(result)
     }
 
     const goToOtherProfile = (addressFromUser: string) => {
@@ -125,8 +117,7 @@ export default observer(function Profile({ }: Props) {
                 </div>
                 <div className='my-land'>
                     <ShowLands 
-                        lands={ownedLand}
-                        allLands={land}
+                        allLands={ownedLand}
                         setselectedLand={setselectedLand}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
@@ -141,8 +132,7 @@ export default observer(function Profile({ }: Props) {
 
     return (
         <>
-        { params.userTokenId === authStore.account.userTokenId ? ownerProfile() : <OthersProfile/>
-        }
+        { params.userTokenId === authStore.account.userTokenId ? ownerProfile() : <OthersProfile/>}
         </>
     )
 })

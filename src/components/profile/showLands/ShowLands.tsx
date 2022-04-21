@@ -3,28 +3,19 @@ import React, { useEffect, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
+import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
 import authStore from '../../../store/auth'
 import './ShowLands.scss'
 
 type Props = {
-    lands: Array<LandModel>
     allLands: Array<LandModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
     setselectedLand: (land: LandModel) => void
 }
 
-interface Status {
-    mapOwnedLands: boolean
-    landForSellOnMarket: boolean
-    landForRentOnMarket: boolean
-    landRent: boolean
-    landRentPurchase: boolean
-    landPeopleAreRenting: boolean
-}
-
 export default function ShowLands(props: Props) {
-    const [isActive, setIsActive] = useState({
+    const [isActive, setIsActive] = useState<ActiveFillterStatusModel>({
         mapOwnedLands: true,
         landForSellOnMarket: false,
         landForRentOnMarket: false,
@@ -45,7 +36,7 @@ export default function ShowLands(props: Props) {
     }
 
     function mapOwnedLands(): JSX.Element {
-        const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 2)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 2)
         console.log(data)
         return (
             <>
@@ -93,7 +84,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landForSellOnMarket(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 3 && item.landOwnerTokenId === authStore.account.userTokenId)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 3)
         console.log(data)
         return (
             <>
@@ -140,7 +131,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landForRentOnMarket(): JSX.Element {
-        const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 4)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 4)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -182,7 +173,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landRent(): JSX.Element {
-        const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 5)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -224,7 +215,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landRentPurchase(): JSX.Element {
-        const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 6)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 6)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -266,7 +257,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landPeopleAreRenting(): JSX.Element {
-        const data: Array<LandModel> = props.lands.filter(item => item.landStatus.landStatusId === 7)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 7)
         return (
             <>
                 <div id='ShowLandsMain'>
