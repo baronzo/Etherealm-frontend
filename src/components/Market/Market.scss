@@ -84,7 +84,7 @@
                 box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
             }
             .land-image-div {
-                background-color: #b6ffff;
+                background-color: #e9f0f0;
                 margin: 0;
                 padding: 0;
                 height: 150px;
@@ -92,10 +92,11 @@
                 border-radius: 10px 10px 0 0;
                 .land-image {
                     margin: 0;
-                    height: 140px;
+                    height: 150px;
                     width: 200px;
                     object-fit: cover;
                     object-position: center;
+                    border-radius: 10px 10px 0 0;
                 }
             }
             .land-detail {
@@ -157,15 +158,30 @@
                     }
                 }
                 .button {
-                  padding: 5px;
-                  background-color: #7645D9;
-                  border-radius: 10px;
-                  width: 180px;
-                  .button-buy {
-                    text-align: center;
-                    color: #fff;
-                    font-weight: bold
-                  }
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 5px;
+                    background-color: #7645D9;
+                    border-radius: 10px;
+                    width: 180px;
+                    height: 31px;
+                    .button-buy {
+                        text-align: center;
+                        color: #fff;
+                        font-weight: 500;
+                        font-size: 14px;
+                        margin: 0;
+                    }
+                    &.owner {
+                        background-color: #7645d9b7;
+                        cursor: no-drop;
+                    }
+                    .button-buy {
+                        text-align: center;
+                        color: #fff;
+                        font-weight: bold;
+                    }
                 }
             }
         }

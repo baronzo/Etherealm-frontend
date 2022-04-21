@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './ModalListOnMarket.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
-import financeStore from '../../store/finance'
+import ListLandOnMarketRequestModel from '../../models/lands/ListLandOnMarketRequestModel'
+import LandMarketService from '../../services/market/LandMarketService'
+import authStore from '../../store/auth'
+import ListOnMarketResponseModel from '../../models/lands/ListOnMarketResponseModel'
+import ModalLoading from '../Loading/ModalLoading'
+import LandService from '../../services/lands/LandService'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -16,11 +21,59 @@ interface Status {
 }
 
 export default function ModalListOnMarket(props: Props) {
-    const [isActiveToggle, setIsActiveToggle] = useState({ sell: true, rent: false })
-    const [price, setprice] = useState(0)
+    const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
+    const landMarketService = new LandMarketService()
+    const landService: LandService = new LandService()
+    const [price, setPrice] = useState<string>('0.00001')
+    const [isLoading, setisLoading] = useState<boolean>(false)
+    const [totalReceive, setTotalReceive] = useState<number>(0)
+    const [fee, setFee] = useState<number>(0)
+
+    useEffect(() => {
+        calculateReceive()
+    }, [price])
+    
+
+    async function postListLandOnMarket(): Promise<void> {
+        setisLoading(true)
+        if (price !== null || price !== "" || Number(price) !== 0 || !price) {
+            let bodyListLandOnMarket: ListLandOnMarketRequestModel = { 
+                landTokenId: props.land.landTokenId,
+                ownerUserTokenId: authStore.account.userTokenId,
+                marketType: 1,
+                price: Number(price),
+                period: null
+            }
+            const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
+            setisLoading(false)
+            props.setIsShowModalListOnMarket(false)
+        }else {
+            console.log('Price null')
+        }
+    }
+
+    const onChangeSellPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value: number = Number(e.target.value)
+        console.log(value)
+        if (value < 0.00001) {
+            console.log('negative')
+            setPrice('0.00001')
+        } else if (value >= 0.00001) {
+            console.log('positive')
+            setPrice(e.target.value) 
+        }
+    }
+
+    const calculateReceive = () => {
+        let fees = Number(price) * (2.5/100)
+        let total = Number(price) + fees
+        setFee(parseFloat(fees.toFixed(6)))
+        setTotalReceive(parseFloat(total.toFixed(6)))
+    }
 
     return (
         <div id='modalListOnMarket'>
+            <ModalLoading isLoading={isLoading}/>
             <div id="detailBox">
                 <div id="header">
                     <div className='title-div'>
@@ -50,20 +103,22 @@ export default function ModalListOnMarket(props: Props) {
                                 <div className='price-div'>
                                     <div className="text-price">Price (ETH)</div>
                                     <div className="input-price-div">
-                                        <input type="text" className='input-price' onChange={event => setprice(Number(event.target.value))}/>
+                                        <input type="number" className='input-price'
+                                        value={price}
+                                        onChange={onChangeSellPrice}/>
                                     </div>
                                 </div>
                                 <div className='fee-div'>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%)</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>{(price * financeStore.fee).toFixed(2)} ETH</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{fee} ETH</p></div>
                                     </div>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>You will receive</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>{price - (price * financeStore.fee)} ETH</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{totalReceive} ETH</p></div>
                                     </div>
                                 </div>
-                                <div className='button-sell-div'><button className='button-sell'>Sell</button></div>
+                                <div className='button-sell-div'><button className='button-sell' onClick={() => postListLandOnMarket()}>Sell</button></div>
                             </div>
                         }
                         {isActiveToggle.rent &&

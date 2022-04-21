@@ -33,6 +33,7 @@ export default function LandDetail() {
   async function getLandDetailsFromApi(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setlandDetails(result)
+    console.log(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
   }
@@ -106,8 +107,8 @@ export default function LandDetail() {
               </div>
             </div>
             <div className="offer">
-              {landDetails.landStatus.landStatusId === 1 && <button className='button-offer'>offer</button>}
-              {landDetails.landStatus.landStatusId === 3 && <button className="button-price-land">Buy 0.5 eth</button>}
+              {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
+              {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land">Buy {} eth</button>}
               {isOwner && (landDetails.landStatus.landStatusId === 2) && <button className="button-price-land">List on Market</button>}
             </div>
           </div>
