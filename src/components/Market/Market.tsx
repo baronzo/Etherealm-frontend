@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
 import LandModel from '../../models/lands/LandModel'
@@ -8,8 +8,10 @@ import LandMarketModel from '../../models/lands/LandMarketModel'
 import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
 import { useHistory } from 'react-router-dom'
+import ContractStore from '../../store/contract'
 
 export default function Market() {
+  const contractStore = useMemo(() => new ContractStore, [])
   const [isTab, setIsTab] = useState<boolean>(true)
   const landMarketService: LandMarketService = new LandMarketService()
   const [landsMarket, setLandsMarket] = useState<Array<LandMarketModel>>([])
@@ -32,7 +34,10 @@ export default function Market() {
       landTokenId: landsMarket[index].landTokenId.landTokenId
     }
     if(authStore.account.userTokenId !== landsMarket[index].ownerUserTokenId.userTokenId) {
-      const result: LandModel = await landMarketService.buyLandOnMarket(body)
+      const isSuccess: boolean = await contractStore.buyLand(landsMarket[index].landTokenId.landTokenId, landsMarket[index].ownerUserTokenId.userTokenId, landsMarket[index].price)
+      if (isSuccess) {
+        const result: LandModel = await landMarketService.buyLandOnMarket(body)
+      }
     }
   }
 
@@ -82,6 +87,7 @@ export default function Market() {
                     </div>
                   </div>
                     <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => buyLandOnMarketFromApi(e, index)}>
+                      <i className="fab fa-ethereum icon"></i>
                       <div className='button-buy'>Buy {item.price} eth</div>
                     </div>
                 </div>

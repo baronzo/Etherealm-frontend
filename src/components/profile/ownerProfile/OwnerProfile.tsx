@@ -33,6 +33,7 @@ export default observer(function Profile({ }: Props) {
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
     const history = useHistory()
     const params: IParams = useParams()
+    const [land, setLand] = useState<Array<LandModel>>([])
 
     useEffect(() => {
         console.log(params.userTokenId)
@@ -42,6 +43,7 @@ export default observer(function Profile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
+        await getAllLands()
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
@@ -52,6 +54,11 @@ export default observer(function Profile({ }: Props) {
     async function getNotificationAPI(): Promise<void> {
         const result: Array<NotificationsResponseModel> = await notificationService.getNotification()
         setNotifications(result)
+    }
+    
+    async function getAllLands(): Promise<void> {
+        const result: Array<LandModel> = await landService.getLands()
+        setLand(result)
     }
 
     const goToOtherProfile = (addressFromUser: string) => {
@@ -117,7 +124,9 @@ export default observer(function Profile({ }: Props) {
                     </div>
                 </div>
                 <div className='my-land'>
-                    <ShowLands lands={ownedLand}
+                    <ShowLands 
+                        lands={ownedLand}
+                        allLands={land}
                         setselectedLand={setselectedLand}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
