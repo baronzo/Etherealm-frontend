@@ -15,7 +15,7 @@ class ContractStore {
   @observable 
   public contract: any = null
   
-  private contractAddress = '0x27aF246550457a60Df7B5Bae9c82341a72AbcE98'
+  private contractAddress = '0x62f9DF627FfA82Bbdd75601E52e3ef643d5E630E'
   
   constructor() {
     makeAutoObservable(this)
@@ -50,6 +50,19 @@ class ContractStore {
         console.log(landTokenId)
         let uri: string = `http://etherealm.ddns.net/api/lands/land/${landTokenId}`
         let tx = await this.contract.create(landTokenId, uri)
+        return this.waitTransactionConfirm(tx)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return false
+  }
+
+  @action
+  public async buyLand(landTokenId: string, ownerTokenId: string, price: number): Promise<boolean> {
+    if (this.contract) {
+      try {
+        let tx = await this.contract.buy(landTokenId, ownerTokenId, { value: ethers.utils.parseEther(String(price)) })
         return this.waitTransactionConfirm(tx)
       } catch (error) {
         console.error(error)
