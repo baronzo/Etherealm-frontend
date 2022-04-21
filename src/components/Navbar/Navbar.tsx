@@ -33,8 +33,8 @@ export default observer(function Navbar(props: IProps) {
     authStore.accountChange()
   }
 
-  function goToProfilePage() {
-    history.push('/profile')
+  function goToProfilePage(address: string) {
+    history.push('/profile/'+ address)
     setIsShowModalMenu(false)
   }
 
@@ -70,13 +70,12 @@ export default observer(function Navbar(props: IProps) {
       </div>
       {authStore.account.userTokenId ?
         <div id="account">
-          {/* <div id="accountAddressToken" title={authStore.account.userTokenId}>{authStore.account.userTokenId}</div> */}
           <div id='profileBalance' onClick={() => showProfileMenu()}>
             <div className='profile'><img className='profile-img' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" /></div>
             <div className="accountBalance"><FaEthereum className='eth-icon' /><p className='value'>{authStore.account.balance} ETH</p></div>
             {isShowModalMenu &&
               <div id='profile-menu'>
-                <div className='menu-profile' onClick={() => goToProfilePage()}>
+                <div className='menu-profile' onClick={() => goToProfilePage(authStore.account.userTokenId)}>
                   <p className='menu-text'>Profile</p>
                 </div>
                 <div className='menu-log-out' onClick={() => onLogout()}>

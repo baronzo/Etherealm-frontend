@@ -7,12 +7,12 @@ import Market from './components/Market/Market';
 import Auction from './components/Auction/Auction';
 import Bid from './components/Bid/Bid';
 import OwnerProfile from './components/profile/ownerProfile/OwnerProfile';
-import OthersProfile from './components/profile/othersProfile/OthersProfile';
 import EditLand from './components/EditLand/EditLand';
 import LandDetail from './components/LandDetail/LandDetail';
 import Map from './components/Map/Map';
 
 function App() {
+
   return (
     <BrowserRouter>
       <React.Fragment>
@@ -22,8 +22,7 @@ function App() {
                 <Route exact path='/market'><Layout children={Market}/></Route>
                 <Route exact path='/auction'><Layout children={Auction}/></Route>
                 <Route exact path='/bid'><Layout children={Bid}/></Route>
-                <Route exact path='/profile'><Layout children={OwnerProfile}/></Route>
-                <Route exact path='/profile/1'><Layout children={OthersProfile}/></Route>
+                <Route exact path='/profile/:userTokenId'><Layout children={OwnerProfile}/></Route>
                 <Route exact path='/lands/:landTokenId/edit'><Layout children={EditLand}/></Route>
                 <Route exact path='/lands/:landTokenId/details'><Layout children={LandDetail}/></Route>
                 <Route exact path='*'><Layout children={Home}/></Route>
