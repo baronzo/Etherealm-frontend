@@ -173,9 +173,17 @@
                         font-size: 14px;
                         margin: 0;
                     }
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #5d1edc;
+                    }
                     &.owner {
                         background-color: #7645d9b7;
                         cursor: no-drop;
+                    }
+                    .icon {
+                        color: #fff;
+                        margin-right: 5px;
                     }
                     .button-buy {
                         text-align: center;

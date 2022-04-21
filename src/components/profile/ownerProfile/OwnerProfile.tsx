@@ -25,6 +25,7 @@ export default observer(function Profile({ }: Props) {
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
+    const [land, setLand] = useState<Array<LandModel>>([])
 
     useEffect(() => {
         getDataFromAPI()
@@ -33,6 +34,7 @@ export default observer(function Profile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
+        await getAllLands()
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
@@ -43,6 +45,11 @@ export default observer(function Profile({ }: Props) {
     async function getNotificationAPI(): Promise<void> {
         const result: Array<NotificationsResponseModel> = await notificationService.getNotification()
         setNotifications(result)
+    }
+
+    async function getAllLands(): Promise<void> {
+        const result: Array<LandModel> = await landService.getLands()
+        setLand(result)
     }
 
     return (
@@ -102,6 +109,7 @@ export default observer(function Profile({ }: Props) {
             </div>
             <div className='my-land'>
                 <ShowLands lands={ownedLand}
+                    allLands={land}
                     setselectedLand={setselectedLand}
                     setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
