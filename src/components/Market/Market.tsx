@@ -82,6 +82,7 @@ export default function Market() {
                     </div>
                   </div>
                     <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => buyLandOnMarketFromApi(e, index)}>
+                      <i className="fab fa-ethereum icon"></i>
                       <div className='button-buy'>Buy {item.price} eth</div>
                     </div>
                 </div>
