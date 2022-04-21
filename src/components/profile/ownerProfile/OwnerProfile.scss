@@ -230,6 +230,16 @@
                                 color: #6F6F6F;
                                 font-weight: bold;
                             }
+                            .log-address-text {
+                                margin: 0 0 0 10px;
+                                font-size: 14px;
+                                color: #2c53be;
+                                font-weight: bold;
+                                &:hover {
+                                    cursor: pointer;
+                                    text-decoration: underline;
+                                }
+                            }
                         }
                     }
                 }
