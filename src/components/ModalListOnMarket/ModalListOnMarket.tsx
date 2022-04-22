@@ -3,10 +3,10 @@ import './ModalListOnMarket.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
-import ListLandOnMarketRequestModel from '../../models/lands/ListLandOnMarketRequestModel'
+import ListLandOnMarketRequestModel from '../../models/market/ListLandOnMarketRequestModel'
 import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
-import ListOnMarketResponseModel from '../../models/lands/ListOnMarketResponseModel'
+import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
 import ModalLoading from '../Loading/ModalLoading'
 
 type Props = {

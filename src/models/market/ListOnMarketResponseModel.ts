@@ -1,6 +1,6 @@
-import LandModel from "./LandModel";
+import LandModel from "../lands/LandModel";
 import MarketTypeModel from "./MarketTypeModel";
-import OwnerUserTokenIdModel from "./OwnerUserTokenIdModel";
+import OwnerUserTokenIdModel from "../lands/OwnerUserTokenIdModel";
 
 export default class ListOnMarketResponseModel {
     public landTokenId: LandModel = new LandModel();

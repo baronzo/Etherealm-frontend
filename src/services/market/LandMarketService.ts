@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from "axios"
 import LandModel from "../../models/lands/LandModel"
-import BuyLandOnMarketRequestModel from "../../models/lands/BuyLandOnMarketRequestModel"
-import LandMarketModel from "../../models/lands/LandMarketModel"
-import ListLandOnMarketRequestModel from "../../models/lands/ListLandOnMarketRequestModel"
-import ListOnMarketResponseModel from "../../models/lands/ListOnMarketResponseModel"
+import BuyLandOnMarketRequestModel from "../../models/market/BuyLandOnMarketRequestModel"
+import LandMarketModel from "../../models/market/LandMarketModel"
+import ListLandOnMarketRequestModel from "../../models/market/ListLandOnMarketRequestModel"
+import ListOnMarketResponseModel from "../../models/market/ListOnMarketResponseModel"
 import Host from "../Host"
 
 class LandMarketService {
