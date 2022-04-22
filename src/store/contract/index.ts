@@ -3,6 +3,9 @@ import { ethers } from 'ethers'
 import { createContext } from 'react'
 import abi from './abi.json'
 import AuthStore from '../auth'
+import TransactionsRequestModel from '../../models/transaction/TransactionsRequestModel'
+import TransactionService from '../../services/notification/TransactionService'
+import TransactionsResponseModel from '../../models/notifications/TransactionsResponseModel'
 
 class ContractStore {
   
@@ -16,6 +19,8 @@ class ContractStore {
   public contract: any = null
   
   private contractAddress = '0x62f9DF627FfA82Bbdd75601E52e3ef643d5E630E'
+
+  private transactionService: TransactionService = new TransactionService()
   
   constructor() {
     makeAutoObservable(this)
@@ -50,7 +55,10 @@ class ContractStore {
         console.log(landTokenId)
         let uri: string = `http://etherealm.ddns.net/api/lands/land/${landTokenId}`
         let tx = await this.contract.create(landTokenId, uri)
-        return this.waitTransactionConfirm(tx)
+        const result = await this.waitTransactionConfirm(tx)
+        const request: TransactionsRequestModel = this.mapReceiptToTransactionRequestModel(result[1], '0x347Aa0FC3E7e4b06AF8515dd265a593410940E05', 1)
+        const response: TransactionsResponseModel = await this.transactionService.addTransaction(request)
+        return result[0]
       } catch (error) {
         console.error(error)
       }
@@ -63,21 +71,41 @@ class ContractStore {
     if (this.contract) {
       try {
         let tx = await this.contract.buy(landTokenId, ownerTokenId, { value: ethers.utils.parseEther(String(price)) })
-        return this.waitTransactionConfirm(tx)
+        const result = await this.waitTransactionConfirm(tx)
+        const request: TransactionsRequestModel = this.mapReceiptToTransactionRequestModel(result[1], ownerTokenId, 1)
+        const response: TransactionsResponseModel = await this.transactionService.addTransaction(request)
+        return result[0]
       } catch (error) {
         console.error(error)
       }
     }
     return false
+    // const result = await this.provider.getTransaction("0xe59bb2585ae3848ba2eaa9ec5c87c42b0d5c49fb4f14197037e21348fda2793b")
+    // console.log(result)
+    // console.log(Number(ethers.utils.formatEther(result.maxFeePerGas)))
+    return false
   }
 
-  private async waitTransactionConfirm(tx: any): Promise<boolean> {
+  private mapReceiptToTransactionRequestModel(receipt: any, owner: string, type: number): TransactionsRequestModel {
+    const result: TransactionsRequestModel = {
+      fromUserTokenId: receipt.from,
+      toUserTokenId: owner,
+      logType: type,
+      transactionBlock: receipt.transactionHash,
+      // gasPrice: Number(ethers.utils.formatEther(receipt.gasUsed))
+      gasPrice: 0.1
+    }
+    return result
+  }
+
+  private async waitTransactionConfirm(tx: any) {
     let receipt = await tx.wait()
     if (receipt.status) {
       console.log(receipt)
-      return true
+      console.log(Number(ethers.utils.formatEther(receipt.gasUsed)))
+      return [true, receipt]
     }
-    return false
+    return [false, receipt]
   }
 }
 
