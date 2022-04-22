@@ -69,7 +69,7 @@ export default function LandDetail() {
         </div>
         <div id="detailSection">
           <div className="image-section">
-            <img className="image-land" src="/map.jpg" alt="" />
+            <img className="image-land" src={landDetails.landAssets ? landDetails.landAssets : "/map.jpg"} alt="" />
           </div>
           <div className="detail-section">
             <div className="detail-desc">
