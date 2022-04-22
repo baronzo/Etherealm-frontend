@@ -15,13 +15,10 @@ import NotificationService from '../../../services/notification/NotificationServ
 import NotificationsResponseModel from '../../../models/notifications/NotificationsResponseModel'
 import { useHistory, useParams } from 'react-router-dom'
 import OthersProfile from '../othersProfile/OthersProfile'
-<<<<<<< HEAD
 import UserModel from '../../../models/auth/UserModel'
 import UserService from '../../../services/user/UserService'
-=======
 import TransactionService from '../../../services/notification/TransactionService'
 import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
->>>>>>> 47326e26c2612dd2c8dd8d4025a253cb19914137
 
 interface IParams {
     userTokenId: string
@@ -35,11 +32,8 @@ export default observer(function Profile({ }: Props) {
     const [isShowModalEditProfile, setIsShowModalEditProfile] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const notificationService: NotificationService = new NotificationService()
-<<<<<<< HEAD
     const userService: UserService = new UserService()
-=======
     const transactionService: TransactionService = new TransactionService()
->>>>>>> 47326e26c2612dd2c8dd8d4025a253cb19914137
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
@@ -55,11 +49,8 @@ export default observer(function Profile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
-<<<<<<< HEAD
         await getUserDetail()
-=======
         await getTransactionAPI()
->>>>>>> 47326e26c2612dd2c8dd8d4025a253cb19914137
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
