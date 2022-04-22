@@ -7,7 +7,7 @@ import Host from "../Host";
 export default class TransactionService {
     private readonly host: string = new Host().host;
 
-    public async getNotification(): Promise<Array<TransactionsResponseModel>> {
+    public async getTransaction(): Promise<Array<TransactionsResponseModel>> {
         let notifications: AxiosResponse<Array<TransactionsResponseModel>> = await axios.get(`${this.host}/transaction/${authStore.account.userTokenId}`);
         return notifications.data;
     }

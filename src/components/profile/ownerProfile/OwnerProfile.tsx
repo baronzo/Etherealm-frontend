@@ -59,7 +59,7 @@ export default observer(function Profile({ }: Props) {
     }
 
     async function getTransactionAPI(): Promise<void> {
-        const result: Array<TransactionsResponseModel> = await transactionService.getNotification()
+        const result: Array<TransactionsResponseModel> = await transactionService.getTransaction()
         setTransactions(result)
     }
 
