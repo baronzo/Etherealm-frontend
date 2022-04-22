@@ -100,8 +100,8 @@ export default function Market() {
                   </div>
                     {!item.isLoading
                     ?
-                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => !item.isActive ? undefined : buyLandOnMarketFromApi(e, index)}>
-                        { !item.isActive
+                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
+                        { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                           ?
                             <>
                             <i className="fas fa-home icon"></i>
