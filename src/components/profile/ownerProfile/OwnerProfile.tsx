@@ -15,6 +15,8 @@ import NotificationService from '../../../services/notification/NotificationServ
 import NotificationsResponseModel from '../../../models/notifications/NotificationsResponseModel'
 import { useHistory, useParams } from 'react-router-dom'
 import OthersProfile from '../othersProfile/OthersProfile'
+import UserModel from '../../../models/auth/UserModel'
+import UserService from '../../../services/user/UserService'
 import TransactionService from '../../../services/notification/TransactionService'
 import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
 
@@ -30,6 +32,7 @@ export default observer(function Profile({ }: Props) {
     const [isShowModalEditProfile, setIsShowModalEditProfile] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const notificationService: NotificationService = new NotificationService()
+    const userService: UserService = new UserService()
     const transactionService: TransactionService = new TransactionService()
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
@@ -37,6 +40,7 @@ export default observer(function Profile({ }: Props) {
     const [transactions, setTransactions] = useState<Array<TransactionsResponseModel>>([])
     const history = useHistory()
     const params: IParams = useParams()
+    const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
 
     useEffect(() => {
         getDataFromAPI()
@@ -45,6 +49,7 @@ export default observer(function Profile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
+        await getUserDetail()
         await getTransactionAPI()
     }
 
@@ -59,7 +64,7 @@ export default observer(function Profile({ }: Props) {
     }
 
     async function getTransactionAPI(): Promise<void> {
-        const result: Array<TransactionsResponseModel> = await transactionService.getNotification()
+        const result: Array<TransactionsResponseModel> = await transactionService.getTransaction()
         setTransactions(result)
     }
 
@@ -70,6 +75,26 @@ export default observer(function Profile({ }: Props) {
     async function handleWhenListedLandToMarket(): Promise<void> {
         await getLandByOwnerTokenId()
     }
+
+    async function getUserDetail(): Promise<void> {
+        const result: UserModel = await userService.getUserDetailsByTokenId(authStore.account.userTokenId)
+        setUserProfile(result)
+    }
+
+    async function fetchUserProfile(): Promise<void> {
+        await getUserDetail()
+    }
+
+    // async function updateProfile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+    //     const body: UserModel = {
+    //         userTokenId: authStore.account.userTokenId,
+    //         userName: e.target.value,
+    //         userDescription: e.target.value,
+    //         userProfilePic: ''
+    //     }
+    //     const result: UserModel = await userService.updateUserProfile(body)
+    //     console.log(result)
+    // }
 
     const ownerProfile = () => {
         return (
@@ -82,7 +107,7 @@ export default observer(function Profile({ }: Props) {
                                 <img className='profle-image' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" />
                             </div>
                             <div className='name-div'>
-                                <p className='name'>{authStore.account.userName || '-'}</p>
+                                <p className='name'>{userProfile.userName || '-'}</p>
                             </div>
                             <div className='value-div'>
                                 <div className='value-button'>
@@ -98,7 +123,7 @@ export default observer(function Profile({ }: Props) {
                             </div>
                             <div className='user-description-div'>
                                 <div className='user-description'>
-                                    <p className='text-description'>{authStore.account.userDescription || 'No description'}</p>
+                                    <p className='text-description'>{userProfile.userDescription || 'No description'}</p>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +178,7 @@ export default observer(function Profile({ }: Props) {
                 </div>
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
-                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} />}
+                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
             </div>
         )
     }
