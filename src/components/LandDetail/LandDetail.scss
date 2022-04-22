@@ -85,7 +85,6 @@
     #detailSection {
       display: flex;
       padding: 20px;
-      height: 350px;
       margin: 0;
       .image-section {
         width: 300px;
@@ -98,16 +97,16 @@
           height: 300px;
           padding: 0;
           margin: 0;
+          object-fit: cover;
+          object-position: center;
         }
       }
       .detail-section {
-        width: 320px;
-        height: 300px;
+        width: 360px;
         margin: 0;
         padding-left: 25px;
         .detail-desc {
-          height: 25%;
-          padding: 0;
+          padding: 0 0 13px 0;
           margin: 0;
           .text-title {
             margin: 0;
@@ -129,8 +128,7 @@
           }
         }
         .detail-url {
-          height: 15%;
-          padding: 0;
+          padding: 0 0 13px 0;
           margin: 0;
           .text-title {
             margin: 0;
@@ -149,9 +147,8 @@
           display: flex;
           justify-content: flex-start ;
           align-items: center;
-          height: 15%;
           margin: 0;
-          padding: 0;
+          padding: 0 0 13px 0;
           .button-size {
             background-color: #3FD2CE;
             height: 28px;
@@ -201,9 +198,11 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
-          height: 30%;
           margin: 0;
-          padding: 0;
+          padding: 0 0 13px 0;
+          &:hover {
+            cursor: pointer;
+          }
           .profile-box {
             display: flex;
             align-items: center;
@@ -212,6 +211,7 @@
             height: 70px;
             width: 320px;
             border-radius: 10px;
+            border: 1px solid #d6d2d2;
             padding: 0 5px 0 7px;
             margin: 0;
             .image-box {
@@ -228,6 +228,7 @@
                 border-radius: 50%;
                 margin: 0;
                 padding: 0;
+                border: 1px solid #d6d2d2;
               }
             }
             .detail-profile {
@@ -264,6 +265,7 @@
                   height: 20px;
                   &:hover {
                     cursor: pointer;
+                    background-color: #8a5ce6;
                   }
                   .copy-icon {
                     color: #ffff;
@@ -279,10 +281,11 @@
         .offer {
           display: flex;
           justify-content: center;
-          align-items: flex-end;
-          height: 15%;
+          align-items: center;
+          height: auto;
           padding: 0;
           margin: 0;
+          width: 97%;
           .button-offer {
             background-color: #1080E4;
             border-radius: 20px;
@@ -290,7 +293,7 @@
             font-weight: bold;
             border: none;
             height: 30px;
-            width: 250px;
+            width: 100%;
             font-size: 14px;
             margin: 0;
           }
@@ -302,10 +305,58 @@
             font-size: 14px;
             border: none;
             height: 30px;
-            width: 250px;
+            width: 100%;
             margin: 0;
             &:hover {
               cursor: pointer;
+            }
+          }
+          .cancel-edit {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 15px 0 0 0;
+            border-top:1px solid #d6d2d2;
+            .text-price {
+              color: #787878;
+              font-weight: normal;
+              font-style: italic;
+              font-size: 14px;
+              margin: 0 0 10px 0;
+            }
+            .button-cancel-land {
+              background-color: #7645D9;
+              border-radius: 20px;
+              color: #ffff;
+              font-weight: bold;
+              font-size: 14px;
+              border: none;
+              height: 30px;
+              width: 100%;
+              margin: 0 0 10px 0;
+              &:hover {
+                cursor: pointer;
+                background-color: #7645d9ef;
+              }
+            }
+            .button-edit-price-land {
+              background-color: #fff;
+              border-radius: 20px;
+              color: #7645D9;
+              font-weight: bold;
+              font-size: 14px;
+              border: none;
+              height: 30px;
+              width: 100%;
+              margin: 0 0 10px 0;
+              border: 1px solid #AE86FF;
+              &:hover {
+                cursor: pointer;
+                background-color: #773aef0e;
+              }
             }
           }
         }
