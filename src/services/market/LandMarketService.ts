@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from "axios"
 import LandModel from "../../models/lands/LandModel"
 import BuyLandOnMarketRequestModel from "../../models/market/BuyLandOnMarketRequestModel"
+import CancelListedOnMarketRequestModel from "../../models/market/CancelListedOnMarketRequestModel"
 import LandMarketModel from "../../models/market/LandMarketModel"
 import ListLandOnMarketRequestModel from "../../models/market/ListLandOnMarketRequestModel"
 import ListOnMarketResponseModel from "../../models/market/ListOnMarketResponseModel"
+import UpdatePriceListedOnMarketRequestModel from "../../models/market/UpdatePriceListedOnMarketRequestModel"
 import Host from "../Host"
 
 class LandMarketService {
@@ -22,6 +24,16 @@ class LandMarketService {
   public async listLandOnMarket(listOnMarket: ListLandOnMarketRequestModel): Promise<ListOnMarketResponseModel> {
     let bodyResponse: AxiosResponse<ListOnMarketResponseModel> = await axios.post(`${this.host}/market/land/create`, listOnMarket)
     return bodyResponse.data
+  }
+
+  public async cancelListedOnMarket(bodyCancelListed: CancelListedOnMarketRequestModel): Promise<string> {
+    let cancelResponse: AxiosResponse<string> = await axios.post(`${this.host}/market/land/remove`, bodyCancelListed)
+    return cancelResponse.data
+  }
+
+  public async updatePriceListedOnMarket(bodyUpdateListed: UpdatePriceListedOnMarketRequestModel): Promise<ListOnMarketResponseModel> {
+    let updateResponse: AxiosResponse<ListOnMarketResponseModel> = await axios.post(`${this.host}/market/land/remove`, bodyUpdateListed)
+    return updateResponse.data
   }
 
 }
