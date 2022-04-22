@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaGavel } from 'react-icons/fa'
 import LandModel from '../../models/lands/LandModel'
-import BuyLandOnMarketRequestModel from '../../models/lands/BuyLandOnMarketRequestModel'
+import BuyLandOnMarketRequestModel from '../../models/market/BuyLandOnMarketRequestModel'
 import '../Market/Market.scss'
-import LandMarketModel from '../../models/lands/LandMarketModel'
+import LandMarketModel from '../../models/market/LandMarketModel'
 import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
 import { useHistory } from 'react-router-dom'
@@ -100,8 +100,8 @@ export default function Market() {
                   </div>
                     {!item.isLoading
                     ?
-                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => !item.isActive ? undefined : buyLandOnMarketFromApi(e, index)}>
-                        { !item.isActive
+                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
+                        { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                           ?
                             <>
                             <i className="fas fa-home icon"></i>
