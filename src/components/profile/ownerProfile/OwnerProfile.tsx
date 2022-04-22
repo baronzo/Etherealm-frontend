@@ -12,9 +12,11 @@ import AccountModel from '../../../models/auth/AccountModel'
 import ModalEditProfile from '../../ModalEditProfile/ModalEditProfile'
 import { BsFillGearFill } from 'react-icons/bs'
 import NotificationService from '../../../services/notification/NotificationService'
-import NotificationsResponseModel from '../../../models/lands/NotificationsResponseModel'
+import NotificationsResponseModel from '../../../models/notifications/NotificationsResponseModel'
 import { useHistory, useParams } from 'react-router-dom'
 import OthersProfile from '../othersProfile/OthersProfile'
+import TransactionService from '../../../services/notification/TransactionService'
+import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
 
 interface IParams {
     userTokenId: string
@@ -28,9 +30,11 @@ export default observer(function Profile({ }: Props) {
     const [isShowModalEditProfile, setIsShowModalEditProfile] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const notificationService: NotificationService = new NotificationService()
+    const transactionService: TransactionService = new TransactionService()
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
+    const [transactions, setTransactions] = useState<Array<TransactionsResponseModel>>([])
     const history = useHistory()
     const params: IParams = useParams()
 
@@ -41,6 +45,7 @@ export default observer(function Profile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
         await getNotificationAPI()
+        await getTransactionAPI()
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
@@ -51,6 +56,11 @@ export default observer(function Profile({ }: Props) {
     async function getNotificationAPI(): Promise<void> {
         const result: Array<NotificationsResponseModel> = await notificationService.getNotification()
         setNotifications(result)
+    }
+
+    async function getTransactionAPI(): Promise<void> {
+        const result: Array<TransactionsResponseModel> = await transactionService.getNotification()
+        setTransactions(result)
     }
 
     const goToOtherProfile = (addressFromUser: string) => {
@@ -119,11 +129,15 @@ export default observer(function Profile({ }: Props) {
                                     <p className='topic-text'>Transections</p>
                                 </div>
                                 <div className='log-notifications-div'>
-                                    <div className='log-item'>
-                                        <div className='status-div'><p className='status-text'>sell</p></div>
-                                        <p className='log-notifications-text'>[02:28:2022  1:19AM]</p>
-                                        <p className='log-address-text'>asdfasdfasdfasdfasdfasdfasdf651asd3f1asd56fasd32f1asd32f1asd6f1s312</p>
-                                    </div>
+                                    {transactions.map((item: TransactionsResponseModel) => {
+                                        return (
+                                            <div className='log-item'>
+                                                <div className='status-div'><p className='status-text'>{item.logType.logTypeName}</p></div>
+                                                <p className='log-notifications-text'>[{item.dateTime}]</p>
+                                                <p className='log-address-text'>{item.transactionBlock}</p>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>

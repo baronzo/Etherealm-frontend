@@ -1,7 +1,7 @@
-import LandModel from "./LandModel";
-import LandTokenIdModel from "./LandTokenIdModel";
+import LandModel from "../lands/LandModel";
+import LandTokenIdModel from "../lands/LandTokenIdModel";
 import MarketTypeModel from "./MarketTypeModel";
-import OwnerUserTokenIdModel from "./OwnerUserTokenIdModel";
+import OwnerUserTokenIdModel from "../lands/OwnerUserTokenIdModel";
 
 class LandMarketModel {
     public landMarketId : number = Number();

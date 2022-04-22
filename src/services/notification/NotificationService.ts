@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import NotificationsResponseModel from "../../models/lands/NotificationsResponseModel";
+import NotificationsResponseModel from "../../models/notifications/NotificationsResponseModel";
 import authStore from "../../store/auth";
 import Host from "../Host";
 
