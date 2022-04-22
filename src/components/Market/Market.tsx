@@ -37,6 +37,7 @@ export default function Market() {
       const isSuccess: boolean = await contractStore.buyLand(landsMarket[index].landTokenId.landTokenId, landsMarket[index].ownerUserTokenId.userTokenId, landsMarket[index].price)
       if (isSuccess) {
         const result: LandModel = await landMarketService.buyLandOnMarket(body)
+        getLandOnMarketFromAPI()
       }
     }
   }
