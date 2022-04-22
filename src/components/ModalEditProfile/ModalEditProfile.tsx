@@ -8,6 +8,7 @@ import UserService from '../../services/user/UserService';
 type Props = {
     setIsShowModalEditProfile: (value: boolean) => void
     // updateProfile: (e: React.ChangeEvent<HTMLInputElement>) => void
+    fetchDetail: () => void
 }
 
 interface Status {
@@ -40,6 +41,8 @@ export default function ModalEditProfile(props: Props) {
         }
         const result: UserModel = await userService.updateUserProfile(body)
         console.log(result)
+        props.fetchDetail()
+        props.setIsShowModalEditProfile(false)
     }
 
     return (

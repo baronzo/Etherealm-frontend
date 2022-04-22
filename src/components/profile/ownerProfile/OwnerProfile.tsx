@@ -81,6 +81,10 @@ export default observer(function Profile({ }: Props) {
         setUserProfile(result)
     }
 
+    async function fetchUserProfile(): Promise<void> {
+        await getUserDetail()
+    }
+
     // async function updateProfile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     //     const body: UserModel = {
     //         userTokenId: authStore.account.userTokenId,
@@ -174,7 +178,7 @@ export default observer(function Profile({ }: Props) {
                 </div>
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
-                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} />}
+                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
             </div>
         )
     }
