@@ -14,6 +14,9 @@ import BuyLandDetailOnMarketRequestModel from '../../models/market/BuyLandOnMark
 import ContractStore from '../../store/contract'
 import LandMarketService from '../../services/market/LandMarketService'
 import ModalListOnMarket from '../ModalListOnMarket/ModalListOnMarket'
+import CancelListedOnMarketRequestModel from '../../models/market/CancelListedOnMarketRequestModel'
+import UpdatePriceListedOnMarketRequestModel from '../../models/market/UpdatePriceListedOnMarketRequestModel'
+import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
 
 interface IParams {
   landTokenId: string
@@ -86,6 +89,22 @@ export default function LandDetail() {
     }
   }
 
+  async function cancelLandOnMarketAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
+    let bodyCancel: CancelListedOnMarketRequestModel = {landTokenId, ownerTokenId}
+    const cancelIsSuccess: string = await landMarketService.cancelListedOnMarket(bodyCancel)
+    if (cancelIsSuccess) {
+      getLandDetailsFromApi()
+    }
+  }
+
+  async function updatePriceLandOnMarketAPI(landTokenId: string, ownerTokenId: string, price: number): Promise<void> {
+    let bodyUpdatePrice: UpdatePriceListedOnMarketRequestModel = {landTokenId, ownerTokenId, price}
+    const cancelIsSuccess: ListOnMarketResponseModel = await landMarketService.updatePriceListedOnMarket(bodyUpdatePrice)
+    if (cancelIsSuccess) {
+      getLandDetailsFromApi()
+    }
+  }
+
   return (
     <>
       <div id="landDetail">
@@ -144,7 +163,7 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
-                    <button className="button-cancel-land">Cancel Listing</button>
+                    <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
                     <button className="button-edit-price-land">Edit Price</button>
                   </div>
                 }

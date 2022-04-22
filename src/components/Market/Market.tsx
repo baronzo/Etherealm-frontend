@@ -95,7 +95,7 @@ export default function Market() {
                       <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[1]}</p>
                     </div>
                     <div className='wallet-div'>
-                      <p className='owner-wallet'>{item.landTokenId.landOwnerTokenId}</p>
+                      <p className='owner-wallet'>{item.landTokenId.landTokenId}</p>
                     </div>
                   </div>
                     {!item.isLoading

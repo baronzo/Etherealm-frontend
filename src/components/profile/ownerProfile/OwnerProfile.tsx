@@ -72,6 +72,11 @@ export default observer(function Profile({ }: Props) {
         history.push(`/profile/${addressFromUser}`)
     }
 
+    const goToEtherScan = (transactionHash: string) => {
+        let url = 'https://rinkeby.etherscan.io/tx/' + transactionHash
+        window.open(url, '_blank')
+    }
+
     async function handleWhenListedLandToMarket(): Promise<void> {
         await getLandByOwnerTokenId()
     }
@@ -156,10 +161,10 @@ export default observer(function Profile({ }: Props) {
                                 <div className='log-notifications-div'>
                                     {transactions.map((item: TransactionsResponseModel) => {
                                         return (
-                                            <div className='log-item'>
+                                            <div className='log-item' key={item.logTransactionsId}>
                                                 <div className='status-div'><p className='status-text'>{item.logType.logTypeName}</p></div>
                                                 <p className='log-notifications-text'>[{item.dateTime}]</p>
-                                                <p className='log-address-text'>{item.transactionBlock}</p>
+                                                <p className='log-address-text' onClick={() => goToEtherScan(item.transactionBlock)}>{item.transactionBlock}</p>
                                             </div>
                                         )
                                     })}
