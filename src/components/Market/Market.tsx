@@ -26,7 +26,17 @@ export default function Market() {
     setIsTab(isTab)
   }
 
+  function setLoading(loading: boolean, index: number): void {
+    let newLand: Array<LandMarketModel> = [...landsMarket]
+    newLand[index].isLoading = loading
+    newLand.forEach((item: LandMarketModel, loopIndex: number) => {
+      item.isActive = loopIndex === index ? true : false
+    })
+    setLandsMarket(newLand)
+  }
+
   async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
+    setLoading(true, index)
     e.stopPropagation()
     const body: BuyLandOnMarketRequestModel = {
       fromUserTokenId: landsMarket[index].ownerUserTokenId.userTokenId,
@@ -40,13 +50,14 @@ export default function Market() {
         getLandOnMarketFromAPI()
       }
     }
+    setLoading(false, index)
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
     const result: Array<LandMarketModel> = await landMarketService.getLandsOnMarket()
     result.map((item) => {
-      item.isActive = false
-      item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? item.isActive = false : item.isActive = true
+      item.isActive = item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? false : true
+      item.isLoading = false
     })
     setLandsMarket(result)
   }
@@ -87,10 +98,30 @@ export default function Market() {
                       <p className='owner-wallet'>{item.landTokenId.landOwnerTokenId}</p>
                     </div>
                   </div>
-                    <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => buyLandOnMarketFromApi(e, index)}>
-                      <i className="fab fa-ethereum icon"></i>
-                      <div className='button-buy'>Buy {item.price} ETH</div>
-                    </div>
+                    {!item.isLoading
+                    ?
+                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => !item.isActive ? undefined : buyLandOnMarketFromApi(e, index)}>
+                        { !item.isActive
+                          ?
+                            <>
+                            <i className="fas fa-home icon"></i>
+                              <div className='button-buy'>Your owned land</div>
+                            </>
+                          :
+                          <>
+                            <i className="fab fa-ethereum icon"></i>
+                            <div className='button-buy'>Buy {item.price} ETH</div>
+                          </>
+                            
+                        }
+                        
+                      </div>
+                    :
+                      <div className={`button ${item.isLoading ? 'loading' : ''}`}>
+                        <i className="fas fa-spinner fa-spin"></i>
+                      </div>
+                    }
+                    
                 </div>
               </div>
             )

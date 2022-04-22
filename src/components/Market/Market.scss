@@ -178,8 +178,13 @@
                         background-color: #5d1edc;
                     }
                     &.owner {
-                        background-color: #7645d9b7;
+                        background-color: #b493f8b7;
                         cursor: no-drop;
+                    }
+                    &.loading {
+                        background-color: #7645D9;
+                        color: #fff;
+                        cursor: wait;
                     }
                     .icon {
                         color: #fff;
