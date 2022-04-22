@@ -25,6 +25,16 @@ class UserService {
       return new UserModel
     }
   }
+
+  public async updateUserProfile(updateProfileRequest: UserModel):Promise<UserModel> {
+    try {
+      const user: AxiosResponse<UserModel> = await axios.post(`${this.host}/users/user/update`, updateProfileRequest)
+      return user.data
+    } catch (error) {
+      console.error(error)
+      return new UserModel
+    }
+  }
 }
 
 export default UserService
