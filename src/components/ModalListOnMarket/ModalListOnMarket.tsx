@@ -11,6 +11,7 @@ import ModalLoading from '../Loading/ModalLoading'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
+    fetchLands: () => void
     land: LandModel
 }
 
@@ -43,10 +44,13 @@ export default function ModalListOnMarket(props: Props) {
                 period: null
             }
             const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
-            setisLoading(false)
-            props.setIsShowModalListOnMarket(false)
+            setTimeout(() => {
+                setisLoading(false)
+                props.fetchLands()
+                props.setIsShowModalListOnMarket(false)
+            }, 2000)   
         }else {
-            console.log('Price null')
+            console.error('Price is null')
         }
     }
 
@@ -58,20 +62,19 @@ export default function ModalListOnMarket(props: Props) {
             setPrice('0.00001')
         } else if (value >= 0.00001) {
             console.log('positive')
-            setPrice(e.target.value) 
+            setPrice(e.target.value)
         }
     }
 
     const calculateReceive = () => {
         let fees = Number(price) * (2.5/100)
-        let total = Number(price) + fees
+        let total = Number(price) - fees
         setFee(parseFloat(fees.toFixed(6)))
         setTotalReceive(parseFloat(total.toFixed(6)))
     }
 
     return (
         <div id='modalListOnMarket'>
-            <ModalLoading isLoading={isLoading}/>
             <div id="detailBox">
                 <div id="header">
                     <div className='title-div'>
@@ -81,7 +84,8 @@ export default function ModalListOnMarket(props: Props) {
                         <MdClose className='close-icon' onClick={() => props.setIsShowModalListOnMarket(false)}/>
                     </div>
                 </div>
-                <div id="detailSection">
+                <div id="detailSection" className={`${isLoading ? 'loading' : ''}`}>
+                    <ModalLoading isLoading={isLoading} text='Waiting for listing on market...'/>
                     <div className="image-section">
                         <img className='land-image' src={props.land.landAssets ? props.land.landAssets : "./map.jpg"} alt="" />
                         <div className='land-name'>
