@@ -78,7 +78,7 @@ export default observer(function Profile({ }: Props) {
                             </div>
                             <div className='wallet-div'>
                                 <p className='addreess'>{authStore.account.userTokenId}</p>
-                                <div className='copy-buton' onClick={() => {navigator.clipboard.writeText(authStore.account.userTokenId)}}>
+                                <div className='copy-buton' onClick={() => { navigator.clipboard.writeText(authStore.account.userTokenId) }}>
                                     <FaCopy className='copy-icon' />
                                 </div>
                             </div>
@@ -111,19 +111,29 @@ export default observer(function Profile({ }: Props) {
                         </div>
                         <div className='transactions-container'>
                             <div className='transactions'>
+                                <div className='topic-div'>
+                                    <p className='topic-text'>Transections</p>
+                                </div>
+                                <div className='log-notifications-div'>
+                                    <div className='log-item'>
+                                        <div className='status-div'><p className='status-text'>sell</p></div>
+                                        <p className='log-notifications-text'>[02:28:2022  1:19AM]</p>
+                                        <p className='log-address-text'>asdfasdfasdfasdfasdfasdfasdf651asd3f1asd56fasd32f1asd32f1asd6f1s312</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className='my-land'>
-                    <ShowLands 
+                    <ShowLands
                         allLands={ownedLand}
                         setselectedLand={setselectedLand}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} />}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchDataAPI={getDataFromAPI}/>}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} />}
             </div>
@@ -132,7 +142,7 @@ export default observer(function Profile({ }: Props) {
 
     return (
         <>
-        { params.userTokenId === authStore.account.userTokenId ? ownerProfile() : <OthersProfile/>}
+            {params.userTokenId === authStore.account.userTokenId ? ownerProfile() : <OthersProfile />}
         </>
     )
 })

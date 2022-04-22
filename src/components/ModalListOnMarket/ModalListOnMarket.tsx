@@ -12,6 +12,7 @@ import ModalLoading from '../Loading/ModalLoading'
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
     land: LandModel
+    fetchDataAPI: () => Promise<void>
 }
 
 interface Status {
@@ -45,6 +46,7 @@ export default function ModalListOnMarket(props: Props) {
             const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
             setisLoading(false)
             props.setIsShowModalListOnMarket(false)
+            props.fetchDataAPI()
         }else {
             console.log('Price null')
         }

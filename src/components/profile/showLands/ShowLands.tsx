@@ -295,20 +295,6 @@ export default function ShowLands(props: Props) {
         )
     }
 
-    function landIsEmpty(): JSX.Element {
-        return (
-            <div id='ShowLandsMain'>
-                <div className='topic-my-land-div'>
-                    <p className='topic-my-land-text'>Owned Lands</p>
-                </div>
-                <div>
-                    <p>There are no items in this category</p>
-                </div>
-            </div>
-
-        )
-    }
-
     return (
         <>
             <div id='typeOfLand'>
