@@ -57,6 +57,10 @@ export default observer(function Profile({ }: Props) {
         history.push(`/profile/${addressFromUser}`)
     }
 
+    async function handleWhenListedLandToMarket(): Promise<void> {
+        await getLandByOwnerTokenId()
+    }
+
     const ownerProfile = () => {
         return (
             <div id='profileMain'>
@@ -123,7 +127,7 @@ export default observer(function Profile({ }: Props) {
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} />}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} />}
             </div>

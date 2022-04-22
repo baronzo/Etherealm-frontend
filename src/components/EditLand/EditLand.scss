@@ -192,6 +192,21 @@
             &:hover {
               background-color: #5b26c5;
             }
+            &.disable {
+              background-color: #caafff;
+              cursor: no-drop;
+              &:hover {
+                background-color: #caafff;
+              }
+            }
+            &.loading {
+              background-color: #7645D9;
+              font-weight: bold;
+              cursor: wait;
+              &:hover {
+                background-color: #7645D9;
+              }
+            }
           }
         }
       }
