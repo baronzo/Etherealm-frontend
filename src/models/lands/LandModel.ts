@@ -13,7 +13,7 @@ class LandModel {
   public onRecommend: boolean = Boolean()
   public landStatus: LandStatusModel = new LandStatusModel
   public landSize: LandSizeModel = new LandSizeModel
-  public price: number = Number()
+  public price: number | null = null
 }
 
 export default LandModel
