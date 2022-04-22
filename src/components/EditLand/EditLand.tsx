@@ -21,6 +21,8 @@ export default function EditLand() {
   const [isTab, setIsTab] = useState(true)
   const [linkImage, setLinkImage] = useState<string>('')
   const [prevImage, setPrevImage] = useState<string>('')
+  const [prevData, setprevData] = useState<LandModel>(new LandModel)
+  const [isLoading, setisLoading] = useState<boolean>(false)
   const history = useHistory()
 
 
@@ -32,6 +34,7 @@ export default function EditLand() {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setPrevImage(result.landAssets)
     setLand(result)
+    setprevData(result)
   }
 
   function onChangeImageClick(): void {
@@ -65,8 +68,9 @@ export default function EditLand() {
   }
 
   async function onSaveClick(): Promise<void> {
+    setisLoading(true)
     let imagePath: string = ''
-    if (!linkImage) {
+    if (!linkImage && base64Image) {
       imagePath = await imageService.postImageApi(base64Image)
     }
     let body: LandRequestModel = {
@@ -76,21 +80,32 @@ export default function EditLand() {
       landLocation: `${land.landLocation.x},${land.landLocation.y}`,
       landPosition: `${land.landPosition.x},${land.landPosition.y}`,
       landOwnerTokenId: land.landOwnerTokenId,
-      landAssets: linkImage ? linkImage : imagePath,
+      landAssets: linkImage ? linkImage : imagePath ? imagePath : land.landAssets,
       landSize: land.landSize.landSizeId,
       landStatus: land.landStatus.landStatusId,
       onRecommend: land.onRecommend
     }
     let result: LandModel = await landService.updateLand(body)
+    onChangeTab(true)
     setLand(result)
+    setprevData(result)
+    setisLoading(false)
   }
 
   function onChangeTab(isTab: boolean ) {
     let newLand = land
-    newLand.landAssets = prevImage
+    newLand.landAssets = prevData.landAssets
     setLinkImage('')
     setLand(newLand)
     setIsTab(isTab)
+  }
+
+  function checkDataIsChange(): boolean {
+    let result: boolean = JSON.stringify(land) === JSON.stringify(prevData) ? false : true
+    if (linkImage && linkImage !== prevData.landAssets) {
+      result = true
+    }
+    return result
   }
 
   return (
@@ -108,7 +123,7 @@ export default function EditLand() {
                 <div className={`link-image ${!isTab ? 'active' : ''}`} onClick={() => onChangeTab(false)}>Link Image</div>
               </div>
             </div>
-            <img id="landImage" src={linkImage ? linkImage : land.landAssets} alt=""/>
+            <img id="landImage" src={linkImage ? linkImage : land.landAssets ? land.landAssets : "/map.jpg"}  alt=""/>
             { isTab ? 
               <div id="changeImage">
                 <input type="file" ref={inputImage} name="" id="uploadInput" onChange={e => onImageSelected(e.target)} accept="image/png, image/jpeg" />
@@ -134,7 +149,12 @@ export default function EditLand() {
               <input type="text" className='input'/>
             </div>
             <div className="button-section">
-              <button className='button-save' onClick={() => onSaveClick()}>Save</button>
+              {!isLoading 
+              ?
+                <button className={`button-save ${checkDataIsChange() ? 'change' : 'disable'}`} onClick={() => checkDataIsChange() ? onSaveClick() : undefined}>Save</button>
+              :
+                <button className={`button-save ${isLoading ? 'loading' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
+              }
             </div>
           </div>
         </div>
