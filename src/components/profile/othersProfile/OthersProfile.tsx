@@ -8,6 +8,7 @@ import authStore from '../../../store/auth'
 import { useParams } from 'react-router-dom'
 import UserModel from '../../../models/auth/UserModel'
 import UserService from '../../../services/user/UserService'
+import ShowLandsOtherProfile from '../showLandsOtherProfile/ShowLandsOtherProfile'
 
 interface IParams {
     userTokenId: string
@@ -70,10 +71,9 @@ export default function OthersProfile({ }: Props) {
                 </div>
             </div>
             <div className='my-land'>
-                <ShowLands
+                <ShowLandsOtherProfile
                     allLands={ownedLand}
                     setselectedLand={setselectedLand}
-                    setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                 />
             </div>
