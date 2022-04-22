@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { FaCopy } from 'react-icons/fa'
 import { BsFillGearFill } from 'react-icons/bs'
@@ -10,6 +10,9 @@ import LandModel from '../../models/lands/LandModel'
 import UserService from '../../services/user/UserService'
 import UserModel from '../../models/auth/UserModel'
 import authStore from '../../store/auth'
+import BuyLandDetailOnMarketRequestModel from '../../models/lands/BuyLandOnMarketRequestModel'
+import ContractStore from '../../store/contract'
+import LandMarketService from '../../services/market/LandMarketService'
 
 interface IParams {
   landTokenId: string
@@ -25,7 +28,10 @@ export default function LandDetail() {
 
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const [isShowListOnMarket, setIsShowListOnMarket] = useState(false)
+  const contractStore = useMemo(() => new ContractStore, [])
+  const landMarketService: LandMarketService = new LandMarketService()
   
+
   useEffect(() => {
     getLandDetailsFromApi()
   }, [])
@@ -54,6 +60,21 @@ export default function LandDetail() {
 
   function goToEditPage(landTokenId: string) {
     history.push(`/lands/${landTokenId}/edit`)
+}
+
+async function buyLandDetailOnMarketFromApi(landDetails: LandModel ): Promise<void> {
+  const body: BuyLandDetailOnMarketRequestModel = {
+    fromUserTokenId: landDetails.landOwnerTokenId,
+    toUserTokenId: authStore.account.userTokenId,
+    landTokenId: landDetails.landTokenId
+  }
+  if(authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
+    const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, landDetails.price)
+    if (isSuccess) {
+      const result: LandModel = await landMarketService.buyLandOnMarket(body)
+      getLandDetailsFromApi()
+    }
+  }
 }
 
   return (
@@ -108,7 +129,7 @@ export default function LandDetail() {
             </div>
             <div className="offer">
               {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
-              {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land">Buy {} eth</button>}
+              {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button>}
               {isOwner && (landDetails.landStatus.landStatusId === 2) && <button className="button-price-land">List on Market</button>}
             </div>
           </div>
