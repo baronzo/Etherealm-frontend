@@ -5,16 +5,15 @@ import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
 import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
 import authStore from '../../../store/auth'
-import './ShowLands.scss'
+import './ShowLandsOtherProfile.scss'
 
 type Props = {
     allLands: Array<LandModel>
-    setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
     setselectedLand: (land: LandModel) => void
 }
 
-export default function ShowLands(props: Props) {
+export default function ShowLandsOtherProfile(props: Props) {
     const [isActive, setIsActive] = useState<ActiveFillterStatusModel>({
         mapOwnedLands: true,
         landForSellOnMarket: false,
@@ -28,11 +27,6 @@ export default function ShowLands(props: Props) {
 
     function goToDetailsPage(landTokenId: string) {
         history.push(`/lands/${landTokenId}/details`)
-    }
-
-    function onClickListOnMarket(selectedLand: LandModel): void {
-        props.setselectedLand(selectedLand)
-        props.setIsShowModalListOnMarket(true)
     }
 
     function mapOwnedLands(): JSX.Element {
@@ -65,8 +59,8 @@ export default function ShowLands(props: Props) {
                                             <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
                                                 <p className='button-text-detail'>Land Details</p>
                                             </div>
-                                            <div className='list-to-market' onClick={() => onClickListOnMarket(item)}>
-                                                <p className='button-text-list'>List to Market</p>
+                                            <div className='list-to-market'>
+                                                <p className='button-text-list'>Offer</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
@@ -114,7 +108,7 @@ export default function ShowLands(props: Props) {
                                                 <p className='button-text-detail'>Land Details</p>
                                             </div>
                                             <div className='list-to-market'>
-                                                <p className='button-text-list'>View on Market</p>
+                                                <p className='button-text-list'>Buy 0.05 ETH</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
@@ -158,7 +152,7 @@ export default function ShowLands(props: Props) {
                                         <p className='button-text-detail'>Land Detail</p>
                                     </div>
                                     <div className='list-to-market'>
-                                        <p className='button-text-list'>View on Market</p>
+                                        <p className='button-text-list'>Buy 0.5 ETH</p>
                                     </div>
                                 </div>
                                 <div className='offer-div'>
