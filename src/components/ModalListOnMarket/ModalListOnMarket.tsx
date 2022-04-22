@@ -8,7 +8,6 @@ import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
 import ListOnMarketResponseModel from '../../models/lands/ListOnMarketResponseModel'
 import ModalLoading from '../Loading/ModalLoading'
-import LandService from '../../services/lands/LandService'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -23,7 +22,6 @@ interface Status {
 export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
     const landMarketService = new LandMarketService()
-    const landService: LandService = new LandService()
     const [price, setPrice] = useState<string>('0.00001')
     const [isLoading, setisLoading] = useState<boolean>(false)
     const [totalReceive, setTotalReceive] = useState<number>(0)
@@ -85,7 +83,7 @@ export default function ModalListOnMarket(props: Props) {
                 </div>
                 <div id="detailSection">
                     <div className="image-section">
-                        <img className='land-image' src="./map.jpg" alt="" />
+                        <img className='land-image' src={props.land.landAssets ? props.land.landAssets : "./map.jpg"} alt="" />
                         <div className='land-name'>
                             <p className='land-name-text'>{props.land.landName}</p>
                             <FaInfoCircle className='icon-info' />

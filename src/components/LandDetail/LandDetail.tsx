@@ -25,7 +25,7 @@ export default function LandDetail() {
 
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const [isShowListOnMarket, setIsShowListOnMarket] = useState(false)
-  
+
   useEffect(() => {
     getLandDetailsFromApi()
   }, [])
@@ -46,7 +46,7 @@ export default function LandDetail() {
   function checkLandOwner(landOwnerTokenId: string): void {
     if (landOwnerTokenId === authStore.account.userTokenId) {
       setIsOwner(true)
-    }else {
+    } else {
       setIsOwner(false)
     }
     console.log(isOwner)
@@ -54,16 +54,25 @@ export default function LandDetail() {
 
   function goToEditPage(landTokenId: string) {
     history.push(`/lands/${landTokenId}/edit`)
-}
+  }
+
+  const goToProfile = (userToketId: string) => {
+    history.push(`/profile/${userToketId}`)
+  }
+
+  const copyAddess = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(ownerDetails.userTokenId)
+  }
 
   return (
     <div id="landDetail">
       <div id="detailBox">
         <div id="header">
-          <BiArrowBack className="icon-back" onClick={history.goBack}/>
+          <BiArrowBack className="icon-back" onClick={history.goBack} />
           <div className="title-text">{landDetails.landName}</div>
           <div className="edit-and-tag">
-            {isOwner &&  <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon"/> Edit this land</div>}
+            {isOwner && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
             <div className="tags">{landDetails.landStatus.landStatusName}</div>
           </div>
         </div>
@@ -74,10 +83,10 @@ export default function LandDetail() {
           <div className="detail-section">
             <div className="detail-desc">
               <div className="text-title">Description</div>
-              <div className="text-description">{landDetails.landDescription}</div>
+              <div className="text-description">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</div>
             </div>
             <div className="detail-url">
-              <div className="text-title">URL</div>
+              <div className="text-title">Link</div>
               <div className="text-url">http://www.google.com</div>
             </div>
             <div className="button-section">
@@ -91,15 +100,15 @@ export default function LandDetail() {
               </button>
             </div>
             <div id="profile">
-              <div className="profile-box">
+              <div className="profile-box" onClick={() => goToProfile(ownerDetails.userTokenId)}>
                 <div className="image-box">
-                  <img className="profile-image" src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt=""/>
+                  <img className="profile-image" src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" />
                 </div>
                 <div className="detail-profile">
-                  <div className="name">Anicha</div>
+                  <div className="name">{ownerDetails.userName ? ownerDetails.userName : '-'}</div>
                   <div className="box">
                     <div className="token-id">{ownerDetails.userTokenId}</div>
-                    <button className="copy">
+                    <button className="copy" onClick={(e) => copyAddess(e)}>
                       <FaCopy className='copy-icon' />
                     </button>
                   </div>
@@ -108,8 +117,15 @@ export default function LandDetail() {
             </div>
             <div className="offer">
               {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
-              {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land">Buy {} eth</button>}
+              {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land">Buy { } eth</button>}
               {isOwner && (landDetails.landStatus.landStatusId === 2) && <button className="button-price-land">List on Market</button>}
+              {isOwner && landDetails.landStatus.landStatusId === 3 &&
+                <div className='cancel-edit'>
+                  <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
+                  <button className="button-cancel-land">Cancel Listing</button>
+                  <button className="button-edit-price-land">Edit Price</button>
+                </div>
+              }
             </div>
           </div>
         </div>

@@ -78,7 +78,7 @@ export default observer(function Profile({ }: Props) {
                             </div>
                             <div className='wallet-div'>
                                 <p className='addreess'>{authStore.account.userTokenId}</p>
-                                <div className='copy-buton' onClick={() => { navigator.clipboard.writeText(authStore.account.userTokenId) }}>
+                                <div className='copy-buton' onClick={() => {navigator.clipboard.writeText(authStore.account.userTokenId)}}>
                                     <FaCopy className='copy-icon' />
                                 </div>
                             </div>
