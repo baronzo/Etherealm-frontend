@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './ModalEditProfile.scss'
 import { MdClose } from 'react-icons/md';
 import UserModel from '../../models/auth/UserModel';
 import authStore from '../../store/auth';
 import UserService from '../../services/user/UserService';
+import ImageService from '../../services/imgbb/ImageService';
 
 type Props = {
     setIsShowModalEditProfile: (value: boolean) => void
@@ -17,32 +18,94 @@ interface Status {
 }
 
 export default function ModalEditProfile(props: Props) {
-    const [isActiveToggle, setIsActiveToggle] = useState<Status>({ upload: true, link: false })
-    const [linkImageProfile, setLinkImageProfile] = useState<string>('https://cdn.wallpapersafari.com/7/36/98MpYN.jpg')
+    const [isActiveToggle, setIsActiveToggle] = useState(true)
+    const [linkImageProfile, setLinkImageProfile] = useState<string>('')
     const inputImage = useRef<HTMLInputElement>(null)
     const userService: UserService = new UserService()
-    const [profile, setProfile] = useState<UserModel>({
-        userTokenId: '',
-        userName: '',
-        userDescription: '',
-        userProfilePic: ''
-    })
+    const [profile, setProfile] = useState<UserModel>(new UserModel)
+    const [base64Image, setbase64Image] = useState<string>('')
+    const imageService: ImageService = new ImageService
+    const [prevData, setprevData] = useState<UserModel>(new UserModel)
+    const [prevImage, setPrevImage] = useState<string>('')
 
+    useEffect(() => {
+        getDataFromAPI()
+    }, [])
+
+    async function getDataFromAPI(): Promise<void> {
+        await getUserDetail()
+    }
+
+    async function getUserDetail(): Promise<void> {
+        const result: UserModel = await userService.getUserDetailsByTokenId(authStore.account.userTokenId)
+        setPrevImage(result.userProfilePic)
+        setProfile(result)
+        setprevData(result)
+    }
+    
     function onChangeImageClick(): void {
         inputImage.current?.click()
     }
 
+    function formatBase64Image(base64Image: string, type: string): string {
+        return base64Image.replace(`data:image/${type};base64,`, '')
+    }
+    
+    function convertImageToBase64(image: File): Promise<string> {
+        return new Promise(resolve => {
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = () => {
+        resolve(String(reader.result))
+        };
+    });
+    }
+
+    async function onImageSelected(e: HTMLInputElement): Promise<void> {
+        const target: HTMLInputElement = e
+        let image: FileList  = target.files as FileList 
+        let type: string = image[0].type.split('/')[1]
+        let base64Image = await convertImageToBase64(image[0])
+        let newProfile = {...profile}
+        newProfile.userProfilePic = base64Image
+        base64Image = formatBase64Image(base64Image, type)
+        setbase64Image(base64Image)
+        setProfile(newProfile)
+    }
+
     async function updateProfile(): Promise<void> {
+        let imagePath: string = ''
+        if (!linkImageProfile && base64Image) {
+            imagePath = await imageService.postImageApi(base64Image)
+        }
         const body: UserModel = {
             userTokenId: authStore.account.userTokenId,
             userName: profile.userName,
             userDescription: profile.userDescription,
-            userProfilePic: profile.userProfilePic
+            userProfilePic: linkImageProfile ? linkImageProfile : imagePath ? imagePath : profile.userProfilePic
         }
         const result: UserModel = await userService.updateUserProfile(body)
-        console.log(result)
+        onChangeTab(true)
+        setProfile(result)
+        setprevData(result)
         props.fetchDetail()
         props.setIsShowModalEditProfile(false)
+    }
+
+    function onChangeTab(isTab: boolean ) {
+        let newImage = profile
+        newImage.userProfilePic = prevData.userProfilePic
+        setLinkImageProfile('')
+        setProfile(newImage)
+        setIsActiveToggle(isTab)
+    }
+
+    function checkDataIsChange(): boolean {
+        let result: boolean = JSON.stringify(profile) === JSON.stringify(prevData) ? false : true
+        if (linkImageProfile && linkImageProfile !== prevData.userProfilePic) {
+            result = true
+        }
+        return result
     }
 
     return (
@@ -56,24 +119,24 @@ export default function ModalEditProfile(props: Props) {
                 </div>
                 <div className="toggle-div">
                     <div className="toggle-upload-link">
-                        <div className={`button-upload ${isActiveToggle.upload ? 'active' : ''}`}
-                            onClick={() => setIsActiveToggle({ ...isActiveToggle, upload: true, link: false })}>Upload image</div>
-                        <div className={`button-link ${isActiveToggle.link ? 'active' : ''}`}
-                            onClick={() => setIsActiveToggle({ ...isActiveToggle, upload: false, link: true })}>Link image</div>
+                        <div className={`button-upload ${isActiveToggle ? 'active' : ''}`}
+                            onClick={() => onChangeTab(true)}>Upload image</div>
+                        <div className={`button-link ${!isActiveToggle ? 'active' : ''}`}
+                            onClick={() => onChangeTab(false)}>Link image</div>
                     </div>
                 </div>
                 <div className="image-upload-or-link">
                     <div className="image-div">
-                        <img className="image-profile" src={linkImageProfile} alt="" />
+                        <img className="image-profile" src={linkImageProfile ? linkImageProfile : profile.userProfilePic ? profile.userProfilePic : ''} alt="" />
                     </div>
                     <div className="input-image-div">
-                        {isActiveToggle.upload &&
+                        {isActiveToggle &&
                             <>
-                                <input type="file" ref={inputImage} name="" className="upload-input" accept="image/*" onChange={e => {}} />
+                                <input type="file" ref={inputImage} name="" className="upload-input" accept="image/*" onChange={e => onImageSelected(e.target)} />
                                 <button className="change-image-button" onClick={onChangeImageClick}>Change Image</button>
                             </>
                         }
-                        {isActiveToggle.link && 
+                        {!isActiveToggle && 
                             <input type="text" className="link-image-input" 
                             placeholder='Enter your link image' 
                             onChange={e => setLinkImageProfile(e.target.value)}/>
