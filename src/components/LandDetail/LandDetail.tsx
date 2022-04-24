@@ -120,7 +120,7 @@ export default function LandDetail() {
             <div className="detail-section">
               <div className="detail-desc">
                 <div className="text-title">Description</div>
-                <div className="text-description">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</div>
+                <div className="text-description">{landDetails.landDescription}</div>
               </div>
               <div className="detail-url">
                 <div className="text-title">Link</div>
