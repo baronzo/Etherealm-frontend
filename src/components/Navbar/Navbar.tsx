@@ -84,7 +84,6 @@ export default observer(function Navbar(props: IProps) {
               </div>
             }
           </div>
-
           {/* <button id='logoutBtn' onClick={() => onLogout()}>Logout</button> */}
         </div>
         :

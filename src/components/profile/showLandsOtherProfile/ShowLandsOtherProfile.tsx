@@ -4,7 +4,6 @@ import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
 import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
-import authStore from '../../../store/auth'
 import './ShowLandsOtherProfile.scss'
 
 type Props = {

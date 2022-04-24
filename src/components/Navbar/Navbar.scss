@@ -87,12 +87,13 @@
             object-fit: cover;
             object-position: center;
             border-radius: 5px;
+            margin: 0;
           }
         }
         .accountBalance {
           width: 105px;
           display: flex;
-          justify-content: flex-end;
+          justify-content: flex-start;
           align-items: center;
           margin: 0;
           padding-left: 5px;
@@ -177,31 +178,5 @@
           }
         }
       }
-      // #logoutBtn {
-      //   height: 35px;
-      //   width: 80px;
-      //   background-color: #7645D9;
-      //   border: none;
-      //   outline: none;
-      //   border-radius: 5px;
-      //   color: #ffffff;
-      //   cursor: pointer;
-      //   font-weight: bold;
-      //   &:hover {
-      //     background-color: #5b26c5;
-      //   }
-      // }
-      // #accountAddressToken {
-      //   margin: 0 10px;
-      //   width: 200px;
-      //   overflow: hidden;
-      //   text-overflow: ellipsis;
-      //   cursor: pointer;
-      //   font-weight: bold;
-      //   color: rgb(170, 170, 170);
-      //   &:hover {
-      //     color: #5b26c5;
-      //   }
-      // }
     }
   }

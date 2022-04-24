@@ -17,6 +17,7 @@ import ModalListOnMarket from '../ModalListOnMarket/ModalListOnMarket'
 import CancelListedOnMarketRequestModel from '../../models/market/CancelListedOnMarketRequestModel'
 import UpdatePriceListedOnMarketRequestModel from '../../models/market/UpdatePriceListedOnMarketRequestModel'
 import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
+import ModalEditPriceListing from '../ModalEditPriceListing/ModalEditPriceListing'
 
 interface IParams {
   landTokenId: string
@@ -30,10 +31,11 @@ export default function LandDetail() {
   const [ownerDetails, setownerDetails] = useState<UserModel>(new UserModel)
   const history = useHistory()
   const [isOwner, setIsOwner] = useState<boolean>(false)
-  const [isShowListOnMarket, setIsShowListOnMarket] = useState(false)
+  const [isShowListOnMarket, setIsShowListOnMarket] = useState<boolean>(false)
+  const [isShowEditPrice, setIsShowEditPrice] = useState<boolean>(false)
   const contractStore = useMemo(() => new ContractStore, [])
   const landMarketService: LandMarketService = new LandMarketService()
-
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     getLandDetailsFromApi()
@@ -42,7 +44,6 @@ export default function LandDetail() {
   async function getLandDetailsFromApi(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setlandDetails(result)
-    console.log(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
   }
@@ -58,7 +59,6 @@ export default function LandDetail() {
     } else {
       setIsOwner(false)
     }
-    console.log(isOwner)
   }
 
   function goToEditPage(landTokenId: string) {
@@ -90,18 +90,14 @@ export default function LandDetail() {
   }
 
   async function cancelLandOnMarketAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
-    let bodyCancel: CancelListedOnMarketRequestModel = {landTokenId, ownerTokenId}
+    setIsLoading(true)
+    let bodyCancel: CancelListedOnMarketRequestModel = {landTokenId: landTokenId, ownerTokenId: ownerTokenId}
     const cancelIsSuccess: string = await landMarketService.cancelListedOnMarket(bodyCancel)
     if (cancelIsSuccess) {
-      getLandDetailsFromApi()
-    }
-  }
-
-  async function updatePriceLandOnMarketAPI(landTokenId: string, ownerTokenId: string, price: number): Promise<void> {
-    let bodyUpdatePrice: UpdatePriceListedOnMarketRequestModel = {landTokenId, ownerTokenId, price}
-    const cancelIsSuccess: ListOnMarketResponseModel = await landMarketService.updatePriceListedOnMarket(bodyUpdatePrice)
-    if (cancelIsSuccess) {
-      getLandDetailsFromApi()
+      setTimeout(() => {
+        getLandDetailsFromApi()
+        setIsLoading(false)
+      }, 1500);
     }
   }
 
@@ -163,8 +159,12 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
-                    <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
-                    <button className="button-edit-price-land">Edit Price</button>
+                    {!isLoading ? 
+                      <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
+                    :
+                      <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
+                    }
+                    <button className="button-edit-price-land" onClick={() => setIsShowEditPrice(true)} >Edit Price</button>
                   </div>
                 }
               </div>
@@ -173,6 +173,7 @@ export default function LandDetail() {
         </div>
       </div>
       {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi}/>}
+      {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails}/>}
     </>
   )
 }
