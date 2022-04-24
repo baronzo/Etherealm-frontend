@@ -1,15 +1,21 @@
 import { createBrowserHistory } from 'history'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
 import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
 import './ShowLandsOtherProfile.scss'
+import BuyLandOnMarketRequestModel from '../../../models/market/BuyLandOnMarketRequestModel'
+import authStore from '../../../store/auth'
+import ContractStore from '../../../store/contract'
+import LandMarketService from '../../../services/market/LandMarketService'
+import LandMarketModel from '../../../models/market/LandMarketModel'
 
 type Props = {
     allLands: Array<LandModel>
     setIsShowModalDetailRenting: (value: boolean) => void
     setselectedLand: (land: LandModel) => void
+    fetchDetail: () => void
 }
 
 export default function ShowLandsOtherProfile(props: Props) {
@@ -23,10 +29,30 @@ export default function ShowLandsOtherProfile(props: Props) {
     })
 
     const history = useHistory()
+    const [landsMarket, setLandsMarket] = useState<Array<LandModel>>([])
+    const contractStore = useMemo(() => new ContractStore, [])
+    const landMarketService: LandMarketService = new LandMarketService()
 
     function goToDetailsPage(landTokenId: string) {
         history.push(`/lands/${landTokenId}/details`)
     }
+
+    async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
+        e.stopPropagation()
+        console.log(props.allLands[index]);
+        const body: BuyLandOnMarketRequestModel = {
+          fromUserTokenId: props.allLands[index].landOwnerTokenId,
+          toUserTokenId: authStore.account.userTokenId,
+          landTokenId: props.allLands[index].landTokenId
+        }
+        if(authStore.account.userTokenId !== props.allLands[index].landOwnerTokenId) {
+          const isSuccess: boolean = await contractStore.buyLand(props.allLands[index].landTokenId, props.allLands[index].landOwnerTokenId, Number(props.allLands[index].price))
+          if (isSuccess) {
+            const result: LandModel = await landMarketService.buyLandOnMarket(body)
+            props.fetchDetail()
+          }
+        }
+      }
 
     function mapOwnedLands(): JSX.Element {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 2)
@@ -86,7 +112,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                         <p className='topic-my-land-text'>Lands for Sell on Market</p>
                     </div>
                     <div className='show-my-land'>
-                        {data.map((item: LandModel) => {
+                        {data.map((item: LandModel, index:number) => {
                             return (
                                 <div className='land-card' key={item.landTokenId}>
                                     <div className='land-image-div'>
@@ -107,7 +133,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                                                 <p className='button-text-detail'>Land Details</p>
                                             </div>
                                             <div className='list-to-market'>
-                                                <p className='button-text-list'>Buy 0.05 ETH</p>
+                                                <p className='button-text-list' onClick={(e) => authStore.account.userTokenId === item.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>Buy {item.price} ETH</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
