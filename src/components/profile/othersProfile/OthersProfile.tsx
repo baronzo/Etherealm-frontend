@@ -74,6 +74,7 @@ export default function OthersProfile({ }: Props) {
                     allLands={ownedLand}
                     setselectedLand={setselectedLand}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                    fetchDetail={getDataFromAPI}
                 />
             </div>
         </div>
