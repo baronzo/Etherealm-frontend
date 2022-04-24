@@ -109,7 +109,7 @@ export default observer(function Profile({ }: Props) {
                         <div className='profile'>
                             <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)} />
                             <div className='profile-image-div'>
-                                <img className='profle-image' src={userProfile.userProfilePic} alt="" />
+                                <img className='profle-image' src={userProfile.userProfilePic ? userProfile.userProfilePic : '/profile.jpg'} alt="" />
                             </div>
                             <div className='name-div'>
                                 <p className='name'>{userProfile.userName || '-'}</p>

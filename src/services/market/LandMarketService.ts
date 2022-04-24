@@ -32,7 +32,7 @@ class LandMarketService {
   }
 
   public async updatePriceListedOnMarket(bodyUpdateListed: UpdatePriceListedOnMarketRequestModel): Promise<ListOnMarketResponseModel> {
-    let updateResponse: AxiosResponse<ListOnMarketResponseModel> = await axios.post(`${this.host}/market/land/remove`, bodyUpdateListed)
+    let updateResponse: AxiosResponse<ListOnMarketResponseModel> = await axios.post(`${this.host}/market/land/update/price`, bodyUpdateListed)
     return updateResponse.data
   }
 

@@ -1,10 +1,8 @@
-import { createBrowserHistory } from 'history'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
 import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
-import authStore from '../../../store/auth'
 import './ShowLands.scss'
 
 type Props = {
