@@ -145,7 +145,7 @@ export default observer(function Profile({ }: Props) {
                         <div className='transactions-container'>
                             <div className='transactions'>
                                 <div className='topic-div'>
-                                    <p className='topic-text'>Transections</p>
+                                    <p className='topic-text'>Transactions</p>
                                 </div>
                                 <div className='log-notifications-div'>
                                     {transactions.map((item: TransactionsResponseModel) => {
