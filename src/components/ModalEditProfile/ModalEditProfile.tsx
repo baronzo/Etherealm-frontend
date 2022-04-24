@@ -27,6 +27,7 @@ export default function ModalEditProfile(props: Props) {
     const imageService: ImageService = new ImageService
     const [prevData, setprevData] = useState<UserModel>(new UserModel)
     const [prevImage, setPrevImage] = useState<string>('')
+    const [isLoading, setisLoading] = useState(false)
 
     useEffect(() => {
         getDataFromAPI()
@@ -74,6 +75,7 @@ export default function ModalEditProfile(props: Props) {
     }
 
     async function updateProfile(): Promise<void> {
+        setisLoading(true)
         let imagePath: string = ''
         if (!linkImageProfile && base64Image) {
             imagePath = await imageService.postImageApi(base64Image)
@@ -89,6 +91,7 @@ export default function ModalEditProfile(props: Props) {
         setProfile(result)
         setprevData(result)
         props.fetchDetail()
+        setisLoading(false)
         props.setIsShowModalEditProfile(false)
     }
 
@@ -154,7 +157,12 @@ export default function ModalEditProfile(props: Props) {
                     </div>
                 </div>
                 <div className="button-save-div">
-                    <button className="button-save" onClick={e => updateProfile()}>Save</button>
+                    {!isLoading
+                        ?
+                            <button className={`button-save ${checkDataIsChange() ? '' : 'disable'}`} onClick={e => checkDataIsChange() ? updateProfile() : undefined}>Save</button>
+                        :
+                            <button className={`button-save`}><i className="fas fa-spinner fa-spin"></i></button>
+                    }
                 </div>
             </div>
         </div>

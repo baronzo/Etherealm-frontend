@@ -74,6 +74,7 @@ class ContractStore {
         const result = await this.waitTransactionConfirm(tx)
         const request: TransactionsRequestModel = this.mapReceiptToTransactionRequestModel(result[1], ownerTokenId, 1)
         const response: TransactionsResponseModel = await this.transactionService.addTransaction(request)
+        console.log(response)
         return result[0]
       } catch (error) {
         console.error(error)
@@ -82,8 +83,8 @@ class ContractStore {
     return false
     // const result = await this.provider.getTransaction("0xe59bb2585ae3848ba2eaa9ec5c87c42b0d5c49fb4f14197037e21348fda2793b")
     // console.log(result)
-    // console.log(Number(ethers.utils.formatEther(result.maxFeePerGas)))
-    return false
+    // console.log(Number(ethers.utils.formatEther(result.gasPrice.mul(result.gasLimit))))
+    // return false
   }
 
   private mapReceiptToTransactionRequestModel(receipt: any, owner: string, type: number): TransactionsRequestModel {
@@ -92,8 +93,8 @@ class ContractStore {
       toUserTokenId: owner,
       logType: type,
       transactionBlock: receipt.transactionHash,
-      // gasPrice: Number(ethers.utils.formatEther(receipt.gasUsed))
-      gasPrice: 0.1
+      gasPrice: Number(ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice)))
+      // gasPrice: 0.1
     }
     return result
   }
@@ -102,7 +103,7 @@ class ContractStore {
     let receipt = await tx.wait()
     if (receipt.status) {
       console.log(receipt)
-      console.log(Number(ethers.utils.formatEther(receipt.gasUsed)))
+      console.log(Number(ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice))))
       return [true, receipt]
     }
     return [false, receipt]
