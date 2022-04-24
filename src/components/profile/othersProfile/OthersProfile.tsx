@@ -17,7 +17,6 @@ interface IParams {
 type Props = {}
 
 export default function OthersProfile({ }: Props) {
-    const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
@@ -46,12 +45,12 @@ export default function OthersProfile({ }: Props) {
     }
 
     return (
-        <div id='profileMain'>
+        <div id='otherProfileMain'>
             <div className='profile'>
                 <div className='profile-container'>
                     <div className='profile-card'>
                         <div className='profile-image-div'>
-                            <img className='profle-image' src={userDetails.userProfilePic ? userDetails.userProfilePic : "https://cdn.wallpapersafari.com/7/36/98MpYN.jpg"} alt="" />
+                            <img className='profle-image' src={userDetails.userProfilePic ? userDetails.userProfilePic : "/profile.jpg"} alt="" />
                         </div>
                         <div className='name-div'>
                             <p className='name'>{userDetails.userName}</p>

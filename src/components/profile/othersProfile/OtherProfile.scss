@@ -1,4 +1,4 @@
-#profileMain {
+#otherProfileMain {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -37,6 +37,7 @@
                         object-fit: cover;
                         object-position: center;
                         border-radius: 50%;
+                        border: 1px solid #BFBFBF;
                     }
                 }
                 .name-div {

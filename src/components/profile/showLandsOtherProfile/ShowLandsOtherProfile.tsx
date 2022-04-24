@@ -33,7 +33,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         console.log(data)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Owned Lands</p>
                     </div>
@@ -81,7 +81,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         console.log(data)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Lands for Sell on Market</p>
                     </div>
@@ -127,7 +127,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 4)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Lands for Rent  on Market</p>
                     </div>
@@ -169,7 +169,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Land Rent</p>
                     </div>
@@ -211,7 +211,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 6)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Land Rent Purchase</p>
                     </div>
@@ -253,7 +253,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 7)
         return (
             <>
-                <div id='ShowLandsMain'>
+                <div id='ShowLandsOtherMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>People are Renting</p>
                     </div>

@@ -130,7 +130,7 @@ export default function ModalEditProfile(props: Props) {
                 </div>
                 <div className="image-upload-or-link">
                     <div className="image-div">
-                        <img className="image-profile" src={linkImageProfile ? linkImageProfile : profile.userProfilePic ? profile.userProfilePic : ''} alt="" />
+                        <img className="image-profile" src={linkImageProfile ? linkImageProfile : profile.userProfilePic ? profile.userProfilePic : '/profile.jpg'} alt="" />
                     </div>
                     <div className="input-image-div">
                         {isActiveToggle &&
