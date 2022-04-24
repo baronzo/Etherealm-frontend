@@ -71,7 +71,7 @@ export default observer(function Navbar(props: IProps) {
       {authStore.account.userTokenId ?
         <div id="account">
           <div id='profileBalance' onClick={() => showProfileMenu()}>
-            <div className='profile'><img className='profile-img' src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" /></div>
+            <div className='profile'><img className='profile-img' src={authStore.account.userProfilePic} alt="" /></div>
             <div className="accountBalance"><FaEthereum className='eth-icon' /><p className='value'>{authStore.account.balance} ETH</p></div>
             {isShowModalMenu &&
               <div id='profile-menu'>

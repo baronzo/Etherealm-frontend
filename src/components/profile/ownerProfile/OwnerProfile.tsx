@@ -90,17 +90,6 @@ export default observer(function Profile({ }: Props) {
         await getUserDetail()
     }
 
-    // async function updateProfile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
-    //     const body: UserModel = {
-    //         userTokenId: authStore.account.userTokenId,
-    //         userName: e.target.value,
-    //         userDescription: e.target.value,
-    //         userProfilePic: ''
-    //     }
-    //     const result: UserModel = await userService.updateUserProfile(body)
-    //     console.log(result)
-    // }
-
     const ownerProfile = () => {
         return (
             <div id='profileMain'>
@@ -109,10 +98,10 @@ export default observer(function Profile({ }: Props) {
                         <div className='profile'>
                             <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)} />
                             <div className='profile-image-div'>
-                                <img className='profle-image' src={userProfile.userProfilePic ? userProfile.userProfilePic : '/profile.jpg'} alt="" />
+                                <img className='profle-image' src={authStore.account.userProfilePic ? authStore.account.userProfilePic : '/profile.jpg'} alt="" />
                             </div>
                             <div className='name-div'>
-                                <p className='name'>{userProfile.userName || '-'}</p>
+                                <p className='name'>{authStore.account.userName || '-'}</p>
                             </div>
                             <div className='value-div'>
                                 <div className='value-button'>
@@ -128,7 +117,7 @@ export default observer(function Profile({ }: Props) {
                             </div>
                             <div className='user-description-div'>
                                 <div className='user-description'>
-                                    <p className='text-description'>{userProfile.userDescription || 'No description'}</p>
+                                    <p className='text-description'>{authStore.account.userDescription || 'No description'}</p>
                                 </div>
                             </div>
                         </div>
