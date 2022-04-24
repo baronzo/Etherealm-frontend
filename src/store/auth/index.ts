@@ -25,6 +25,17 @@ class AuthStore {
   }
 
   @action
+  public updateAccountDetails(response: UserModel): void {
+    let newDetails: AccountModel = {...this.account}
+    newDetails.userTokenId = response.userTokenId
+    newDetails.userName = response.userName
+    newDetails.userProfilePic = response.userProfilePic
+    newDetails.userDescription = response.userDescription
+    this.account = newDetails
+    window.localStorage.setItem('account', JSON.stringify(this.account))
+  }
+
+  @action
   public async getAccountInCookies(): Promise<AccountModel> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
       const storeAccount: AccountModel = JSON.parse(window.localStorage.getItem('account')!)

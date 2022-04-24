@@ -272,6 +272,13 @@
                 &:hover {
                     background-color: #704db6;
                 }
+                &.disable {
+                    background-color: #caafff;
+                    cursor: no-drop;
+                    &:hover {
+                      background-color: #caafff;
+                    }
+                  }
             }
         }
     }

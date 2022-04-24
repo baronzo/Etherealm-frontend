@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import UserModel from "../../models/auth/UserModel";
+import authStore from "../../store/auth";
 import Host from "../Host";
 
 class UserService {
@@ -29,6 +30,7 @@ class UserService {
   public async updateUserProfile(updateProfileRequest: UserModel):Promise<UserModel> {
     try {
       const user: AxiosResponse<UserModel> = await axios.post(`${this.host}/users/user/update`, updateProfileRequest)
+      await authStore.updateAccountDetails(user.data)
       return user.data
     } catch (error) {
       console.error(error)
