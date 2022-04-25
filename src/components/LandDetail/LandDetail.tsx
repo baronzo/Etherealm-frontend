@@ -147,9 +147,14 @@ export default function LandDetail() {
                 </div>
               </div>
               <div className="offer">
+                {!isOwner && landDetails.landStatus.landStatusId === 2 && 
+                  <div className='best-offer'>
+                    <p className='text-price-offer'>Best offer is 0.05 ETH</p>
+                  </div> 
+                }
                 {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
                 {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button>}
-                {isOwner && (landDetails.landStatus.landStatusId === 2) && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
+                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
@@ -161,6 +166,7 @@ export default function LandDetail() {
                     <button className="button-edit-price-land" onClick={() => setIsShowEditPrice(true)} >Edit Price</button>
                   </div>
                 }
+                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer'>View offer list</button>}
               </div>
             </div>
           </div>

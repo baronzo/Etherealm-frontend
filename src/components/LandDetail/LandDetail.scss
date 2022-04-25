@@ -282,13 +282,14 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          flex-direction: column;
           height: auto;
           padding: 0;
           margin: 0;
           width: 97%;
           .button-offer {
             background-color: #1080E4;
-            border-radius: 20px;
+            border-radius: 5px;
             color: #ffff;
             font-weight: bold;
             border: none;
@@ -303,7 +304,7 @@
           }
           .button-price-land {
             background-color: #7645D9;
-            border-radius: 20px;
+            border-radius: 5px;
             color: #ffff;
             font-weight: bold;
             font-size: 14px;
@@ -314,6 +315,38 @@
             &:hover {
               cursor: pointer;
               background-color: #7645d9ef;
+            }
+          }
+          .button-view-offer {
+            background-color: #1080e4;
+            border-radius: 5px;
+            color: #ffff;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            height: 30px;
+            width: 100%;
+            margin: 5px 0 0 0;
+            &:hover {
+              cursor: pointer;
+              background-color: #1081e4ec;
+            }
+          }
+          .best-offer {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 15px 0 0 0;
+            border-top:1px solid #d6d2d2;
+            .text-price-offer {
+              color: #787878;
+              font-weight: normal;
+              font-style: italic;
+              font-size: 14px;
+              margin: 0 0 10px 0;
             }
           }
           .cancel-edit {
