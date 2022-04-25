@@ -148,6 +148,10 @@ export default function EditLand() {
               <div className="text">URL</div>
               <input type="text" className='input'/>
             </div>
+            <div className="input-box">
+              <div className="text">Minimum Offer (ETH)</div>
+              <input type="text" className='input'/>
+            </div>
             <div className="button-section">
               {!isLoading 
               ?
