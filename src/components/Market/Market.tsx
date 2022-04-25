@@ -38,15 +38,9 @@ export default function Market() {
   async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
     setLoading(true, index)
     e.stopPropagation()
-    const body: BuyLandOnMarketRequestModel = {
-      fromUserTokenId: landsMarket[index].ownerUserTokenId.userTokenId,
-      toUserTokenId: authStore.account.userTokenId,
-      landTokenId: landsMarket[index].landTokenId.landTokenId
-    }
     if(authStore.account.userTokenId !== landsMarket[index].ownerUserTokenId.userTokenId) {
       const isSuccess: boolean = await contractStore.buyLand(landsMarket[index].landTokenId.landTokenId, landsMarket[index].ownerUserTokenId.userTokenId, landsMarket[index].price)
       if (isSuccess) {
-        const result: LandModel = await landMarketService.buyLandOnMarket(body)
         getLandOnMarketFromAPI()
       }
     }

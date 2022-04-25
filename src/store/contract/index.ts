@@ -6,6 +6,11 @@ import AuthStore from '../auth'
 import TransactionsRequestModel from '../../models/transaction/TransactionsRequestModel'
 import TransactionService from '../../services/notification/TransactionService'
 import TransactionsResponseModel from '../../models/notifications/TransactionsResponseModel'
+import LandService from '../../services/lands/LandService'
+import BuyLandOnMarketRequestModel from '../../models/market/BuyLandOnMarketRequestModel'
+import authStore from '../auth'
+import LandMarketModel from '../../models/market/LandMarketModel'
+import LandMarketService from '../../services/market/LandMarketService'
 
 class ContractStore {
   
@@ -21,7 +26,9 @@ class ContractStore {
   private contractAddress = '0x62f9DF627FfA82Bbdd75601E52e3ef643d5E630E'
 
   private transactionService: TransactionService = new TransactionService()
-  
+  private landMarketService: LandMarketService = new LandMarketService()
+  private landService: LandService = new LandService()
+
   constructor() {
     makeAutoObservable(this)
     this.getContract()
@@ -71,20 +78,25 @@ class ContractStore {
     if (this.contract) {
       try {
         let tx = await this.contract.buy(landTokenId, ownerTokenId, { value: ethers.utils.parseEther(String(price)) })
-        const result = await this.waitTransactionConfirm(tx)
-        const request: TransactionsRequestModel = this.mapReceiptToTransactionRequestModel(result[1], ownerTokenId, 1)
-        const response: TransactionsResponseModel = await this.transactionService.addTransaction(request)
-        console.log(response)
-        return result[0]
+        const body: BuyLandOnMarketRequestModel = this.mapTxtoBuyLandOnMarketRequestModel(tx, landTokenId, ownerTokenId)
+        await this.landMarketService.buyLandOnMarket(body)
+        return true
       } catch (error) {
         console.error(error)
       }
     }
+    
     return false
-    // const result = await this.provider.getTransaction("0xe59bb2585ae3848ba2eaa9ec5c87c42b0d5c49fb4f14197037e21348fda2793b")
-    // console.log(result)
-    // console.log(Number(ethers.utils.formatEther(result.gasPrice.mul(result.gasLimit))))
-    // return false
+  }
+
+  private mapTxtoBuyLandOnMarketRequestModel(tx: ethers.providers.TransactionResponse, landTokenId: string, ownerTokenId: string): BuyLandOnMarketRequestModel {
+    const body: BuyLandOnMarketRequestModel = {
+      fromUserTokenId: ownerTokenId,
+      toUserTokenId: authStore.account.userTokenId,
+      landTokenId: landTokenId,
+      hash: tx.hash
+    }
+    return body
   }
 
   private mapReceiptToTransactionRequestModel(receipt: any, owner: string, type: number): TransactionsRequestModel {
@@ -94,7 +106,6 @@ class ContractStore {
       logType: type,
       transactionBlock: receipt.transactionHash,
       gasPrice: Number(ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice)))
-      // gasPrice: 0.1
     }
     return result
   }
