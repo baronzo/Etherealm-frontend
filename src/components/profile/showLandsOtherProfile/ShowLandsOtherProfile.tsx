@@ -39,16 +39,9 @@ export default function ShowLandsOtherProfile(props: Props) {
 
     async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
         e.stopPropagation()
-        console.log(props.allLands[index]);
-        const body: BuyLandOnMarketRequestModel = {
-          fromUserTokenId: props.allLands[index].landOwnerTokenId,
-          toUserTokenId: authStore.account.userTokenId,
-          landTokenId: props.allLands[index].landTokenId
-        }
         if(authStore.account.userTokenId !== props.allLands[index].landOwnerTokenId) {
           const isSuccess: boolean = await contractStore.buyLand(props.allLands[index].landTokenId, props.allLands[index].landOwnerTokenId, Number(props.allLands[index].price))
           if (isSuccess) {
-            const result: LandModel = await landMarketService.buyLandOnMarket(body)
             props.fetchDetail()
           }
         }

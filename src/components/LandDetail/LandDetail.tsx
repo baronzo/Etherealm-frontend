@@ -75,15 +75,9 @@ export default function LandDetail() {
   }
 
   async function buyLandDetailOnMarketFromApi(landDetails: LandModel): Promise<void> {
-    const body: BuyLandDetailOnMarketRequestModel = {
-      fromUserTokenId: landDetails.landOwnerTokenId,
-      toUserTokenId: authStore.account.userTokenId,
-      landTokenId: landDetails.landTokenId
-    }
     if (authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
       const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, Number(landDetails.price))
       if (isSuccess) {
-        const result: LandModel = await landMarketService.buyLandOnMarket(body)
         getLandDetailsFromApi()
       }
     }
