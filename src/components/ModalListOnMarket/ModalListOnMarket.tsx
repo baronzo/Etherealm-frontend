@@ -31,8 +31,8 @@ export default function ModalListOnMarket(props: Props) {
     useEffect(() => {
         calculateReceive()
     }, [price])
-    
 
+    
     async function postListLandOnMarket(): Promise<void> {
         setisLoading(true)
         if (price !== null || price !== "" || Number(price) !== 0 || !price) {

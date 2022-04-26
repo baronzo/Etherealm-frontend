@@ -88,6 +88,7 @@
             box-sizing: border-box;
             &:hover {
                 box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
+                cursor: pointer;
             }
             .land-image-div {
                 background-color: #b6ffff;
@@ -164,11 +165,11 @@
                         padding: 0;
                         height: 25px;
                         width: 180px;
-                        background-color: #3FD2CE;
+                        background-color: #1080E4;
                         border-radius: 5px;
                         &:hover {
                             cursor: pointer;
-                            background-color: #0fb3ad;
+                            background-color: #288fe8;
                         }
                         .button-text-detail {
                             margin: 0;
