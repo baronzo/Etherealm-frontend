@@ -75,15 +75,9 @@ export default function LandDetail() {
   }
 
   async function buyLandDetailOnMarketFromApi(landDetails: LandModel): Promise<void> {
-    const body: BuyLandDetailOnMarketRequestModel = {
-      fromUserTokenId: landDetails.landOwnerTokenId,
-      toUserTokenId: authStore.account.userTokenId,
-      landTokenId: landDetails.landTokenId
-    }
     if (authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
       const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, Number(landDetails.price))
       if (isSuccess) {
-        const result: LandModel = await landMarketService.buyLandOnMarket(body)
         getLandDetailsFromApi()
       }
     }
@@ -153,9 +147,14 @@ export default function LandDetail() {
                 </div>
               </div>
               <div className="offer">
+                {!isOwner && landDetails.landStatus.landStatusId === 2 && 
+                  <div className='best-offer'>
+                    <p className='text-price-offer'>Best offer is 0.05 ETH</p>
+                  </div> 
+                }
                 {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
                 {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button>}
-                {isOwner && (landDetails.landStatus.landStatusId === 2) && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
+                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
@@ -167,6 +166,7 @@ export default function LandDetail() {
                     <button className="button-edit-price-land" onClick={() => setIsShowEditPrice(true)} >Edit Price</button>
                   </div>
                 }
+                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer'>View offer list</button>}
               </div>
             </div>
           </div>

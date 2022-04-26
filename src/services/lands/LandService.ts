@@ -40,6 +40,10 @@ class LandService {
     return land.data
   }
 
+  public async test(tx: any): Promise<void> {
+    let lands: AxiosResponse<any> = await axios.post(`${this.host}/lands/test`, tx)
+  }
+
 }
 
 export default LandService
