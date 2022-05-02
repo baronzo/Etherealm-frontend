@@ -60,11 +60,9 @@ class ContractStore {
     if (this.contract) {
       try {
         console.log(landTokenId)
-        let uri: string = `http://etherealm.ddns.net/api/lands/land/${landTokenId}`
+        let uri: string = `http://etherealm1.ddns.net/api/lands/land/${landTokenId}`
         let tx = await this.contract.create(landTokenId, uri)
         const result = await this.waitTransactionConfirm(tx)
-        const request: TransactionsRequestModel = this.mapReceiptToTransactionRequestModel(result[1], '0x347Aa0FC3E7e4b06AF8515dd265a593410940E05', 1)
-        const response: TransactionsResponseModel = await this.transactionService.addTransaction(request)
         return result[0]
       } catch (error) {
         console.error(error)

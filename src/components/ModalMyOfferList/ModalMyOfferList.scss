@@ -1,4 +1,4 @@
-#modalOfferList {
+#modalMyOfferList {
     position: fixed;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.534);
@@ -89,7 +89,6 @@
             margin: 0;
             padding: 0;
             overflow-y: scroll;
-
             .offer-item {
                 display: flex;
                 height: 90px;
@@ -109,7 +108,6 @@
                     width: 40px;
                     margin: 0;
                     padding: 0;
-
                     .order {
                         color: black;
                         font-size: 20px;
@@ -117,86 +115,75 @@
                         margin-left: 8px;
                     }
                 }
-
                 .profile-div {
                     display: flex;
-                    align-items: center;
+                    align-items: flex-start;
+                    justify-content: center;
+                    flex-direction: column;
                     width: 300px;
                     margin: 0;
                     padding: 0;
-
-                    .profile-box {
+                    .land-and-location {
                         display: flex;
                         align-items: center;
                         justify-content: flex-start;
-                        height: 70px;
                         margin: 0;
                         padding: 0;
-
-                        .image-box {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin: 0;
-                            padding: 0;
-
-                            .profile-image {
-                                width: 50px;
-                                height: 50px;
-                                object-fit: cover;
-                                object-position: center;
-                                border-radius: 50%;
-                                margin: 0;
-                                padding: 0;
-                                border: 1px solid #ececec;
-                            }
+                        .land-name {
+                            color: #7645D9;
+                            font-size: 20px;
+                            font-weight: bold;
+                            max-width: 195px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
                         }
-
-                        .detail-profile {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-start;
-                            justify-content: center;
+                        .location-icon {
+                            margin: 0 0 0 3px;
+                            color: #5ABFBC;
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                        .land-locatoin {
                             margin: 0;
-                            padding-left: 5px;
-                            .name {
-                                color: #7645D9;
-                                font-weight: bold;
+                            color: #5ABFBC;
+                            font-size: 14px;
+                            font-weight: bold;
+                        }
+                    }
+                    .box {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        margin: 0;
+                        padding: 0;
+                        .token-id {
+                            width: 220px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            font-size: 13px;
+                            font-weight: normal;
+                        }
+                        .copy {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin: 0 5px 0 0;
+                            border: none;
+                            background-color: #7645D9;
+                            border-radius: 5px;
+                            padding: 5px;
+                            width: 20px;
+                            height: 20px;
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #8a5ce6;
                             }
-                            .box {
+                            .copy-icon {
+                                color: #ffff;
                                 display: flex;
+                                justify-content: center;
                                 align-items: center;
-                                .token-id {
-                                    width: 215px;
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                    font-size: 12px;
-                                    font-weight: medium;
-                                }
-                                .copy {
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    margin: 0 5px 0 0;
-                                    border: none;
-                                    background-color: #7645D9;
-                                    border-radius: 5px;
-                                    padding: 5px;
-                                    width: 20px;
-                                    height: 20px;
-
-                                    &:hover {
-                                        cursor: pointer;
-                                        background-color: #8a5ce6;
-                                    }
-
-                                    .copy-icon {
-                                        color: #ffff;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                    }
-                                }
                             }
                         }
                     }
@@ -204,12 +191,11 @@
                 .offer-price-div {
                     display: flex;
                     flex-direction: column;
-                    justify-content: center;
+                    justify-content: flex-start;
                     align-items: flex-start;
-                    width: 145px;
+                    width: 130px;
                     margin: 0;
-                    padding: 0 0 0 15px;
-                    
+                    padding: 22px 0 0 10px;
                     .offer-price-label {
                         color: #A9A9A9;
                         font-size: 10px;
@@ -236,77 +222,20 @@
                 }
                 .button-select-div {
                     display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
+                    align-items: center;
                     justify-content: flex-start;
-                    width: 165px;
+                    height: 100%;
+                    width: 180px;
                     margin: 0;
                     padding: 0;
-                    .button-select {
-                        height: 30px;
-                        width: 145px;
-                        margin: 30px 0 0 0;
-                        border-radius: 5px;
-                        border: none;
-                        background-color: #1080E4;
-                        color: white;
-                        font-size: 14px;
-                        font-weight: 500;
-                        &:hover {
-                            cursor: pointer;
-                            background-color: #1e8def;
-                        }
-                        .hand-icon {
-                            color: white;
-                            font-size: 16px;
-                            font-weight: bold;
-                            margin: 0 4px 0 0;
-                        }
-                    }
-                    .warning-div {
+                    .button-select-cancel {
                         display: flex;
-                        justify-content: flex-start;
                         align-items: center;
+                        justify-content: center;
+                        height: 30px;
+                        width: 165px;
                         margin: 0;
                         padding: 0;
-                        .icon-warning {
-                            color: #DC0000;
-                            font-size: 16px;
-                            font-weight: bold;
-                            margin: 0 4px 0 0;
-                        }
-                        .warning-text {
-                            color: #DC0000;
-                            font-size: 10px;
-                            font-weight: bold;
-                            margin: 0 4px 0 0;
-                        }
-                    }
-                    .button-select-confirm {
-                        height: 30px;
-                        width: 145px;
-                        margin: 13px 2px 2px 2px;
-                        border-radius: 5px;
-                        border: none;
-                        background-color: #2AC161;
-                        color: white;
-                        font-size: 14px;
-                        font-weight: 500;
-                        &:hover {
-                            cursor: pointer;
-                            background-color: #35d670;
-                        }
-                        .icon {
-                            color: white;
-                            font-size: 13px;
-                            font-weight: bold;
-                            margin: 0 4px 0 0;
-                        }
-                    }
-                    .button-select-cancel {
-                        height: 30px;
-                        width: 145px;
-                        margin: 2px;
                         border-radius: 5px;
                         border: none;
                         background-color: #FB3C3C;
