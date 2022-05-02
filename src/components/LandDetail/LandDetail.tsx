@@ -36,6 +36,7 @@ export default function LandDetail() {
   const contractStore = useMemo(() => new ContractStore, [])
   const landMarketService: LandMarketService = new LandMarketService()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
 
   useEffect(() => {
     getLandDetailsFromApi()
@@ -92,6 +93,15 @@ export default function LandDetail() {
         getLandDetailsFromApi()
         setIsLoading(false)
       }, 1500);
+    }
+  }
+
+  function checkOfferButton() {
+    if (isShowCancelOffer != true) {
+      setIsShowCancelOffer(true)
+    }
+    else {
+      setIsShowCancelOffer(false)
     }
   }
 
@@ -152,7 +162,15 @@ export default function LandDetail() {
                     <p className='text-price-offer'>Best offer is 0.05 ETH</p>
                   </div> 
                 }
-                {!isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-offer'>offer</button>}
+                {!isOwner && landDetails.landStatus.landStatusId === 2 && 
+                  <div className='button-offer' onClick={() => checkOfferButton()}>
+                    {!isShowCancelOffer ?
+                      <button className='button-offer'>offer</button>
+                    :
+                      <button className='cancel-offer'>Cancel Offering</button>
+                    }
+                  </div>
+                }
                 {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 2 && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
