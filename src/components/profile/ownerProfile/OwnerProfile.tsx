@@ -19,6 +19,8 @@ import UserModel from '../../../models/auth/UserModel'
 import UserService from '../../../services/user/UserService'
 import TransactionService from '../../../services/notification/TransactionService'
 import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
+import ModalOfferList from '../../ModalOfferList/ModalOfferList'
+import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
 
 interface IParams {
     userTokenId: string
@@ -30,6 +32,8 @@ export default observer(function Profile({ }: Props) {
     const [isShowModalListOnMarket, setIsShowModalListOnMarket] = useState<boolean>(false)
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
     const [isShowModalEditProfile, setIsShowModalEditProfile] = useState<boolean>(false)
+    const [isShowModalOfferList, setIsShowModalOfferList] = useState<boolean>(false)
+    const [isShowModalMyOfferList, setIsShowModalMyOfferList] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const notificationService: NotificationService = new NotificationService()
     const userService: UserService = new UserService()
@@ -120,6 +124,9 @@ export default observer(function Profile({ }: Props) {
                                     <p className='text-description'>{authStore.account.userDescription || 'No description'}</p>
                                 </div>
                             </div>
+                            <div className='my-offer-list-div'>
+                                <button className='button-my-offer-list' onClick={() => setIsShowModalMyOfferList(true)}>View My Offer List</button>
+                            </div>
                         </div>
                     </div>
                     <div className='log-container'>
@@ -168,15 +175,17 @@ export default observer(function Profile({ }: Props) {
                         setselectedLand={setselectedLand}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                        setIsShowModalOfferList={setIsShowModalOfferList}
                     />
                 </div>
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
-                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} />}
+                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting}/>}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
+                {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand}/>}
+                {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
             </div>
         )
     }
-
     return (
         <>
             {params.userTokenId === authStore.account.userTokenId ? ownerProfile() : <OthersProfile />}

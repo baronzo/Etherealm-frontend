@@ -25,7 +25,7 @@
                 padding: 15px;
                 background-color: white;
                 width: 300px;
-                height: 400px;
+                height: 450px;
                 border-radius: 10px;
                 box-shadow: 0px 0px 9px 3px rgba(125, 125, 125, 0.2);
                 .edit-icon {
@@ -158,6 +158,24 @@
                             -webkit-box-orient: vertical;
                             text-overflow: ellipsis;
                             overflow: hidden;
+                        }
+                    }
+                }
+                .my-offer-list-div {
+                    margin: 0;
+                    padding-top: 10px;
+                    .button-my-offer-list {
+                        width: 270px;
+                        height: 35px;
+                        border: none;
+                        background-color: #1080E4;
+                        color: white;
+                        border-radius: 5px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #1a8ef3;
                         }
                     }
                 }
@@ -321,6 +339,6 @@
     .my-land {
         margin: 0;
         padding-top: 20px;
-        width: 1060px;
+        width: 1125px;
     }
 }

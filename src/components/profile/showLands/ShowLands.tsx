@@ -9,6 +9,7 @@ type Props = {
     allLands: Array<LandModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
+    setIsShowModalOfferList: (value: boolean) => void;
     setselectedLand: (land: LandModel) => void
 }
 
@@ -28,9 +29,16 @@ export default function ShowLands(props: Props) {
         history.push(`/lands/${landTokenId}/details`)
     }
 
-    function onClickListOnMarket(selectedLand: LandModel): void {
+    function onClickListOnMarket(selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>): void {
+        e.stopPropagation()
         props.setselectedLand(selectedLand)
         props.setIsShowModalListOnMarket(true)
+    }
+
+    const onClickShowModalOfferList = (selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        props.setselectedLand(selectedLand)
+        props.setIsShowModalOfferList(true)
     }
 
     function mapOwnedLands(): JSX.Element {
@@ -45,7 +53,7 @@ export default function ShowLands(props: Props) {
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
-                                <div className='land-card' key={item.landTokenId}>
+                                <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
                                         <img className='land-image' src={item.landAssets ? item.landAssets : '/map.jpg'} alt="" />
                                     </div>
@@ -60,10 +68,10 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='status-div'>
-                                            <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                                <p className='button-text-detail'>Land Details</p>
+                                            <div className='view-detail' onClick={(e: React.MouseEvent<HTMLDivElement>) => onClickShowModalOfferList(item, e)}>
+                                                <p className='button-text-detail'>Veiw Offer list</p>
                                             </div>
-                                            <div className='list-to-market' onClick={() => onClickListOnMarket(item)}>
+                                            <div className='list-to-market' onClick={(e: React.MouseEvent<HTMLDivElement>) => onClickListOnMarket(item, e)}>
                                                 <p className='button-text-list'>List to Market</p>
                                             </div>
                                         </div>
