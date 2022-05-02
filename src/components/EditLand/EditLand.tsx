@@ -83,7 +83,8 @@ export default function EditLand() {
       landAssets: linkImage ? linkImage : imagePath ? imagePath : land.landAssets,
       landSize: land.landSize.landSizeId,
       landStatus: land.landStatus.landStatusId,
-      onRecommend: land.onRecommend
+      onRecommend: land.onRecommend,
+      minimumOfferPrice: land.minimumOfferPrice
     }
     let result: LandModel = await landService.updateLand(body)
     onChangeTab(true)
@@ -106,6 +107,15 @@ export default function EditLand() {
       result = true
     }
     return result
+  }
+
+  function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
+    let value: number = Number(e.target.value)
+    if (value < 0.00001) {
+      setLand({...land, ...{minimumOfferPrice: '0.00001'}})
+    } else if (value >= 0.00001) {
+      setLand({...land, ...{minimumOfferPrice: (e.target.value)}})
+    }
   }
 
   return (
@@ -150,7 +160,7 @@ export default function EditLand() {
             </div>
             <div className="input-box">
               <div className="text">Minimum Offer (ETH)</div>
-              <input type="text" className='input'/>
+              <input type="number" className='input' value={land.minimumOfferPrice} onChange={onChangeOfferPrice}/>
             </div>
             <div className="button-section">
               {!isLoading 

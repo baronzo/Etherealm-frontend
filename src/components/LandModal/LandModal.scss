@@ -126,6 +126,16 @@
             background-color: #46b41b;
           }
         }
+        #offerLand {
+          border: none;
+          background-color: #fff;
+          color: #7645D9;
+          font-weight: bold;
+          font-size: 16px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
       }
     }
   }
