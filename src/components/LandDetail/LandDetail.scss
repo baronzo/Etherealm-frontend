@@ -301,6 +301,21 @@
               cursor: pointer;
               background-color: #218ff0f1;
             }
+            .cancel-offer {
+              background-color: #fb3c3c;
+              border-radius: 5px;
+              color: #ffff;
+              font-weight: bold;
+              border: none;
+              height: 30px;
+              width: 100%;
+              font-size: 14px;
+              margin: 0;
+              &:hover {
+                cursor: pointer;
+                background-color: #fb3c3c;
+              }
+            }
           }
           .button-price-land {
             background-color: #7645D9;
