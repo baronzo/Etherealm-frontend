@@ -29,9 +29,9 @@ export default function ModalOffer(props: Props) {
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
     let value: number = Number(e.target.value)
-    if (value < 0.001) {
+    if (value < 0.00001) {
       setOfferPrice('0.00001')
-    } else if (value >= 0.001) {
+    } else if (value >= 0.00001) {
       setOfferPrice(e.target.value)
     }
   }
