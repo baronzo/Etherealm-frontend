@@ -23,7 +23,7 @@ class ContractStore {
   @observable 
   public contract: any = null
   
-  private contractAddress = '0x62f9DF627FfA82Bbdd75601E52e3ef643d5E630E'
+  private contractAddress = '0x59c874F99a95Aeb5cB37abBD26dDaCCa77A94B24'
 
   private transactionService: TransactionService = new TransactionService()
   private landMarketService: LandMarketService = new LandMarketService()
