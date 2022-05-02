@@ -18,6 +18,7 @@ import CancelListedOnMarketRequestModel from '../../models/market/CancelListedOn
 import UpdatePriceListedOnMarketRequestModel from '../../models/market/UpdatePriceListedOnMarketRequestModel'
 import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
 import ModalEditPriceListing from '../ModalEditPriceListing/ModalEditPriceListing'
+import ModalOffer from '../ModalOffer/ModalOffer'
 
 interface IParams {
   landTokenId: string
@@ -33,6 +34,7 @@ export default function LandDetail() {
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const [isShowListOnMarket, setIsShowListOnMarket] = useState<boolean>(false)
   const [isShowEditPrice, setIsShowEditPrice] = useState<boolean>(false)
+  const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(false)
   const contractStore = useMemo(() => new ContractStore, [])
   const landMarketService: LandMarketService = new LandMarketService()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -165,7 +167,7 @@ export default function LandDetail() {
                 {!isOwner && landDetails.landStatus.landStatusId === 2 && 
                   <div className='button-offer' onClick={() => checkOfferButton()}>
                     {!isShowCancelOffer ?
-                      <button className='button-offer'>offer</button>
+                      <button className='button-offer' onClick={() => setIsShowModalOffer(true)}>offer</button>
                     :
                       <button className='cancel-offer'>Cancel Offering</button>
                     }
@@ -192,6 +194,7 @@ export default function LandDetail() {
       </div>
       {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi}/>}
       {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails}/>}
+      {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails}/>}
     </>
   )
 }
