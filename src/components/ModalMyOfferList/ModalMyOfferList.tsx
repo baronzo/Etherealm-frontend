@@ -15,20 +15,20 @@ type Props = {
 
 export default function ModalMyOfferList(props: Props) {
   const [offeringList, setOfferingList] = useState<Array<OffersDataOfLandModel>>([]);
+  const [sortByValue, setSortByValue] = useState<number>(1)
   const offerService = new OfferService();
 
   useEffect(() => {
     getOfferForThisLand();
-  }, []);
+  }, [sortByValue]);
 
   const getOfferForThisLand = async (): Promise<void> => {
     const bodyOfferingRequest: OfferingLandRequestModel = {
       requestUserTokenId: authStore.account.userTokenId,
       page: 1,
-      sortBy: 1,
+      sortBy: sortByValue,
     };
     const offeringLandResponse: OffersLandResponseModel = await offerService.getOfferingLandByUserTokenId(bodyOfferingRequest);
-    console.log(offeringLandResponse.data);
     setOfferingList(offeringLandResponse.data);
   };
 
@@ -46,7 +46,10 @@ export default function ModalMyOfferList(props: Props) {
         </div>
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
-          <select className="select-fillter">
+          <select className="select-fillter" 
+            value={sortByValue} 
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
+          >
             <option value="1">Latest</option>
             <option value="2">Oldest</option>
             <option value="3">Highest price</option>
@@ -54,17 +57,17 @@ export default function ModalMyOfferList(props: Props) {
           </select>
         </div>
         <div className="show-offer-list">
-          {offeringList.map((item: OffersDataOfLandModel) => {
+          {offeringList.map((item: OffersDataOfLandModel, index: number) => {
             return (
-              <div className="offer-item">
+              <div className="offer-item" key={item.offerId}>
                 <div className="order-div">
-                  <p className="order">1</p>
+                  <p className="order">{index+1}</p>
                 </div>
                 <div className="profile-div">
                   <div className="land-and-location">
                     <p className="land-name">{item.landTokenId.landName}</p>
                     <MdLocationOn className="location-icon" />
-                    <p className="land-locatoin">X: 99, Y: 199</p>
+                    <p className="land-locatoin">{item.landTokenId.landLocation}</p>
                   </div>
                   <div className="box">
                     <div className="token-id">
@@ -79,7 +82,7 @@ export default function ModalMyOfferList(props: Props) {
                   <p className="offer-price-label">Offer price:</p>
                   <div className="offer-price">
                     <FaEthereum className="ether-icon" />
-                    <p className="price-text">9999 ETH</p>
+                    <p className="price-text">{item.offerPrice} ETH</p>
                   </div>
                 </div>
                 <div className="button-select-div">

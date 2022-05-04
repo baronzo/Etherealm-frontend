@@ -22,17 +22,18 @@ type Props = {
 
 export default function ModalOfferList(props: Props) {
   const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>([]);
+  const [sortByValue, setSortByValue] = useState<number>(1)
   const offerService = new OfferService();
 
   useEffect(() => {
     getOfferForThisLand();
-  }, []);
+  }, [sortByValue]);
 
   const getOfferForThisLand = async (): Promise<void> => {
     const bodyOffersRequest: OffersLandRequestModel = {
       landTokenId: props.land.landTokenId,
       page: 1,
-      sortBy: 1,
+      sortBy: sortByValue,
     };
     const offersLandResponse: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(bodyOffersRequest);
     console.log(offersLandResponse.data)
@@ -53,7 +54,10 @@ export default function ModalOfferList(props: Props) {
         </div>
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
-          <select className=" select-fillter">
+          <select className=" select-fillter"
+            value={sortByValue} 
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
+          >
             <option value="1">Latest</option>
             <option value="2">Oldest</option>
             <option value="3">High offer price</option>
@@ -61,26 +65,26 @@ export default function ModalOfferList(props: Props) {
           </select>
         </div>
         <div className="show-offer-list">
-          {offerlist.map((item: OffersDataOfLandModel) => {
+          {offerlist.map((item: OffersDataOfLandModel, index: number) => {
             return (
-              <div className="offer-item">
+              <div className="offer-item" key={item.offerId}>
                 <div className="order-div">
-                  <p className="order">1</p>
+                  <p className="order">{index+1}</p>
                 </div>
                 <div className="profile-div">
                   <div className="profile-box">
                     <div className="image-box">
                       <img
                         className="profile-image"
-                        src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg"
+                        src={item.fromUserTokenId.userProfilePic ? item.fromUserTokenId.userProfilePic : '/profile.jpg'}
                         alt=""
                       />
                     </div>
                     <div className="detail-profile">
-                      <div className="name">Anicha</div>
+                      <div className="name">{item.fromUserTokenId.userName ? item.fromUserTokenId.userName: '-'}</div>
                       <div className="box">
                         <div className="token-id">
-                          0xcc896c2cdd10aasderhdfgsdfbdsfsdfdfsdf
+                          {item.fromUserTokenId.userTokenId}
                         </div>
                         <button className="copy">
                           <FaCopy className="copy-icon" />
@@ -93,7 +97,7 @@ export default function ModalOfferList(props: Props) {
                   <p className="offer-price-label">Offer price:</p>
                   <div className="offer-price">
                     <FaEthereum className="ether-icon" />
-                    <p className="price-text">9999 ETH</p>
+                    <p className="price-text">{item.offerPrice} ETH</p>
                   </div>
                 </div>
                 <div className="button-select-div">
