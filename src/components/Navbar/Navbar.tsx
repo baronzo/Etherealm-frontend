@@ -15,13 +15,17 @@ export default observer(function Navbar(props: IProps) {
   const contractStore = useMemo(() => new ContractStore(), []);
   const [isShowModalMenu, setIsShowModalMenu] = useState<boolean>(false);
   const [isShowAddPoint, setIsShowAddPoint] = useState<boolean>(false);
+  const [point, setpoint] = useState<number>(0.00001)
+  const [isAddPointLoading, setisAddPointLoading] = useState<boolean>(false)
 
   const history = useHistory();
 
   async function onLogin(): Promise<void> {
     const accountResponse = await authStore.login();
     if (accountResponse.userTokenId) {
-      // alert error
+      const result = await contractStore.getPoint(accountResponse.userTokenId)
+      authStore.setPoint(result)
+      console.log(result)
     }
   }
 
@@ -41,6 +45,16 @@ export default observer(function Navbar(props: IProps) {
 
   function showProfileMenu() {
     setIsShowModalMenu(!isShowModalMenu);
+  }
+
+  async function onAddPointClick(): Promise<void> {
+    setisAddPointLoading(true)
+    const isSuccess = await contractStore.depositPoints(point)
+    if (isSuccess) {
+      const result = await contractStore.getPoint(authStore.account.userTokenId)
+      authStore.setPoint(result)
+    }
+    setisAddPointLoading(false)
   }
 
   (window as any).ethereum.on("accountsChanged", onAccountChangeHandler);
@@ -86,7 +100,7 @@ export default observer(function Navbar(props: IProps) {
               <div className="point-label">Points</div>
               <div className="points">
                 <FaEthereum className="eth-icon" />
-                <p className="value">{authStore.account.balance}</p>
+                <p className="value">{authStore.account.point}</p>
                 <p className="eth">ETH</p>
               </div>
               <div className="add-point">
@@ -95,8 +109,13 @@ export default observer(function Navbar(props: IProps) {
               {isShowAddPoint && (
                 <div id="addPoint">
                   <p className="label">Points (ETH)</p>
-                  <input type="number" className="input-point"/>
-                  <button className="add-point-button">Add Point</button>
+                  <input type="number" className="input-point" value={point} onChange={event => setpoint(Number(event.target.value))} step={0.00001}/>
+                  {!isAddPointLoading
+                    ?
+                      <button className="add-point-button" onClick={onAddPointClick}>Add Point</button>
+                    :
+                      <button className={`add-point-button ${isAddPointLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
+                  }
                 </div>
               )}
             </div>
