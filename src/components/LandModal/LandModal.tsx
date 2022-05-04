@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
+import { useHistory } from 'react-router-dom'
 import LandModel from '../../models/lands/LandModel'
 import LandService from '../../services/lands/LandService'
 import authStore from '../../store/auth'
@@ -17,6 +18,7 @@ export default function LandModal(props: IProps) {
   const landService: LandService = new LandService
   const [land, setLand] = useState<LandModel>(new LandModel)
   const [isLoading, setisLoading] = useState<boolean>(false)
+  const history = useHistory()
 
   useEffect(() => {
     setLand(props.land)
@@ -50,7 +52,9 @@ export default function LandModal(props: IProps) {
         )
       case 2:
         return (
-          <div className="option">Offer this land</div>
+          <div className="option">
+            <button id="offerLand" onClick={() => goToOffer(land.landTokenId)}>Offer this land</button>
+          </div>
         )
       case 3:
         return (
@@ -74,6 +78,10 @@ export default function LandModal(props: IProps) {
       props.onLandChange(result)
       setisLoading(false)
     }
+  }
+
+  function goToOffer(landTokenId: string) {
+    history.push(`/lands/${landTokenId}/details`)
   }
   
   return (

@@ -14,6 +14,7 @@ class LandModel {
   public landStatus: LandStatusModel = new LandStatusModel
   public landSize: LandSizeModel = new LandSizeModel
   public price: number | null = null
+  public minimumOfferPrice: string = String()
 }
 
 export default LandModel
