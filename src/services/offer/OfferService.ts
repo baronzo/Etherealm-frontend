@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import OfferingLandRequestModel from "../../models/offer/OfferingLandRequestModel";
 import CreateOfferLandRequestModel from "../../models/offer/CreateOfferLandRequestModel";
 import CreateOfferLandResponseModel from "../../models/offer/CreateOfferLandResponseModel";
 import OffersLandRequestModel from "../../models/offer/OffersLandRequestModel";
@@ -11,6 +12,11 @@ export default class OfferService {
     public async getOffersLandByLandTokenId(bodyOffersRequest: OffersLandRequestModel): Promise<OffersLandResponseModel> {
         let offerLandResponse: AxiosResponse<OffersLandResponseModel> = await axios.patch(`${this.host}/offers/page`, bodyOffersRequest)
         return offerLandResponse.data
+    }
+
+    public async getOfferingLandByUserTokenId(bodyOfferingRequest: OfferingLandRequestModel): Promise<OffersLandResponseModel> {
+        let offeringLandResponse: AxiosResponse<OffersLandResponseModel> = await axios.patch(`${this.host}/offers/user/page`, bodyOfferingRequest)
+        return offeringLandResponse.data
     }
 
     public async createOffer(bodyCreateOffer: CreateOfferLandRequestModel): Promise<CreateOfferLandResponseModel> {

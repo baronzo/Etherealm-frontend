@@ -53,128 +53,251 @@
         }
       }
     }
-    #account {
+    #account-and-points-div {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
       margin: 0;
       padding: 0;
-      #profileBalance {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f1eeeefb;
-        border-radius: 5px;
-        height: 35px;
-        width: 140px;
-        margin: 0 15px 0 0;
-        padding: 0;
-
-        &:hover {
-          cursor: pointer;
-        }
-
-        .profile {
-          width: 35px;
-          height: 35px;
-          border-radius: 5px;
-          margin: 0;
-          padding: 0;
-          .profile-img {
-            width: 35px;
-            height: 35px;
-            object-fit: cover;
-            object-position: center;
-            border-radius: 5px;
-            margin: 0;
-          }
-        }
-        .accountBalance {
-          width: 105px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          margin: 0;
-          padding-left: 5px;
-          padding-right: 6px;
-          .eth-icon {
-            font-size: 16px;
-            color: #7645D9;
-            margin: 0;
-          }
-          .value {
-            font-size: 14px;
-            color: #7645D9;
-            font-weight: bold;
-            margin: 0;
-          }
-        }
-      }
-      #profile-menu {
-        width: 140px;
-        height: 80px;
-        top: 52px;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-        border-radius: 5px;
-        position: absolute;
-        background-color: white;
+      #account {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         margin: 0;
         padding: 0;
-        .menu-profile {
+        #accountPoints {
           display: flex;
-          align-items: center;
           justify-content: flex-start;
-          height: 50%;
-          margin: 0;
-          padding: 5px 5px 5px 10px;
-          border-bottom: 1px solid #7645D9;
+          align-items: center;
+          background-color: #f1eeeefb;
+          border-radius: 5px;
+          height: 35px;
+          width: 210px;
+          margin: 0 15px 0 0;
+          padding: 0;
           &:hover {
             cursor: pointer;
-            background-color: #6c43be;
-            border-radius: 5px 5px 0 0;
-            .menu-text {
-              color: #ffffff;
-            }
           }
-
-          .menu-text {
-            font-size: 14px;
+          .point-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 25px;
+            margin: 0;
+            padding-left: 2px;
+            font-size: 16px;
             color: #7645D9;
             font-weight: bold;
+            border-right: 1px solid #8b898f;
+          }
+          .points {
+            width: 115px;
+            height: 35px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
             margin: 0;
+            padding-left: 3px;
+            padding-right: 3px;
+            .eth-icon {
+              font-size: 16px;
+              color: #7645D9;
+              margin: 0;
+            }
+            .value {
+              font-size: 14px;
+              color: #7645D9;
+              font-weight: bold;
+              margin: 0;
+            }
+            .eth {
+              font-size: 14px;
+              color: #7645D9;
+              font-weight: bold;
+              margin: 0 0 0 4px;
+            }
+          }
+          .add-point {
+            width: 30px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            .add-point-icon {
+              font-size: 27px;
+              color: #5ABFBC;
+              font-weight: bold;
+              margin: 0;
+              &:hover {
+                color: #67d6d2;
+              }
+            }
           }
         }
-        .menu-log-out {
+        #addPoint {
+          width: 210px;
+          height: 110px;
+          top: 52px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+          border-radius: 5px;
+          position: absolute;
+          background-color: white;
           display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          height: 50%;
+          flex-direction: column;
           margin: 0;
-          padding: 5px 5px 5px 10px;
-
-          &:hover {
-            cursor: pointer;
-            background-color: #6c43be;
-            border-radius: 0 0 5px 5px;
-            .menu-text {
-              color: #ffffff;
-            }
-          }
-
-          &.active {
-            cursor: pointer;
-            color: white;
-            background-color: #7645D9;
-          }
-
-          .menu-text {
-            font-size: 14px;
+          padding: 10px;
+          .label {
+            font-size: 12px;
             color: #7645D9;
             font-weight: bold;
+            margin: 0 0 5px 0;
+          }
+          .input-point {
+            margin: 0 0 8px 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            color:black ;
+            font-size: 14px;
+            font-weight: regular;
+            width: 100%;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #c3b1e7;
+            outline: none;
+            &:focus {
+                border: 1px solid #c3b1e7;
+                box-sizing: border-box;
+                box-shadow: 0px 0px 4px 1px rgba(174, 134, 255, 0.5);
+            }
+          }
+          .add-point-button {
+            width: 100%;
+            height: 26px;
+            border-radius: 5px;
+            border: none;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            background-color: #7645D9;
             margin: 0;
+            padding: 0;
+            &:hover {
+                cursor: pointer;
+                background-color: #6c43be;
+            }
+          }
+        }
+        #profileBalance {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background-color: #f1eeeefb;
+          border-radius: 5px;
+          height: 35px;
+          width: 140px;
+          margin: 0 15px 0 0;
+          padding: 0;
+          &:hover {
+            cursor: pointer;
+          }
+          .profile {
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            margin: 0;
+            padding: 0;
+            .profile-img {
+              width: 35px;
+              height: 35px;
+              object-fit: cover;
+              object-position: center;
+              border-radius: 5px;
+              margin: 0;
+            }
+          }
+          .accountBalance {
+            width: 105px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0;
+            padding-left: 5px;
+            padding-right: 6px;
+            .eth-icon {
+              font-size: 16px;
+              color: #7645D9;
+              margin: 0;
+            }
+            .value {
+              font-size: 14px;
+              color: #7645D9;
+              font-weight: bold;
+              margin: 0;
+            }
+          }
+        }
+        #profile-menu {
+          width: 140px;
+          height: 80px;
+          top: 52px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+          border-radius: 5px;
+          position: absolute;
+          background-color: white;
+          display: flex;
+          flex-direction: column;
+          margin: 0;
+          padding: 0;
+          .menu-profile {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 50%;
+            margin: 0;
+            padding: 5px 5px 5px 10px;
+            border-bottom: 1px solid #7645D9;
+            &:hover {
+              cursor: pointer;
+              background-color: #6c43be;
+              border-radius: 5px 5px 0 0;
+              .menu-text {
+                color: #ffffff;
+              }
+            }
+            .menu-text {
+              font-size: 14px;
+              color: #7645D9;
+              font-weight: bold;
+              margin: 0;
+            }
+          }
+          .menu-log-out {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 50%;
+            margin: 0;
+            padding: 5px 5px 5px 10px;
+            &:hover {
+              cursor: pointer;
+              background-color: #6c43be;
+              border-radius: 0 0 5px 5px;
+              .menu-text {
+                color: #ffffff;
+              }
+            }
+            &.active {
+              cursor: pointer;
+              color: white;
+              background-color: #7645D9;
+            }
+            .menu-text {
+              font-size: 14px;
+              color: #7645D9;
+              font-weight: bold;
+              margin: 0;
+            }
           }
         }
       }

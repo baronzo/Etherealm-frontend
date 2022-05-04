@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function ModalOfferList(props: Props) {
-  const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>(new Array<OffersDataOfLandModel>());
+  const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>([]);
   const offerService = new OfferService();
 
   useEffect(() => {
@@ -36,7 +36,9 @@ export default function ModalOfferList(props: Props) {
     };
     const offersLandResponse: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(bodyOffersRequest);
     console.log(offersLandResponse.data)
-  };
+    setOfferlist(offersLandResponse.data)
+  }
+
   return (
     <div id="modalOfferList">
       <div id="offerBox">
