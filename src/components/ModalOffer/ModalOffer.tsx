@@ -21,7 +21,7 @@ export default function ModalOffer(props: Props) {
     const body: CreateOfferLandRequestModel = {
       landTokenId: props.landOffer.landTokenId,
       offerPrice: Number(offerPrice),
-      requestUserTokenId: props.landOffer.landOwnerTokenId
+      requestUserTokenId: authStore.account.userTokenId
     }
     const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
     console.log(result)
