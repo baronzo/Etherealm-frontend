@@ -186,6 +186,10 @@
                 cursor: pointer;
                 background-color: #6c43be;
             }
+            &.disable {
+              background-color: #976ee9;
+              cursor: wait;
+            }
           }
         }
         #profileBalance {

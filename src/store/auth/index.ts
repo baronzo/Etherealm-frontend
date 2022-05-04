@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import { createContext } from 'react'
 import UserService from '../../services/user/UserService'
 import UserModel from '../../models/auth/UserModel'
+
 class AuthStore {
 
   @observable 
@@ -22,6 +23,11 @@ class AuthStore {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
       this.account = JSON.parse(window.localStorage.getItem('account')!)
     }
+  }
+
+  @action
+  public async updateAccountOnCookie(): Promise<void> {
+    window.localStorage.setItem('account', JSON.stringify(this.account))
   }
 
   @action
@@ -50,6 +56,12 @@ class AuthStore {
   }
 
   @action
+  public setPoint(value: number): void {
+    this.account.point = value
+    this.updateAccountOnCookie()
+  }
+
+  @action
   public async getAccount(): Promise<AccountModel> {
     let eth = (window as any).ethereum
     let result: AccountModel = new AccountModel
@@ -63,7 +75,8 @@ class AuthStore {
           balance: Number(Number(ethers.utils.formatEther(resBalance)).toFixed(4)),
           userName: userDetails.userName,
           userDescription: userDetails.userDescription,
-          userProfilePic: userDetails.userProfilePic
+          userProfilePic: userDetails.userProfilePic,
+          point: 0
         }
       }
     } else {

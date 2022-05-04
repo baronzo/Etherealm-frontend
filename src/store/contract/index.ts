@@ -83,8 +83,20 @@ class ContractStore {
         console.error(error)
       }
     }
-    
     return false
+  }
+
+  @action
+  public async getPoint(userTokenId: string): Promise<number> {
+    const points = await this.contract.pointOf(userTokenId)
+    return Number(ethers.utils.formatEther(points))
+  }
+
+  @action
+  public async depositPoints(value: number): Promise<boolean> {
+    const tx = await this.contract.depositPoint({value: ethers.utils.parseEther(String(value))})
+    const receipt = await this.waitTransactionConfirm(tx)
+    return receipt[0]
   }
 
   private mapTxtoBuyLandOnMarketRequestModel(tx: ethers.providers.TransactionResponse, landTokenId: string, ownerTokenId: string): BuyLandOnMarketRequestModel {
