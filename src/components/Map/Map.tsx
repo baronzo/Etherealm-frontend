@@ -203,7 +203,7 @@ export default function Map({ }: Props) {
                 const y = (currentTransformedCursor.y + navbarSize) - ((rect.top));
                 const cy = ((y) + (box - ((y) % box))) / box;
                 const cx = ((x) + (box - ((x) % box))) / box;
-                let selectedLocation: CoordinatesModel = {x: cx, y: cy}
+                let selectedLocation = {x: cx, y: cy}
                 let result: Array<LandModel> = lands.filter(item => JSON.stringify(item.landLocation) === JSON.stringify(selectedLocation))
                 if (result.length) {
                     setselectedLand(result[0])
