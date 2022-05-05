@@ -5,6 +5,8 @@ import CreateOfferLandResponseModel from "../../models/offer/CreateOfferLandResp
 import OffersLandRequestModel from "../../models/offer/OffersLandRequestModel";
 import OffersLandResponseModel from "../../models/offer/OffersLandResponseModel";
 import Host from "../Host";
+import CancelOfferLandRequestModel from "../../models/offer/CancelOfferLandRequestModel";
+import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
 
 export default class OfferService {
     private readonly host: string = new Host().host
@@ -22,5 +24,10 @@ export default class OfferService {
     public async createOffer(bodyCreateOffer: CreateOfferLandRequestModel): Promise<CreateOfferLandResponseModel> {
         let createOfferResponse: AxiosResponse<CreateOfferLandResponseModel> = await axios.post(`${this.host}/offers/create`, bodyCreateOffer)
         return createOfferResponse.data
+    }
+
+    public async cancelOffering(bodyCancelOffer: CancelOfferLandRequestModel): Promise<OffersDataOfLandModel> {
+        let cancelOfferResponse: AxiosResponse<OffersDataOfLandModel> = await axios.patch(`${this.host}/offers/cancel`, bodyCancelOffer)
+        return cancelOfferResponse.data
     }
 }
