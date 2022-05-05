@@ -23,6 +23,7 @@ type Props = {
 export default function ModalOfferList(props: Props) {
   const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>([]);
   const [sortByValue, setSortByValue] = useState<number>(1)
+  const [buttonStatus, setButtonStatus] = useState({ select: true, confirm: false, warning: false })
   const offerService = new OfferService();
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function ModalOfferList(props: Props) {
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
           <select className=" select-fillter"
-            value={sortByValue} 
+            value={sortByValue}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
           >
             <option value="1">Latest</option>
@@ -69,7 +70,7 @@ export default function ModalOfferList(props: Props) {
             return (
               <div className="offer-item" key={item.offerId}>
                 <div className="order-div">
-                  <p className="order">{index+1}</p>
+                  <p className="order">{index + 1}</p>
                 </div>
                 <div className="profile-div">
                   <div className="profile-box">
@@ -81,7 +82,7 @@ export default function ModalOfferList(props: Props) {
                       />
                     </div>
                     <div className="detail-profile">
-                      <div className="name">{item.fromUserTokenId.userName ? item.fromUserTokenId.userName: '-'}</div>
+                      <div className="name">{item.fromUserTokenId.userName ? item.fromUserTokenId.userName : '-'}</div>
                       <div className="box">
                         <div className="token-id">
                           {item.fromUserTokenId.userTokenId}
@@ -101,28 +102,36 @@ export default function ModalOfferList(props: Props) {
                   </div>
                 </div>
                 <div className="button-select-div">
-                  <button className="button-select">
-                    <FaHandPointer className="hand-icon" />
-                    Select this Offer
-                  </button>
-                  {/* <div className="warning-div">
-                <MdOutlineWarningAmber className="icon-warning"/>
-                <p className="warning-text">This user not enough point</p>
-              </div> */}
-                  {/* <button className="button-select-confirm">
-                <FaCheck className="icon"/>
-                Confirm this offer
-              </button>
-              <button className="button-select-cancel">
-                <FaTimes className="icon"/>
-                Cancel this Offer
-              </button> */}
+                  {buttonStatus.select &&
+                    <>
+                      <button className="button-select" onClick={() => {setButtonStatus({...buttonStatus, select: false, confirm: true, warning: false})}}
+                      ><FaHandPointer className="hand-icon" />Select this Offer</button>
+                    </>
+                  }
+                  {buttonStatus.confirm &&
+                    <>
+                      <button className="button-select-confirm">
+                        <FaCheck className="icon" />
+                        Confirm this offer
+                      </button>
+                      <button className="button-select-cancel" onClick={() => {setButtonStatus({...buttonStatus, select: true, confirm: false, warning: false})}}>
+                        <FaTimes className="icon" />
+                        Cancel this Offer
+                      </button>
+                    </>
+                  }
+                  {buttonStatus.warning &&
+                    <div className="warning-div">
+                      <MdOutlineWarningAmber className="icon-warning" />
+                      <p className="warning-text">This user not enough point</p>
+                    </div>
+                  }
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

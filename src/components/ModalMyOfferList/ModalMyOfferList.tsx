@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaCheck, FaCopy, FaEthereum, FaTimes } from "react-icons/fa";
 import { MdClose, MdLocationOn } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
+import CancelOfferLandRequestModel from "../../models/offer/CancelOfferLandRequestModel";
 import OfferingLandRequestModel from "../../models/offer/OfferingLandRequestModel";
 import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
 import OffersLandResponseModel from "../../models/offer/OffersLandResponseModel";
@@ -16,6 +17,7 @@ type Props = {
 export default function ModalMyOfferList(props: Props) {
   const [offeringList, setOfferingList] = useState<Array<OffersDataOfLandModel>>([]);
   const [sortByValue, setSortByValue] = useState<number>(1)
+  const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const offerService = new OfferService();
 
   useEffect(() => {
@@ -32,6 +34,21 @@ export default function ModalMyOfferList(props: Props) {
     setOfferingList(offeringLandResponse.data);
   };
 
+  const cancelOffering = async (landTokenId: string): Promise<void> => {
+    setisCancelLoading(true)
+    const bodyOfferingRequest: CancelOfferLandRequestModel = {
+      landTokenId: landTokenId,
+      requestUserTokenId: authStore.account.userTokenId
+    };
+    const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
+    if (cancelOfferResponse) {
+      setTimeout(() => {
+        getOfferForThisLand()
+        setisCancelLoading(false)
+      }, 2000);
+    }
+  }
+
   return (
     <div id="modalMyOfferList">
       <div id="offerBox">
@@ -46,8 +63,8 @@ export default function ModalMyOfferList(props: Props) {
         </div>
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
-          <select className="select-fillter" 
-            value={sortByValue} 
+          <select className="select-fillter"
+            value={sortByValue}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
           >
             <option value="1">Latest</option>
@@ -61,7 +78,7 @@ export default function ModalMyOfferList(props: Props) {
             return (
               <div className="offer-item" key={item.offerId}>
                 <div className="order-div">
-                  <p className="order">{index+1}</p>
+                  <p className="order">{index + 1}</p>
                 </div>
                 <div className="profile-div">
                   <div className="land-and-location">
@@ -86,10 +103,13 @@ export default function ModalMyOfferList(props: Props) {
                   </div>
                 </div>
                 <div className="button-select-div">
-                  <button className="button-select-cancel">
-                    <FaTimes className="icon" />
-                    Cancel this Offering
-                  </button>
+                  {!isCancelLoading ?
+                    <button className="button-select-cancel" onClick={() => cancelOffering(item.landTokenId.landTokenId)}>
+                      <FaTimes className="icon" />Cancel this Offering
+                    </button>
+                    :
+                    <button className={`button-select-cancel ${isCancelLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
+                  }
                 </div>
               </div>
             );
