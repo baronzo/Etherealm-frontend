@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import { createContext } from 'react'
 import UserService from '../../services/user/UserService'
 import UserModel from '../../models/auth/UserModel'
+import axios from 'axios'
 
 class AuthStore {
 
@@ -88,11 +89,14 @@ class AuthStore {
   @action
   public async updateAccountData(): Promise<void> {
     await this.login()
+    this.setAxiosHeader()
   }
 
   @action
   public async accountChange(): Promise<void> {
     this.account = await this.getAccount()
+    window.localStorage.setItem('account', JSON.stringify(this.account))
+    this.setAxiosHeader()
   }
 
   @action
@@ -101,6 +105,11 @@ class AuthStore {
     Cookies.set('is_login', 'true', {expires: 1})
     window.localStorage.setItem('account', JSON.stringify(this.account))
     return this.account
+  }
+
+  private setAxiosHeader(): void {
+    const userAccount: AccountModel = JSON.parse(window.localStorage.getItem('account')!)
+    axios.defaults.headers.common['Authorization'] = userAccount.userTokenId;
   }
 
   @action

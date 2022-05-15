@@ -94,6 +94,11 @@ export default observer(function Profile({ }: Props) {
         await getUserDetail()
     }
 
+    async function handleWhenConfirmOffer(): Promise<void> {
+        await getLandByOwnerTokenId()
+        await getTransactionAPI()
+    }
+
     const ownerProfile = () => {
         return (
             <div id='profileMain'>
@@ -139,7 +144,7 @@ export default observer(function Profile({ }: Props) {
                                     {notifications.map((item: NotificationsResponseModel, index: number) => {
                                         return (
                                             <div className='log-item' key={index}>
-                                                <div className='status-div'><p className='status-text'>{item.activity}</p></div>
+                                                <div className={`status-div ${item.activity}`}><p className='status-text'>{item.activity}</p></div>
                                                 <p className='log-notifications-text'>[{item.dateTime}]</p>
                                                 <p className='log-address-text' onClick={() => goToOtherProfile(item.fromUserTokenId)}>{item.fromUserTokenId.slice(0, 25)}...</p>
                                                 <p className='log-notifications-text'>{item.activity} {item.price} ETH for {item.landName}</p>
@@ -158,8 +163,8 @@ export default observer(function Profile({ }: Props) {
                                     {transactions.map((item: TransactionsResponseModel) => {
                                         return (
                                             <div className='log-item' key={item.logTransactionsId}>
-                                                <div className='status-div'><p className='status-text'>{item.logType.logTypeName}</p></div>
-                                                <p className='log-notifications-text'>[{item.dateTime}]</p>
+                                                <div className={`status-div ${item.logType.logTypeName}`}><p className='status-text'>{item.logType.logTypeName}</p></div>
+                                                <p className='log-notifications-text'>[{item.createdAt}]</p>
                                                 <p className='log-address-text' onClick={() => goToEtherScan(item.transactionBlock)}>{item.transactionBlock}</p>
                                             </div>
                                         )
@@ -181,7 +186,7 @@ export default observer(function Profile({ }: Props) {
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting}/>}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
-                {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand}/>}
+                {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer}/>}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
             </div>
         )
