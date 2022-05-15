@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCheck, FaCopy, FaEthereum, FaTimes } from "react-icons/fa";
 import { MdClose, MdLocationOn } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 import LandModel from "../../models/lands/LandModel";
 import CancelOfferLandRequestModel from "../../models/offer/CancelOfferLandRequestModel";
 import OfferingLandRequestModel from "../../models/offer/OfferingLandRequestModel";
@@ -19,6 +20,7 @@ export default function ModalMyOfferList(props: Props) {
   const [sortByValue, setSortByValue] = useState<number>(1)
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const offerService = new OfferService();
+  const history = useHistory();
 
   useEffect(() => {
     getOfferForThisLand();
@@ -67,6 +69,12 @@ export default function ModalMyOfferList(props: Props) {
     }
   }
 
+  function goToDetailsPage(landTokenId: string) {
+    let url: string = `/lands/${landTokenId}/details`
+    history.push(url);
+    window.open(url, '_blank')
+  }
+
   return (
     <div id="modalMyOfferList">
       <div id="offerBox">
@@ -98,9 +106,9 @@ export default function ModalMyOfferList(props: Props) {
                 <div className="order-div">
                   <p className="order">{index + 1}</p>
                 </div>
-                <div className="profile-div">
+                <div className="profile-div" >
                   <div className="land-and-location">
-                    <p className="land-name">{item.landTokenId.landName}</p>
+                    <p className="land-name" onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>{item.landTokenId.landName}</p>
                     <MdLocationOn className="location-icon" />
                     <p className="land-locatoin">{item.landTokenId.landLocation}</p>
                   </div>

@@ -60,7 +60,7 @@ export default function ModalOfferList(props: Props) {
     return false
   }
 
-  function setLoading(targetIndex: number, isLoading: boolean): void {
+  function setLoading(targetIndex: number, isLoading: boolean, isValid: boolean = true): void {
     let newData: Array<OffersDataOfLandModel> = [...offerlist]
     newData.forEach((item: OffersDataOfLandModel, index: number) => {
       changButtonStatus(index, 2)
@@ -72,7 +72,9 @@ export default function ModalOfferList(props: Props) {
       }
     })
     newData[targetIndex].isLoading = isLoading
-    changButtonStatus(targetIndex, 2)
+    if (!isValid) {
+      changButtonStatus(targetIndex, 3)
+    }
     setOfferlist(newData)
   }
 
@@ -88,7 +90,7 @@ export default function ModalOfferList(props: Props) {
     } else {
       changButtonStatus(index, 3)
     }
-    setLoading(index, false)
+    setLoading(index, false, valid)
   }
 
   function changButtonStatus(index: number, type: number): void {
@@ -106,6 +108,7 @@ export default function ModalOfferList(props: Props) {
       default:
         break;
     }
+    console.log(type)
     setButtonStatus(newData)
   }
 
