@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { MdOutlineWarningAmber } from "react-icons/md";
 import { MdClose } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 import LandModel from "../../models/lands/LandModel";
 import ButtonStatusModel from "../../models/offer/ButtonStatusModel";
 import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
@@ -29,6 +30,7 @@ export default function ModalOfferList(props: Props) {
   const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>([]);
   const [sortByValue, setSortByValue] = useState<number>(1)
   const [buttonStatus, setButtonStatus] = useState<Array<ButtonStatusModel>>(new Array<ButtonStatusModel>())
+  const history = useHistory();
 
   useEffect(() => {
     getOfferForThisLand();
@@ -112,6 +114,17 @@ export default function ModalOfferList(props: Props) {
     setButtonStatus(newData)
   }
 
+  const goToProfile = (userToketId: string) => {
+    let url: string = `/profile/${userToketId}`
+    history.push(url)
+    window.open(url, '_blank')
+  }
+
+  const copyAddess = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userTokenId: string): void => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(userTokenId)
+  }
+
   return (
     <div id="modalOfferList">
       <div id="offerBox">
@@ -152,13 +165,13 @@ export default function ModalOfferList(props: Props) {
                         alt=""
                       />
                     </div>
-                    <div className="detail-profile">
-                      <div className="name">{item.fromUserTokenId.userName ? item.fromUserTokenId.userName : '-'}</div>
+                    <div className="detail-profile" onClick={() => goToProfile(item.fromUserTokenId.userTokenId)}>
+                      <div className="name" onClick={() => goToProfile(item.fromUserTokenId.userTokenId)}>{item.fromUserTokenId.userName ? item.fromUserTokenId.userName : '-'}</div>
                       <div className="box">
                         <div className="token-id">
                           {item.fromUserTokenId.userTokenId}
                         </div>
-                        <button className="copy">
+                        <button className="copy" onClick={(e) => copyAddess(e, item.fromUserTokenId.userTokenId)}>
                           <FaCopy className="copy-icon" />
                         </button>
                       </div>

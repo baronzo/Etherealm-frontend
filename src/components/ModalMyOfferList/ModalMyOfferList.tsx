@@ -75,6 +75,11 @@ export default function ModalMyOfferList(props: Props) {
     window.open(url, '_blank')
   }
 
+  const copyAddess = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, landToken: string): void => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(landToken)
+  }
+
   return (
     <div id="modalMyOfferList">
       <div id="offerBox">
@@ -116,7 +121,7 @@ export default function ModalMyOfferList(props: Props) {
                     <div className="token-id">
                       {item.landTokenId.landTokenId}
                     </div>
-                    <button className="copy">
+                    <button className="copy" onClick={(e) => copyAddess(e, item.landTokenId.landTokenId)}>
                       <FaCopy className="copy-icon" />
                     </button>
                   </div>

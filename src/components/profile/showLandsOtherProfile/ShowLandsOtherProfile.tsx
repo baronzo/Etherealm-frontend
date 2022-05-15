@@ -95,6 +95,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
         if (cancelOfferResponse) {
             setTimeout(() => {
+                props.fetchDetail()
                 setCancelLoading(index, false)
                 setIsOfferInLandList(index)
             }, 2000);
@@ -120,7 +121,6 @@ export default function ShowLandsOtherProfile(props: Props) {
         newData[index].isLoading = isLoading
         setlandList(newData)
     }
-
 
     function mapOwnedLands(): JSX.Element {
         const data: Array<LandModel> = landList.filter((item) => item.landStatus.landStatusId === 2);
