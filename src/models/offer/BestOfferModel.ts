@@ -1,7 +1,7 @@
 import UserModel from "../auth/UserModel";
 // import LandModel from "../lands/LandModel";
 
-export default class GetOfferLandResponseModel {
+export default class BestOfferModel {
     public offerId: number = Number();
     public offerPrice: number = Number();
     public isEnoughPoint: boolean = Boolean();

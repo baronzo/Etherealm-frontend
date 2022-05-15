@@ -113,7 +113,7 @@ export default function ModalOffer(props: Props) {
           {console.log(props.landOffer)}
           <div className="bill-text">
             <p className='text-format'>You will receive</p>
-            <p className='text-format'>{(Number(offerPrice) - props.landOffer?.bestOffer?.fees).toFixed(6)}  ETH</p>
+            <p className='text-format'>{(Number(offerPrice)).toFixed(6)}  ETH</p>
           </div>
         </div>
         <div id="buttonBox">

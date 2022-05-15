@@ -1,7 +1,7 @@
 import CoordinatesModel from "./CoordinatesModel"
 import LandSizeModel from "./LandSizeModel"
 import LandStatusModel from "./LandStatusModel"
-import GetOfferLandResponseModel from "../offer/GetOfferLandResponseModel"
+import BestOfferModel from "../offer/BestOfferModel"
 
 class LandModel {
   public landTokenId: string = String()
@@ -16,7 +16,7 @@ class LandModel {
   public landSize: LandSizeModel = new LandSizeModel
   public price: number | null = null
   public minimumOfferPrice: string = String()
-  public bestOffer: GetOfferLandResponseModel = new GetOfferLandResponseModel()
+  public bestOffer: BestOfferModel | null = null
 }
 
 export default LandModel
