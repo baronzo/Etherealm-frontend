@@ -196,6 +196,27 @@
                             font-weight: 500;
                         }
                     }
+                    .cancel-offer {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 4px 0 0 0;
+                        padding: 0;
+                        height: 25px;
+                        width: 180px;
+                        background-color: #FB3C3C;
+                        border-radius: 5px;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #f74c4c;
+                        }
+                        .button-text {
+                            margin: 0;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                    }
                 }
                 .offer-div {
                     display: flex;

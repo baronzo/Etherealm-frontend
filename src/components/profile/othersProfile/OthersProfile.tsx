@@ -80,7 +80,7 @@ export default function OthersProfile({ }: Props) {
                     setIsShowModalOffer={setIsShowModalOffer}
                 />
             </div>
-            {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand}/>}
+            {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand} fetchOffer={getDataFromAPI}/>}
         </div>
     )
 }
