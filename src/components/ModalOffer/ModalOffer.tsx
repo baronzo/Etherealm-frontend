@@ -13,6 +13,7 @@ import OffersLandResponseModel from '../../models/offer/OffersLandResponseModel'
 type Props = {
   setIsShowModalOffer: (value: boolean) => void
   landOffer: LandModel
+  fetchOffer: () => void
 }
 
 export default function ModalOffer(props: Props) {
@@ -36,6 +37,7 @@ export default function ModalOffer(props: Props) {
     console.log(result)
     setIsLoading(false)
     props.setIsShowModalOffer(false)
+    props.fetchOffer()
   }
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
@@ -81,7 +83,7 @@ export default function ModalOffer(props: Props) {
               </div>
               <div className="tag-best-offer">
                 <i className="fab fa-ethereum ether"></i>
-                <p className='best-price'>Best offer: {props.landOffer.bestOffer?.offerPrice ? props.landOffer.bestOffer?.offerPrice : 0.00 } eth</p>
+                <p className='best-price'>Best offer: {props.landOffer.bestOffer?.offerPrice ? props.landOffer.bestOffer?.offerPrice : 0 } eth</p>
               </div>
             </div>
           </div>
@@ -112,7 +114,7 @@ export default function ModalOffer(props: Props) {
             {!isLoading 
             ?
             <button className='button' onClick={createOfferLand}>offer</button>
-            : <button className={`button ${isLoading ? 'disable' : ''}`} onClick={createOfferLand}>offer <i className="fas fa-spinner fa-spin"></i></button>
+            : <button className={`button ${isLoading ? 'disable' : ''}`} onClick={createOfferLand}><i className="fas fa-spinner fa-spin"></i></button>
             }
           </div>
         </div>
