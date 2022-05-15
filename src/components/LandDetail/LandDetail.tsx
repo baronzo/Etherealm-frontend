@@ -47,6 +47,7 @@ export default function LandDetail() {
   const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
+  const [isRenting, setIsRenting] = useState<boolean>(true) //ทดสอบว่าเป็นผู้เช่า
 
   useEffect(() => {
     getDataFromApi()
@@ -152,6 +153,7 @@ export default function LandDetail() {
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
               {isOwner && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
+              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
@@ -232,6 +234,23 @@ export default function LandDetail() {
                   </div>
                 }
                 {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer' onClick={() => setIsShowModalOffreList(true)}>View offer list</button>}
+                {isOwner && landDetails.landStatus.landStatusId === 4 && 
+                  <div className='cancel-rent'>
+                    <p className='text-price'>Listed on market for {landDetails.price} eth/month</p>
+                    <button className="button-cancel-land">Cancel Listing</button>
+                  </div>
+                }
+                {!isOwner && landDetails.landStatus.landStatusId === 4 && 
+                  <div className='cancel-rent'>
+                    <p className='text-price'>Payable {landDetails.price} eth/month</p>
+                  </div>
+                }
+                {isOwner && isRenting && 
+                  <div className='payable'>
+                    <p className='text-price'>Payable {landDetails.price} eth/month (Next payment 19/05/2022)</p>
+                    <button className="button-payable">Pay {landDetails.price} ETH</button>
+                  </div>
+                }
               </div>
             </div>
           </div>
