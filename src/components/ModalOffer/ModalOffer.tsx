@@ -67,7 +67,7 @@ export default function ModalOffer(props: Props) {
         {props.landOffer.bestOffer &&
         <div id="bestOfferBox">
           <div className="best-offer">
-            <div className="profile">
+            <div className="profile-box">
               <img className="image-profile" src={`${props.landOffer.bestOffer?.fromUserTokenId.userProfilePic ? props.landOffer.bestOffer?.fromUserTokenId.userProfilePic : '/profile.jpg' }`} alt="" />
             </div>
             <div className="detail-best-offer">
