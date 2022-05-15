@@ -10,6 +10,9 @@ import UserModel from '../../../models/auth/UserModel'
 import UserService from '../../../services/user/UserService'
 import ShowLandsOtherProfile from '../showLandsOtherProfile/ShowLandsOtherProfile'
 import ModalOffer from '../../ModalOffer/ModalOffer'
+import CancelOfferLandRequestModel from '../../../models/offer/CancelOfferLandRequestModel'
+import OffersDataOfLandModel from '../../../models/offer/OffersDataOfLandModel'
+import OfferService from '../../../services/offer/OfferService'
 
 interface IParams {
     userTokenId: string
@@ -26,6 +29,7 @@ export default function OthersProfile({ }: Props) {
     const landService: LandService = new LandService()
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
+    const offerService: OfferService = new OfferService()
 
     useEffect(() => {
         getDataFromAPI()
@@ -33,6 +37,10 @@ export default function OthersProfile({ }: Props) {
     
     async function getLandByOwnerTokenId(): Promise<void> {
         const result: Array<LandModel> = await landService.getLandByOwnerTokenId(params.userTokenId)
+        for await (let item of result) {
+            const isOffer: boolean = await getCheckIsHaveMyOfferAPI(item.landTokenId, authStore.account.userTokenId)
+            item.isOffer = isOffer
+        }
         setownedLand(result)
     }
 
@@ -44,6 +52,18 @@ export default function OthersProfile({ }: Props) {
     async function getDataFromAPI(): Promise<void> {
         await  getLandByOwnerTokenId()
         await getUserDetails()
+    }
+
+    async function getCheckIsHaveMyOfferAPI(landTokenId: string, ownerTokenId: string): Promise<boolean> {
+        let bodyRequest: CancelOfferLandRequestModel = {
+            landTokenId: landTokenId,
+            requestUserTokenId: ownerTokenId,
+        };
+        const offerLandResponse: OffersDataOfLandModel = await offerService.getCheckIsHaveMyOffer(bodyRequest);
+        if (!offerLandResponse) {
+            return false
+        }
+        return true
     }
 
     return (

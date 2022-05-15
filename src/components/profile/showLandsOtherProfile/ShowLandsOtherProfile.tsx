@@ -38,7 +38,11 @@ export default function ShowLandsOtherProfile(props: Props) {
     const landMarketService: LandMarketService = new LandMarketService();
     const [isCancelLoading, setisCancelLoading] = useState<boolean>(false);
     const offerService: OfferService = new OfferService();
-    const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false);
+    const [landList, setlandList] = useState<Array<LandModel>>(new Array<LandModel>())
+
+    useEffect(() => {
+        setlandList(props.allLands)
+    }, [props.allLands])
 
     function goToDetailsPage(landTokenId: string) {
         history.push(`/lands/${landTokenId}/details`);
@@ -68,42 +72,58 @@ export default function ShowLandsOtherProfile(props: Props) {
         props.setIsShowModalOffer(true);
     };
 
-    async function getCheckIsHaveMyOfferAPI(
-        landTokenId: string,
-        ownerTokenId: string
-    ): Promise<void> {
+    async function getCheckIsHaveMyOfferAPI(landTokenId: string, ownerTokenId: string): Promise<boolean> {
         let bodyRequest: CancelOfferLandRequestModel = {
             landTokenId: landTokenId,
             requestUserTokenId: ownerTokenId,
         };
         const offerLandResponse: OffersDataOfLandModel =
-            await offerService.getCheckIsHaveMyOffer(bodyRequest);
+        await offerService.getCheckIsHaveMyOffer(bodyRequest);
         console.log(offerLandResponse);
         if (offerLandResponse) {
-            setIsShowCancelOffer(true);
+            return false
         }
+        return true
     }
 
-    const cancelOffering = async (landTokenId: string): Promise<void> => {
-        setisCancelLoading(true);
+    const cancelOffering = async (landTokenId: string, index: number): Promise<void> => {
+        setCancelLoading(index, true)
         const bodyOfferingRequest: CancelOfferLandRequestModel = {
             landTokenId: landTokenId,
             requestUserTokenId: authStore.account.userTokenId,
         };
-        const cancelOfferResponse: OffersDataOfLandModel =
-            await offerService.cancelOffering(bodyOfferingRequest);
+        const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
         if (cancelOfferResponse) {
             setTimeout(() => {
-                setIsShowCancelOffer(false);
-                setisCancelLoading(false);
+                setCancelLoading(index, false)
+                setIsOfferInLandList(index)
             }, 2000);
         }
     };
 
+    function setIsOfferInLandList(index: number): void {
+        let newData = [...landList]
+        newData[index].isOffer = false
+        setlandList(newData)
+    }
+
+    function setCancelLoading(index: number, isLoading: boolean): void {
+        let newData = [...landList]
+        newData.forEach(item => {
+            if (isLoading) {
+                item.isLoading = false
+                item.isDisable = true
+            } else {
+                item.isDisable = false
+            }
+        })
+        newData[index].isLoading = isLoading
+        setlandList(newData)
+    }
+
+
     function mapOwnedLands(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(
-            (item) => item.landStatus.landStatusId === 2
-        );
+        const data: Array<LandModel> = landList.filter((item) => item.landStatus.landStatusId === 2);
         return (
             <>
                 <div id="ShowLandsOtherMain">
@@ -111,7 +131,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                         <p className="topic-my-land-text">Owned Lands</p>
                     </div>
                     <div className="show-my-land">
-                        {data.map((item: LandModel) => {
+                        {data.map((item: LandModel, index: number) => {
                             return (
                                 <div className="land-card" key={item.landTokenId}>
                                     <div className="land-image-div">
@@ -140,7 +160,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                                             >
                                                 <p className="button-text-detail">Land Details</p>
                                             </div>
-                                            {!isShowCancelOffer ? (
+                                            {!item.isOffer ? (
                                                 <div
                                                     className="list-to-market"
                                                     onClick={() => onClickOfferLand(item)}
@@ -149,10 +169,10 @@ export default function ShowLandsOtherProfile(props: Props) {
                                                 </div>
                                             ) : (
                                                 <div
-                                                    className="cancel-offer"
-                                                    onClick={() => onClickOfferLand(item)}
+                                                    className={`cancel-offer ${item.isDisable ? 'disable' : ''}`}
+                                                    onClick={() => item.isDisable ? undefined : cancelOffering(item.landTokenId, index)}
                                                 >
-                                                    <p className="button-text">Cancel offering</p>
+                                                    <p className="button-text">{!item.isLoading ? 'Cancel Offering' : <i className="fas fa-spinner fa-spin"></i>}</p>
                                                 </div>
                                             )}
                                         </div>

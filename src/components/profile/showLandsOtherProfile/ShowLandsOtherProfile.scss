@@ -210,6 +210,10 @@
                             cursor: pointer;
                             background-color: #f74c4c;
                         }
+                        &.disable {
+                            background-color: #ff7a7a;
+                            cursor: no-drop;
+                        }
                         .button-text {
                             margin: 0;
                             color: white;
