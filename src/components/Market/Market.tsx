@@ -9,12 +9,14 @@ import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
 import { useHistory } from 'react-router-dom'
 import ContractStore from '../../store/contract'
+import ModalRenting from '../ModalRenting/ModalRenting'
 
 export default function Market() {
   const contractStore = useMemo(() => new ContractStore, [])
   const [isTab, setIsTab] = useState<boolean>(true)
   const landMarketService: LandMarketService = new LandMarketService()
   const [landsMarket, setLandsMarket] = useState<Array<LandMarketModel>>([])
+  const [isShowModalRenting, setIsShowModalRenting] = useState<boolean>(true)
   const history = useHistory()
 
   useEffect(() => {
@@ -125,6 +127,7 @@ export default function Market() {
       <div className='pagination-container'>
         <div className='pagination'></div>
       </div>
+      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>}
     </div>
   )
 }
