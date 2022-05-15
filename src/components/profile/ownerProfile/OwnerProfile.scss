@@ -235,6 +235,9 @@
                                 width: 60px;
                                 height: 25px;
                                 border-radius: 5px;
+                                &.Offer {
+                                    background-color: #1A8EF3;
+                                }
                                 .status-text {
                                     margin: 0;
                                     font-size: 14px;
@@ -308,6 +311,9 @@
                             width: 60px;
                             height: 25px;
                             border-radius: 5px;
+                            &.Offer {
+                                background-color: #1A8EF3;
+                            }
                             .status-text {
                                 margin: 0;
                                 font-size: 14px;

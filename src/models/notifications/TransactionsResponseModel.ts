@@ -7,5 +7,5 @@ export default class TransactionsResponseModel {
     public transactionBlock: string = String();
     public gasPrice: number = Number();
     public logType: LogTypeModel = new LogTypeModel();
-    public dateTime: string = String();
+    public createdAt: string = String();
 }
