@@ -76,7 +76,7 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>Best Offer : 0.15 ETH</p>
+                                            <p className='offer-text'>{item.bestOffer ? `Best Offer is ${item.bestOffer.offerPrice} ETH` : "Not people offer"}</p>
                                         </div>
                                     </div>
                                 </div>

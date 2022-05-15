@@ -22,6 +22,7 @@ import ModalOffer from '../ModalOffer/ModalOffer'
 import OfferService from '../../services/offer/OfferService'
 import CancelOfferLandRequestModel from '../../models/offer/CancelOfferLandRequestModel'
 import OffersDataOfLandModel from '../../models/offer/OffersDataOfLandModel'
+import ModalOfferList from '../ModalOfferList/ModalOfferList'
 
 interface IParams {
   landTokenId: string
@@ -39,6 +40,7 @@ export default function LandDetail() {
   const [isShowListOnMarket, setIsShowListOnMarket] = useState<boolean>(false)
   const [isShowEditPrice, setIsShowEditPrice] = useState<boolean>(false)
   const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(false)
+  const [isShowModalOffreList, setIsShowModalOffreList] = useState<boolean>(false)
   const contractStore = useMemo(() => new ContractStore, [])
   const landMarketService: LandMarketService = new LandMarketService()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -229,7 +231,7 @@ export default function LandDetail() {
                     <button className="button-edit-price-land" onClick={() => setIsShowEditPrice(true)} >Edit Price</button>
                   </div>
                 }
-                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer'>View offer list</button>}
+                {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer' onClick={() => setIsShowModalOffreList(true)}>View offer list</button>}
               </div>
             </div>
           </div>
