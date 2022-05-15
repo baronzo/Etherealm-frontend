@@ -7,9 +7,15 @@ import OffersLandResponseModel from "../../models/offer/OffersLandResponseModel"
 import Host from "../Host";
 import CancelOfferLandRequestModel from "../../models/offer/CancelOfferLandRequestModel";
 import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
+import authStore from "../../store/auth";
+import ConfirmOfferLandRequestModel from "../../models/offer/ConfirmOfferLandRequestModel";
 
 export default class OfferService {
     private readonly host: string = new Host().host
+
+    constructor() {
+        axios.defaults.headers.common['Authorization'] = authStore.account.userTokenId;
+    }
 
     public async getOffersLandByLandTokenId(bodyOffersRequest: OffersLandRequestModel): Promise<OffersLandResponseModel> {
         let offerLandResponse: AxiosResponse<OffersLandResponseModel> = await axios.patch(`${this.host}/offers/page`, bodyOffersRequest)
@@ -34,5 +40,10 @@ export default class OfferService {
     public async cancelOffering(bodyCancelOffer: CancelOfferLandRequestModel): Promise<OffersDataOfLandModel> {
         let cancelOfferResponse: AxiosResponse<OffersDataOfLandModel> = await axios.patch(`${this.host}/offers/cancel`, bodyCancelOffer)
         return cancelOfferResponse.data
+    }
+
+    public async confirmOfferland(request: ConfirmOfferLandRequestModel): Promise<string> {
+        const response: AxiosResponse<string> = await axios.post(`${this.host}/offers/confirm`, request)
+        return response.data
     }
 }
