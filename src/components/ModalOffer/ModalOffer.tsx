@@ -23,8 +23,7 @@ export default function ModalOffer(props: Props) {
   const offerService: OfferService = new OfferService
 
   useEffect(() => {
-    
-}, [])
+  }, [])
 
   async function createOfferLand(): Promise<void> {
     setIsLoading(true)
@@ -59,7 +58,7 @@ export default function ModalOffer(props: Props) {
           <MdClose className="close-icon" onClick={() => props.setIsShowModalOffer(false)}/>
         </div>
         <div id="imageLandBox">
-          <img className="image-land" src={props.landOffer.landAssets} alt="" />
+          <img className="image-land" src={props.landOffer.landAssets ? props.landOffer.landAssets : "/map.jpg"} alt="" />
         </div>
         <div id="landNameBox">
           <p className='land-name'>{props.landOffer.landName}</p>
@@ -83,7 +82,7 @@ export default function ModalOffer(props: Props) {
               </div>
               <div className="tag-best-offer">
                 <i className="fab fa-ethereum ether"></i>
-                <p className='best-price'>Best offer: {props.landOffer.bestOffer?.offerPrice ? props.landOffer.bestOffer?.offerPrice : 0 } eth</p>
+                <p className='best-price'>Best offer : {props.landOffer.bestOffer?.offerPrice ? props.landOffer.bestOffer?.offerPrice : 0 } ETH</p>
               </div>
             </div>
           </div>
