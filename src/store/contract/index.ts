@@ -11,6 +11,8 @@ import BuyLandOnMarketRequestModel from '../../models/market/BuyLandOnMarketRequ
 import authStore from '../auth'
 import LandMarketModel from '../../models/market/LandMarketModel'
 import LandMarketService from '../../services/market/LandMarketService'
+import ConfirmOfferLandRequestModel from '../../models/offer/ConfirmOfferLandRequestModel'
+import OfferService from '../../services/offer/OfferService'
 
 class ContractStore {
   
@@ -28,6 +30,7 @@ class ContractStore {
   private transactionService: TransactionService = new TransactionService()
   private landMarketService: LandMarketService = new LandMarketService()
   private landService: LandService = new LandService()
+  private offerService: OfferService = new OfferService()
 
   constructor() {
     makeAutoObservable(this)
@@ -87,6 +90,22 @@ class ContractStore {
   }
 
   @action
+  public async confirmOffer(landTokenId: string, ownerOfferUserTokenId: string, price: number) {
+    if (this.contract) {
+      try {
+        let tx = await this.contract.confirmOffer(landTokenId, ownerOfferUserTokenId, { value: ethers.utils.parseEther(String(price)) })
+        const body: ConfirmOfferLandRequestModel = this.mapTxToConfirmOfferLandRequestModel(tx, landTokenId, ownerOfferUserTokenId)
+        await this.offerService.confirmOfferland(body)
+        await this.updateUserPoints()
+        return true
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    return false
+  }
+
+  @action
   public async getPoint(userTokenId: string): Promise<number> {
     const points = await this.contract.pointOf(userTokenId)
     return Number(ethers.utils.formatEther(points))
@@ -97,6 +116,20 @@ class ContractStore {
     const tx = await this.contract.depositPoint({value: ethers.utils.parseEther(String(value))})
     const receipt = await this.waitTransactionConfirm(tx)
     return receipt[0]
+  }
+
+  private async updateUserPoints(): Promise<void> {
+    const points: number = await this.getPoint(authStore.account.userTokenId)
+    authStore.setPoint(points)
+  }
+
+  private mapTxToConfirmOfferLandRequestModel(tx: ethers.providers.TransactionResponse, landTokenId: string, ownerOfferUserTokenId: string): ConfirmOfferLandRequestModel {
+    const body: ConfirmOfferLandRequestModel = {
+      landTokenId: landTokenId,
+      offerOwnerTokenId: ownerOfferUserTokenId,
+      hash: tx.hash
+    }
+    return body
   }
 
   private mapTxtoBuyLandOnMarketRequestModel(tx: ethers.providers.TransactionResponse, landTokenId: string, ownerTokenId: string): BuyLandOnMarketRequestModel {

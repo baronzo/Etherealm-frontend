@@ -12,4 +12,7 @@ export default class OffersDataOfLandModel {
     public fees: number = Number();
     public fromUserTokenId: UserModel = new UserModel();
     public landTokenId: LandModel = new LandModel();
+    public isWarning: boolean = Boolean()
+    public isLoading: boolean = Boolean()
+    public isDisable: boolean = Boolean()
 }

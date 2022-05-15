@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   FaHandPointer,
   FaEthereum,
@@ -9,22 +9,26 @@ import {
 import { MdOutlineWarningAmber } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
+import ButtonStatusModel from "../../models/offer/ButtonStatusModel";
 import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
 import OffersLandRequestModel from "../../models/offer/OffersLandRequestModel";
 import OffersLandResponseModel from "../../models/offer/OffersLandResponseModel";
 import OfferService from "../../services/offer/OfferService";
+import ContractStore from "../../store/contract";
 import "./ModalOfferList.scss";
 
 type Props = {
   setIsShowModalOfferList: (value: boolean) => void;
+  fetchLands: () => void
   land: LandModel;
 };
 
 export default function ModalOfferList(props: Props) {
+  const contractStore = useMemo(() => new ContractStore, [])
+  const offerService = new OfferService();
   const [offerlist, setOfferlist] = useState<Array<OffersDataOfLandModel>>([]);
   const [sortByValue, setSortByValue] = useState<number>(1)
-  const [buttonStatus, setButtonStatus] = useState({ select: true, confirm: false, warning: false })
-  const offerService = new OfferService();
+  const [buttonStatus, setButtonStatus] = useState<Array<ButtonStatusModel>>(new Array<ButtonStatusModel>())
 
   useEffect(() => {
     getOfferForThisLand();
@@ -38,7 +42,71 @@ export default function ModalOfferList(props: Props) {
     };
     const offersLandResponse: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(bodyOffersRequest);
     console.log(offersLandResponse.data)
+    const buttonList: Array<ButtonStatusModel> = []
+    offersLandResponse.data.forEach((item: OffersDataOfLandModel) => {
+      item.isWarning = false
+      item.isLoading = false
+      buttonList.push({ select: true, confirm: false, warning: false })
+    })
+    setButtonStatus(buttonList)
     setOfferlist(offersLandResponse.data)
+  }
+
+  async function validatePoints(item: OffersDataOfLandModel): Promise<boolean> {
+    const points: number = await contractStore.getPoint(item.fromUserTokenId.userTokenId)
+    if (points >= item.offerPrice) {
+      return true
+    }
+    return false
+  }
+
+  function setLoading(targetIndex: number, isLoading: boolean): void {
+    let newData: Array<OffersDataOfLandModel> = [...offerlist]
+    newData.forEach((item: OffersDataOfLandModel, index: number) => {
+      changButtonStatus(index, 2)
+      if (isLoading == true) {
+        item.isDisable = true
+        item.isLoading = false
+      } else {
+        item.isDisable = false
+      }
+    })
+    newData[targetIndex].isLoading = isLoading
+    changButtonStatus(targetIndex, 2)
+    setOfferlist(newData)
+  }
+
+  async function onConfirmClick(item: OffersDataOfLandModel, index: number): Promise<void> {
+    setLoading(index, true)
+    const valid: boolean = await validatePoints(item)
+    if (valid) {
+      const isSuccess: boolean = await contractStore.confirmOffer(item.landTokenId.landTokenId, item.fromUserTokenId.userTokenId, item.offerPrice)
+      if (isSuccess) {
+        props.fetchLands()
+        props.setIsShowModalOfferList(false)
+      }
+    } else {
+      changButtonStatus(index, 3)
+    }
+    setLoading(index, false)
+  }
+
+  function changButtonStatus(index: number, type: number): void {
+    let newData: Array<ButtonStatusModel> = [...buttonStatus]
+    switch (type) {
+      case 1:
+        newData[index] = {select: false, confirm: true, warning: false}
+        break;
+      case 2:
+        newData[index] = {select: true, confirm: false, warning: false}
+        break;
+      case 3:
+        newData[index] = {select: true, confirm: false, warning: true}
+        break
+      default:
+        break;
+    }
+    setButtonStatus(newData)
   }
 
   return (
@@ -102,30 +170,40 @@ export default function ModalOfferList(props: Props) {
                   </div>
                 </div>
                 <div className="button-select-div">
-                  {buttonStatus.select &&
+                  {!item.isLoading
+                    ?
                     <>
-                      <button className="button-select" onClick={() => {setButtonStatus({...buttonStatus, select: false, confirm: true, warning: false})}}
-                      ><FaHandPointer className="hand-icon" />Select this Offer</button>
+                      {buttonStatus[index].select &&
+                      <>
+                        <button className={`button-select ${item.isDisable ? 'disable' : ''}`} onClick={() => item.isDisable ? undefined : changButtonStatus(index, 1)}
+                        ><FaHandPointer className="hand-icon" />Select this Offer</button>
+                      </>
+                      }
+                      {buttonStatus[index].confirm &&
+                        <>
+                          <button className="button-select-confirm" onClick={() => onConfirmClick(item, index)}>
+                            <FaCheck className="icon" />
+                            Confirm this offer
+                          </button>
+                          <button className="button-select-cancel" onClick={() => changButtonStatus(index, 2)}>
+                            <FaTimes className="icon" />
+                            Cancel this offer
+                          </button>
+                        </>
+                      }
+                      {buttonStatus[index].warning &&
+                        <div className="warning-div">
+                          <MdOutlineWarningAmber className="icon-warning" />
+                          <p className="warning-text">This user not enough point</p>
+                        </div>
+                      }
+                    </>
+                    :
+                    <>
+                      <div className="loading-box"><i className="fas fa-spinner fa-spin" aria-hidden='true'></i></div>
                     </>
                   }
-                  {buttonStatus.confirm &&
-                    <>
-                      <button className="button-select-confirm">
-                        <FaCheck className="icon" />
-                        Confirm this offer
-                      </button>
-                      <button className="button-select-cancel" onClick={() => {setButtonStatus({...buttonStatus, select: true, confirm: false, warning: false})}}>
-                        <FaTimes className="icon" />
-                        Cancel this Offer
-                      </button>
-                    </>
-                  }
-                  {buttonStatus.warning &&
-                    <div className="warning-div">
-                      <MdOutlineWarningAmber className="icon-warning" />
-                      <p className="warning-text">This user not enough point</p>
-                    </div>
-                  }
+                  
                 </div>
               </div>
             );
