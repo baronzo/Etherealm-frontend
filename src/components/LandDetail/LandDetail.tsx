@@ -209,7 +209,7 @@ export default function LandDetail() {
                             <button className='cancel-offer' onClick={() => cancelOffering(landDetails.landTokenId)}>Cancel Offering</button>)
                           :
                           (
-                            <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
+                            <button className="cancel-offer"><i className="fas fa-spinner fa-spin"></i></button>
                           )
                         }
                       </>
