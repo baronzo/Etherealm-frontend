@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import UserModel from '../../../models/auth/UserModel'
 import UserService from '../../../services/user/UserService'
 import ShowLandsOtherProfile from '../showLandsOtherProfile/ShowLandsOtherProfile'
+import ModalOffer from '../../ModalOffer/ModalOffer'
 
 interface IParams {
     userTokenId: string
@@ -21,6 +22,7 @@ export default function OthersProfile({ }: Props) {
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [userDetails, setUserDetails] = useState<UserModel>(new UserModel())
+    const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
@@ -75,8 +77,10 @@ export default function OthersProfile({ }: Props) {
                     setselectedLand={setselectedLand}
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                     fetchDetail={getDataFromAPI}
+                    setIsShowModalOffer={setIsShowModalOffer}
                 />
             </div>
+            {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand}/>}
         </div>
     )
 }

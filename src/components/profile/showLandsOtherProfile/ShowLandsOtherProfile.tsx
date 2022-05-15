@@ -15,6 +15,7 @@ type Props = {
     allLands: Array<LandModel>
     setIsShowModalDetailRenting: (value: boolean) => void
     setselectedLand: (land: LandModel) => void
+    setIsShowModalOffer: (value: boolean) => void
     fetchDetail: () => void
 }
 
@@ -77,12 +78,12 @@ export default function ShowLandsOtherProfile(props: Props) {
                                             <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
                                                 <p className='button-text-detail'>Land Details</p>
                                             </div>
-                                            <div className='list-to-market'>
+                                            <div className='list-to-market' onClick={() => props.setIsShowModalOffer(true)}>
                                                 <p className='button-text-list'>Offer</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>Best Offer : 0.15 ETH</p>
+                                            <p className='offer-text'>{item.bestOffer ? `Best Offer is ${item.bestOffer.offerPrice} ETH` : "Not people offer"}</p>
                                         </div>
                                     </div>
                                 </div>
