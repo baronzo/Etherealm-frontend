@@ -63,7 +63,7 @@ export default function ModalOffer(props: Props) {
         <div id="landNameBox">
           <p className='land-name'>{props.landOffer.landName}</p>
         </div>
-        {props.landOffer.bestOffer &&
+        {props.landOffer.bestOffer ?
         <div id="bestOfferBox">
           <div className="best-offer">
             <div className="profile-box">
@@ -85,6 +85,12 @@ export default function ModalOffer(props: Props) {
                 <p className='best-price'>Best offer : {props.landOffer.bestOffer?.offerPrice ? props.landOffer.bestOffer?.offerPrice : 0 } ETH</p>
               </div>
             </div>
+          </div>
+        </div>
+        :
+        <div id="bestOfferBox">
+          <div className="best-offer">
+            <p className='not-offer'>Not people offer</p>
           </div>
         </div>
         }

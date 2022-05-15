@@ -74,18 +74,27 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0;
+      padding: 8px 35px 0 35px;
       .best-offer {
         display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 7px;
         padding: 0 5px 3px 7px;
         height: 80px;
-        width: 310px;
+        width: 100%;
         background-color: #F6F6F6;
         border: 1px solid #d6d2d2;
         &:hover {
           cursor: pointer;
           box-shadow: 0.5px 0.5px 2px 1px #45d9c8af;
+        }
+        .not-offer {
+          color: #787878;
+          font-weight: normal;
+          font-style: italic;
+          font-size: 14px;
+          margin: 0;
         }
         .profile-box {
           display: flex;
@@ -234,7 +243,7 @@
       display: flex;
       flex-direction: column;
       margin: 0;
-      padding: 10px 35px 40px 35px;
+      padding: 10px 37px 40px 35px;
       align-items: flex-start;
       justify-content: center;
       .bill-text {
