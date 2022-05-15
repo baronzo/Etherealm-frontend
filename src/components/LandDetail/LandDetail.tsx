@@ -19,6 +19,9 @@ import UpdatePriceListedOnMarketRequestModel from '../../models/market/UpdatePri
 import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
 import ModalEditPriceListing from '../ModalEditPriceListing/ModalEditPriceListing'
 import ModalOffer from '../ModalOffer/ModalOffer'
+import OfferService from '../../services/offer/OfferService'
+import CancelOfferLandRequestModel from '../../models/offer/CancelOfferLandRequestModel'
+import OffersDataOfLandModel from '../../models/offer/OffersDataOfLandModel'
 
 interface IParams {
   landTokenId: string
@@ -26,8 +29,9 @@ interface IParams {
 
 export default function LandDetail() {
   const params: IParams = useParams()
-  const landService: LandService = new LandService
-  const userService: UserService = new UserService
+  const landService: LandService = new LandService()
+  const userService: UserService = new UserService()
+  const offerService: OfferService = new OfferService()
   const [landDetails, setlandDetails] = useState<LandModel>(new LandModel)
   const [ownerDetails, setownerDetails] = useState<UserModel>(new UserModel)
   const history = useHistory()
@@ -39,9 +43,12 @@ export default function LandDetail() {
   const landMarketService: LandMarketService = new LandMarketService()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
+  const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
+  const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
 
   useEffect(() => {
     getLandDetailsFromApi()
+    checkYouIsBestOffer()
   }, [])
 
   async function getLandDetailsFromApi(): Promise<void> {
@@ -49,6 +56,7 @@ export default function LandDetail() {
     setlandDetails(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
+    await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
   }
 
   async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
@@ -88,7 +96,7 @@ export default function LandDetail() {
 
   async function cancelLandOnMarketAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
     setIsLoading(true)
-    let bodyCancel: CancelListedOnMarketRequestModel = {landTokenId: landTokenId, ownerTokenId: ownerTokenId}
+    let bodyCancel: CancelListedOnMarketRequestModel = { landTokenId: landTokenId, ownerTokenId: ownerTokenId }
     const cancelIsSuccess: string = await landMarketService.cancelListedOnMarket(bodyCancel)
     if (cancelIsSuccess) {
       setTimeout(() => {
@@ -98,12 +106,34 @@ export default function LandDetail() {
     }
   }
 
-  function checkOfferButton() {
-    if (isShowCancelOffer != true) {
+  async function getCheckIsHaveMyOfferAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
+    let bodyRequest: CancelOfferLandRequestModel = { landTokenId: landTokenId, requestUserTokenId: ownerTokenId }
+    const offerLandResponse: OffersDataOfLandModel = await offerService.getCheckIsHaveMyOffer(bodyRequest)
+    console.log(offerLandResponse)
+    if (offerLandResponse) {
       setIsShowCancelOffer(true)
     }
-    else {
-      setIsShowCancelOffer(false)
+  }
+
+  const cancelOffering = async (landTokenId: string): Promise<void> => {
+    setisCancelLoading(true)
+    const bodyOfferingRequest: CancelOfferLandRequestModel = {
+      landTokenId: landTokenId,
+      requestUserTokenId: authStore.account.userTokenId
+    };
+    const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
+    if (cancelOfferResponse) {
+      setTimeout(() => {
+        getLandDetailsFromApi()
+        setisCancelLoading(false)
+        setIsShowCancelOffer(false)
+      }, 2000);
+    }
+  }
+
+  const checkYouIsBestOffer = (): void => {
+    if (landDetails.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
+      setIsYourBestOffer(true)
     }
   }
 
@@ -159,17 +189,26 @@ export default function LandDetail() {
                 </div>
               </div>
               <div className="offer">
-                {!isOwner && landDetails.landStatus.landStatusId === 2 && 
+                {!isOwner && landDetails.landStatus.landStatusId === 2 &&
                   <div className='best-offer'>
-                    <p className='text-price-offer'>Best offer is 0.05 ETH</p>
-                  </div> 
+                    <p className='text-price-offer'>{landDetails.bestOffer? `Best offer ${landDetails.bestOffer?.offerPrice} ETH ${isYourBestOffer ? " ( You )" : ''}` : "Not people offer"}</p>
+                  </div>
                 }
-                {!isOwner && landDetails.landStatus.landStatusId === 2 && 
-                  <div className='button-offer' onClick={() => checkOfferButton()}>
+                {!isOwner && landDetails.landStatus.landStatusId === 2 &&
+                  <div className='button-offer'>
                     {!isShowCancelOffer ?
                       <button className='button-offer' onClick={() => setIsShowModalOffer(true)}>offer</button>
-                    :
-                      <button className='cancel-offer'>Cancel Offering</button>
+                      :
+                      <>
+                        {!isCancelLoading ?
+                          (
+                            <button className='cancel-offer' onClick={() => cancelOffering(landDetails.landTokenId)}>Cancel Offering</button>)
+                          :
+                          (
+                            <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
+                          )
+                        }
+                      </>
                     }
                   </div>
                 }
@@ -178,9 +217,9 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
-                    {!isLoading ? 
+                    {!isLoading ?
                       <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
-                    :
+                      :
                       <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
                     }
                     <button className="button-edit-price-land" onClick={() => setIsShowEditPrice(true)} >Edit Price</button>
@@ -192,9 +231,9 @@ export default function LandDetail() {
           </div>
         </div>
       </div>
-      {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi}/>}
-      {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails}/>}
-      {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails}/>}
+      {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi} />}
+      {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails} />}
+      {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails} />}
     </>
   )
 }

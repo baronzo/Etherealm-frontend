@@ -1,3 +1,4 @@
+import BestOfferModel from "../offer/BestOfferModel"
 import CoordinatesModel from "./CoordinatesModel"
 import LandSizeModel from "./LandSizeModel"
 import LandStatusModel from "./LandStatusModel"
@@ -15,6 +16,7 @@ class LandModel {
   public landSize: LandSizeModel = new LandSizeModel
   public price: number | null = null
   public minimumOfferPrice: string = String()
+  public bestOffer: BestOfferModel | null = null
 }
 
 export default LandModel
