@@ -12,7 +12,7 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            width: 50%;
+            width: 60%;
             margin: 0;
             padding: 0;
             .fee-label-text {
@@ -26,7 +26,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            width: 50%;
+            width: 40%;
             margin: 0;
             padding: 0;
             .fee-value-text {
@@ -278,6 +278,10 @@
                                     box-shadow: 0px 0px 4px 1px rgba(174, 134, 255, 0.5);
                                 }
                             }
+                        }
+                        .select-test {
+                            width: 300px;
+                            height: 30px;
                         }
                     }
                     .fee-div {
