@@ -240,6 +240,10 @@
                             cursor: pointer;
                             background-color: #f74e4e;
                         }
+                        &.disable {
+                            background-color: #ff7a7a;
+                            cursor: no-drop;
+                        }
                         .icon {
                             color: white;
                             font-size: 14px;
