@@ -1,3 +1,4 @@
+import BestOfferModel from "../offer/BestOfferModel"
 import CoordinatesModel from "./CoordinatesModel"
 import LandSizeModel from "./LandSizeModel"
 import LandStatusModel from "./LandStatusModel"

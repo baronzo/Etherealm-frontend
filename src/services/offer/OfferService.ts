@@ -22,6 +22,11 @@ export default class OfferService {
         return offerLandResponse.data
     }
 
+    public async getCheckIsHaveMyOffer(bodyMyOfferRequest: CancelOfferLandRequestModel): Promise<OffersDataOfLandModel> {
+        let offerLandResponse: AxiosResponse<OffersDataOfLandModel> = await axios.post(`${this.host}/offers/user/land`, bodyMyOfferRequest)
+        return offerLandResponse.data
+    }
+
     public async getOfferingLandByUserTokenId(bodyOfferingRequest: OfferingLandRequestModel): Promise<OffersLandResponseModel> {
         let offeringLandResponse: AxiosResponse<OffersLandResponseModel> = await axios.patch(`${this.host}/offers/user/page`, bodyOfferingRequest)
         return offeringLandResponse.data

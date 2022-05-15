@@ -6,6 +6,7 @@ import LandService from '../../services/lands/LandService'
 import authStore from '../../store/auth'
 import ContractStore from '../../store/contract'
 import ModalLoading from '../Loading/ModalLoading'
+import ModalHirePurchase from '../ModalHirePurchase/ModalHirePurchase'
 import './LandModal.scss'
 
 interface IProps {
@@ -19,6 +20,8 @@ export default function LandModal(props: IProps) {
   const [land, setLand] = useState<LandModel>(new LandModel)
   const [isLoading, setisLoading] = useState<boolean>(false)
   const history = useHistory()
+
+  const [isShowModalHirePurchase, setIsShowModalHirePurchase] = useState<boolean>(false)
 
   useEffect(() => {
     setLand(props.land)
@@ -46,7 +49,7 @@ export default function LandModal(props: IProps) {
       case 1:
         return (
           <div className="option">
-            <button id="hirePurchase" className={isLoading ? 'disabled' : ''}>Hire Purchase</button>
+            <button id="hirePurchase" className={isLoading ? 'disabled' : ''} onClick={() => {setIsShowModalHirePurchase(true)}}>Hire Purchase</button>
             <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
           </div>
         )
@@ -87,6 +90,8 @@ export default function LandModal(props: IProps) {
   return (
     <div id='landModal' className={!land.landTokenId ? 'hide' : ''}>
       <div id="landModelBackground" onClick={onBackgroundClick}></div>
+      {!isShowModalHirePurchase ? 
+      (
       <div id="landBox">
         <ModalLoading isLoading={isLoading}/>
         <div id="landDetail">
@@ -109,6 +114,10 @@ export default function LandModal(props: IProps) {
           {mapOptionByLandStatus()}
         </div>
       </div>
+      ):(
+        <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase}/>
+      )
+      }
     </div>
   )
 }
