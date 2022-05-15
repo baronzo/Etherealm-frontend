@@ -47,13 +47,17 @@ export default function LandDetail() {
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
 
   useEffect(() => {
-    getLandDetailsFromApi()
-    checkYouIsBestOffer()
+    getDataFromApi()
   }, [])
+
+  async function getDataFromApi(): Promise<void> {
+    await getLandDetailsFromApi()
+  }
 
   async function getLandDetailsFromApi(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setlandDetails(result)
+    checkYouIsBestOffer(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
@@ -131,8 +135,8 @@ export default function LandDetail() {
     }
   }
 
-  const checkYouIsBestOffer = (): void => {
-    if (landDetails.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
+  const checkYouIsBestOffer = (result: LandModel): void => {
+    if (result.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
       setIsYourBestOffer(true)
     }
   }
