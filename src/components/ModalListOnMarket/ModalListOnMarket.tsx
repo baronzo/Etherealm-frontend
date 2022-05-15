@@ -8,6 +8,8 @@ import LandMarketService from '../../services/market/LandMarketService'
 import authStore from '../../store/auth'
 import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseModel'
 import ModalLoading from '../Loading/ModalLoading'
+import Select from 'react-select'
+import ReactSelectOptionModel from '../../models/reactSelect/ReactSelectOptionModel'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -73,6 +75,11 @@ export default function ModalListOnMarket(props: Props) {
         setTotalReceive(parseFloat(total.toFixed(6)))
     }
 
+    const option = ()  => [
+        { value: "Month", label: "Month", },
+        { value: "Day", label: "Day", }
+    ]   
+
     return (
         <div id='modalListOnMarket'>
             <div id="detailBox">
@@ -127,11 +134,7 @@ export default function ModalListOnMarket(props: Props) {
                             <div className="detail-rent">
                                 <div className='price-div'>
                                     <div className="text-price">Type</div>
-                                    <select className="select-test">
-                                        <option value="" selected disabled hidden>Month/Day</option>
-                                        <option value="Month">Month</option>
-                                        <option value="Day">Day</option>
-                                    </select>
+                                    <Select id="reactSelect" options={option()} />
                                     <div className="text-period">Price (ETH/Month)</div>
                                     <div className="input-period-div">
                                         <input type="text" className='input-period' />
@@ -140,10 +143,6 @@ export default function ModalListOnMarket(props: Props) {
                                 <div className='fee-div'>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%)</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
-                                    </div>
-                                    <div className='fee-item'>
-                                        <div className='fee-label'><p className='fee-label-text'>Royalty Contract Owner Fee (5%)</p></div>
                                         <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
                                     </div>
                                     <div className='fee-item'>

@@ -75,7 +75,7 @@ export default function Market() {
           <p className='topic-text'>NFTs Lands</p>
         </div>
         <div className='market-land-container'>
-          {landsMarket.map((item: LandMarketModel, index:number) => {
+          {isTab && landsMarket.map((item: LandMarketModel, index:number) => {
             return(
               <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                 <div className='land-image-div'>
@@ -122,6 +122,54 @@ export default function Market() {
               </div>
             )
           })}
+          {
+            !isTab && landsMarket.map((item: LandMarketModel, index:number) => {
+              return(
+                <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
+                  <div className='land-image-div'>
+                    <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/map.jpg'} alt="" />
+                  </div>
+                  <div className='land-detail'>
+                    <div className='name-location'>
+                      <div className='land-name'>
+                        <p className='land-name-text'>{item.landTokenId.landName}</p>
+                      </div>
+                      <div className='location-div'>
+                        <MdLocationOn className='location-icon' />
+                        <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[1]}</p>
+                      </div>
+                      <div className='wallet-div'>
+                        <p className='owner-wallet'>{item.landTokenId.landTokenId}</p>
+                      </div>
+                    </div>
+                      {!item.isLoading
+                      ?
+                        <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
+                          { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
+                            ?
+                              <>
+                              <i className="fas fa-home icon"></i>
+                                <div className='button-buy'>Your owned land</div>
+                              </>
+                            :
+                            <>
+                              <i className="fab fa-ethereum icon"></i>
+                              <div className='button-buy'>Rent 0.5 eth/month</div>
+                            </>
+                              
+                          }
+                          
+                        </div>
+                      :
+                        <div className={`button ${item.isLoading ? 'loading' : ''}`}>
+                          <i className="fas fa-spinner fa-spin"></i>
+                        </div>
+                      }
+                      
+                  </div>
+                </div>
+              )
+            })}
         </div>
       </div>
       <div className='pagination-container'>
