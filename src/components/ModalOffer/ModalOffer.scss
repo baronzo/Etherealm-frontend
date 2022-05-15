@@ -230,6 +230,9 @@
             background-color: #1081e4ad;
             cursor: pointer;
           }
+          &.disable {
+            cursor: wait;
+          }
         }
       }
     }

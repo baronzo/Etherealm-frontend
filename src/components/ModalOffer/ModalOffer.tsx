@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaCopy } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import LandModel from '../../models/lands/LandModel'
@@ -6,7 +6,9 @@ import CreateOfferLandRequestModel from '../../models/offer/CreateOfferLandReque
 import CreateOfferLandResponseModel from '../../models/offer/CreateOfferLandResponseModel'
 import OfferService from '../../services/offer/OfferService'
 import authStore from '../../store/auth'
+import OffersLandRequestModel from '../../models/offer/OffersLandRequestModel'
 import './ModalOffer.scss'
+import OffersLandResponseModel from '../../models/offer/OffersLandResponseModel'
 
 type Props = {
   setIsShowModalOffer: (value: boolean) => void
@@ -15,9 +17,16 @@ type Props = {
 
 export default function ModalOffer(props: Props) {
   const [offerPrice, setOfferPrice] = useState<string>('0.001')
+  const [offerResponse, setOfferResponse] = useState<OffersLandResponseModel>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const offerService: OfferService = new OfferService
 
-  async function createOfferLand() {
+  useEffect(() => {
+    getOfferLand()
+}, [])
+
+  async function createOfferLand(): Promise<void> {
+    setIsLoading(true)
     const body: CreateOfferLandRequestModel = {
       landTokenId: props.landOffer.landTokenId,
       offerPrice: Number(offerPrice),
@@ -25,6 +34,7 @@ export default function ModalOffer(props: Props) {
     }
     const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
     console.log(result)
+    setIsLoading(false)
   }
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
@@ -34,6 +44,18 @@ export default function ModalOffer(props: Props) {
     } else if (value >= 0.00001) {
       setOfferPrice(e.target.value)
     }
+  }
+
+  async function getOfferLand(): Promise<void> {
+    const body: OffersLandRequestModel = {
+      landTokenId: props.landOffer.landTokenId,
+      page: 1,
+      sortBy: 1
+    }
+    const result: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(body)
+    setOfferResponse(result)
+    console.log(offerResponse)
+    // console.log(result)
   }
 
   return (
@@ -86,16 +108,21 @@ export default function ModalOffer(props: Props) {
         <div id="billBox">
           <div className="bill-text">
             <p className='text-format'>Platform Fee (2.5%)</p>
-            <p className='text-format'>0.0 ETH</p>
+            <p className='text-format'>{props.landOffer?.bestOffer?.fees} ETH</p>
           </div>
+          {console.log(props.landOffer)}
           <div className="bill-text">
             <p className='text-format'>You will receive</p>
-            <p className='text-format'>0.0 ETH</p>
+            <p className='text-format'>{(Number(offerPrice) - props.landOffer?.bestOffer?.fees).toFixed(6)}  ETH</p>
           </div>
         </div>
         <div id="buttonBox">
           <div className="button-section">
+            {!isLoading 
+            ?
             <button className='button' onClick={createOfferLand}>offer</button>
+            : <button className={`button ${isLoading ? 'disable' : ''}`} onClick={createOfferLand}>offer <i className="fas fa-spinner fa-spin"></i></button>
+            }
           </div>
         </div>
       </div>
