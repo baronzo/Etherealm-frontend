@@ -17,6 +17,9 @@ class LandModel {
   public price: number | null = null
   public minimumOfferPrice: string = String()
   public bestOffer: BestOfferModel | null = null
+  public isOffer: boolean = Boolean()
+  public isLoading: boolean = Boolean()
+  public isDisable: boolean = Boolean()
 }
 
 export default LandModel
