@@ -49,16 +49,20 @@ export default function LandDetail() {
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
 
   useEffect(() => {
-    getLandDetailsFromApi()
+    getDataFromApi()
   }, [])
+
+  async function getDataFromApi(): Promise<void> {
+    await getLandDetailsFromApi()
+  }
 
   async function getLandDetailsFromApi(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setlandDetails(result)
+    checkYouIsBestOffer(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
-    checkYouIsBestOffer()
   }
 
   async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
@@ -133,8 +137,8 @@ export default function LandDetail() {
     }
   }
 
-  const checkYouIsBestOffer = (): void => {
-    if (landDetails.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
+  const checkYouIsBestOffer = (result: LandModel): void => {
+    if (result.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
       setIsYourBestOffer(true)
     }
   }
@@ -207,7 +211,7 @@ export default function LandDetail() {
                             <button className='cancel-offer' onClick={() => cancelOffering(landDetails.landTokenId)}>Cancel Offering</button>)
                           :
                           (
-                            <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
+                            <button className="cancel-offer"><i className="fas fa-spinner fa-spin"></i></button>
                           )
                         }
                       </>

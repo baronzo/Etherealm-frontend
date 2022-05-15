@@ -31,11 +31,29 @@ export default function ModalMyOfferList(props: Props) {
       sortBy: sortByValue,
     };
     const offeringLandResponse: OffersLandResponseModel = await offerService.getOfferingLandByUserTokenId(bodyOfferingRequest);
+    offeringLandResponse.data.forEach(item => {
+      item.isLoading = false
+      item.isDisable = false
+    })
     setOfferingList(offeringLandResponse.data);
   };
 
-  const cancelOffering = async (landTokenId: string): Promise<void> => {
-    setisCancelLoading(true)
+  function setLoading(index: number, isLoading: boolean): void {
+    let newData = [...offeringList]
+    newData.forEach(item => {
+      if (isLoading) {
+        item.isDisable = true
+        item.isLoading = false
+      } else {
+        item.isDisable = false
+      }
+    })
+    newData[index].isLoading = isLoading
+    setOfferingList(newData)
+  }
+
+  const cancelOffering = async (landTokenId: string, index: number): Promise<void> => {
+    setLoading(index, true)
     const bodyOfferingRequest: CancelOfferLandRequestModel = {
       landTokenId: landTokenId,
       requestUserTokenId: authStore.account.userTokenId
@@ -44,7 +62,7 @@ export default function ModalMyOfferList(props: Props) {
     if (cancelOfferResponse) {
       setTimeout(() => {
         getOfferForThisLand()
-        setisCancelLoading(false)
+        setLoading(index, false)
       }, 2000);
     }
   }
@@ -103,12 +121,12 @@ export default function ModalMyOfferList(props: Props) {
                   </div>
                 </div>
                 <div className="button-select-div">
-                  {!isCancelLoading ?
-                    <button className="button-select-cancel" onClick={() => cancelOffering(item.landTokenId.landTokenId)}>
+                  {!item.isLoading ?
+                    <button className={`button-select-cancel ${item.isDisable ? 'disable' : ''}`} onClick={() => item.isDisable ? undefined : cancelOffering(item.landTokenId.landTokenId, index)}>
                       <FaTimes className="icon" />Cancel this Offering
                     </button>
                     :
-                    <button className={`button-select-cancel ${isCancelLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
+                    <button className={`button-select-cancel ${item.isLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
                   }
                 </div>
               </div>

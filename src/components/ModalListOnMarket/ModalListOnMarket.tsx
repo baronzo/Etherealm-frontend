@@ -126,18 +126,24 @@ export default function ModalListOnMarket(props: Props) {
                         {isActiveToggle.rent &&
                             <div className="detail-rent">
                                 <div className='price-div'>
-                                    <div className="text-price">Price (ETH/Month)</div>
-                                    <div className="input-price-div">
-                                        <input type="text" className='input-price' />
-                                    </div>
-                                    <div className="text-period">Period (Month)</div>
+                                    <div className="text-price">Type</div>
+                                    <select className="select-test">
+                                        <option value="" selected disabled hidden>Month/Day</option>
+                                        <option value="Month">Month</option>
+                                        <option value="Day">Day</option>
+                                    </select>
+                                    <div className="text-period">Price (ETH/Month)</div>
                                     <div className="input-period-div">
                                         <input type="text" className='input-period' />
                                     </div>
                                 </div>
                                 <div className='fee-div'>
                                     <div className='fee-item'>
-                                        <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%) 0.0 ETH</p></div>
+                                        <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%)</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
+                                    </div>
+                                    <div className='fee-item'>
+                                        <div className='fee-label'><p className='fee-label-text'>Royalty Contract Owner Fee (5%)</p></div>
                                         <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
                                     </div>
                                     <div className='fee-item'>
