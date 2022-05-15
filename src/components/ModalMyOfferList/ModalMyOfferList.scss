@@ -131,6 +131,9 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+                            &:hover {
+                                cursor: pointer;
+                            }
                         }
                         .location-icon {
                             margin: 0 0 0 3px;
