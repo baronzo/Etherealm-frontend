@@ -25,7 +25,7 @@ export default function OthersProfile({ }: Props) {
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [userDetails, setUserDetails] = useState<UserModel>(new UserModel())
-    const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(true)
+    const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(false)
     const landService: LandService = new LandService()
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
