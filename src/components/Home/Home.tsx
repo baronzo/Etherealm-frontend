@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Home.scss'
 
 const Home = () => {
+
   return (
     <>
       <div id="home">
