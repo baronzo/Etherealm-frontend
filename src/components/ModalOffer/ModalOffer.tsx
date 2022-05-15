@@ -76,7 +76,7 @@ export default function ModalOffer(props: Props) {
                 <i className="fas fa-crown icon"></i>
               </div>
               <div className="user-token">
-                <p className='token-id'>{authStore.account.userTokenId}</p>
+                <p className='token-id'>{props.landOffer.bestOffer?.fromUserTokenId.userTokenId}</p>
                 <button className="copy" >
                   <FaCopy className='copy-icon' />
                 </button>
