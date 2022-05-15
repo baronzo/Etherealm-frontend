@@ -48,7 +48,6 @@ export default function LandDetail() {
 
   useEffect(() => {
     getLandDetailsFromApi()
-    checkYouIsBestOffer()
   }, [])
 
   async function getLandDetailsFromApi(): Promise<void> {
@@ -57,6 +56,7 @@ export default function LandDetail() {
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
+    checkYouIsBestOffer()
   }
 
   async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
