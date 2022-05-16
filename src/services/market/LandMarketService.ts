@@ -6,6 +6,8 @@ import LandMarketModel from "../../models/market/LandMarketModel"
 import ListLandOnMarketRequestModel from "../../models/market/ListLandOnMarketRequestModel"
 import ListOnMarketResponseModel from "../../models/market/ListOnMarketResponseModel"
 import UpdatePriceListedOnMarketRequestModel from "../../models/market/UpdatePriceListedOnMarketRequestModel"
+import LandMarketPaginateRequestModel from "../../models/market/LandMarketPaginateRequestModel"
+import LandMarketPaginateResponseModel from "../../models/market/LandMarketPaginateResponseModel"
 import Host from "../Host"
 
 class LandMarketService {
@@ -34,6 +36,11 @@ class LandMarketService {
   public async updatePriceListedOnMarket(bodyUpdateListed: UpdatePriceListedOnMarketRequestModel): Promise<ListOnMarketResponseModel> {
     let updateResponse: AxiosResponse<ListOnMarketResponseModel> = await axios.post(`${this.host}/market/land/update/price`, bodyUpdateListed)
     return updateResponse.data
+  }
+
+  public async getLandOnMarketByMarketType(bodyRequest: LandMarketPaginateRequestModel): Promise<LandMarketPaginateResponseModel> {
+    let marketResponse: AxiosResponse<LandMarketPaginateResponseModel> = await axios.patch(`${this.host}/market/land`, bodyRequest)
+    return marketResponse.data
   }
 
 }

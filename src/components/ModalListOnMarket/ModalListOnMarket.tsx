@@ -10,6 +10,7 @@ import ListOnMarketResponseModel from '../../models/market/ListOnMarketResponseM
 import ModalLoading from '../Loading/ModalLoading'
 import Select from 'react-select'
 import ReactSelectOptionModel from '../../models/reactSelect/ReactSelectOptionModel'
+import RentTypeModel from '../../models/rent/RentTypeModel'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -29,6 +30,17 @@ export default function ModalListOnMarket(props: Props) {
     const [isLoading, setisLoading] = useState<boolean>(false)
     const [totalReceive, setTotalReceive] = useState<number>(0)
     const [fee, setFee] = useState<number>(0)
+    const [rentTypes, setRentsType] = useState<Array<RentTypeModel>>([
+        {
+            rentTypeId: 1,
+            rentTypeText: 'Day'
+        },
+        {
+            rentTypeId: 2,
+            rentTypeText: 'Month'
+        }
+    ])
+    const [rentType, setRentType] = useState<RentTypeModel>()
 
     useEffect(() => {
         calculateReceive()
@@ -43,7 +55,30 @@ export default function ModalListOnMarket(props: Props) {
                 ownerUserTokenId: authStore.account.userTokenId,
                 marketType: 1,
                 price: Number(price),
-                period: null
+                period: null,
+                rentType: null
+            }
+            const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
+            setTimeout(() => {
+                setisLoading(false)
+                props.fetchLands()
+                props.setIsShowModalListOnMarket(false)
+            }, 2000)   
+        }else {
+            console.error('Price is null')
+        }
+    }
+
+    async function rentLandOnMarket(): Promise<void> {
+        setisLoading(true)
+        if (price !== null || price !== "" || Number(price) !== 0 || !price) {
+            let bodyListLandOnMarket: ListLandOnMarketRequestModel = { 
+                landTokenId: props.land.landTokenId,
+                ownerUserTokenId: authStore.account.userTokenId,
+                marketType: 2,
+                price: Number(price),
+                period: null,
+                rentType: rentType?.rentTypeId!
             }
             const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
             setTimeout(() => {
@@ -75,10 +110,24 @@ export default function ModalListOnMarket(props: Props) {
         setTotalReceive(parseFloat(total.toFixed(6)))
     }
 
-    const option = ()  => [
-        { value: "Month", label: "Month", },
-        { value: "Day", label: "Day", }
-    ]   
+    const mapRentTypesToOption = ():Array<ReactSelectOptionModel> => {
+        const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
+        rentTypes.forEach((type) => {
+            const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
+            reactSelectOption.label = type.rentTypeText
+            reactSelectOption.value = type.rentTypeId
+            options.push(reactSelectOption)
+        })
+        return options
+    }
+
+    const mapRentTypeToOption = (e:ReactSelectOptionModel): void => {
+        const reactSelectOption: ReactSelectOptionModel = e
+        let newType = new RentTypeModel
+        newType!.rentTypeText = reactSelectOption.label
+        newType!.rentTypeId = reactSelectOption.value
+        setRentType(newType)
+    }
 
     return (
         <div id='modalListOnMarket'>
@@ -134,23 +183,23 @@ export default function ModalListOnMarket(props: Props) {
                             <div className="detail-rent">
                                 <div className='price-div'>
                                     <div className="text-price">Type</div>
-                                    <Select id="reactSelect" options={option()} />
-                                    <div className="text-period">Price (ETH/Month)</div>
+                                    <Select id="reactSelect" options={mapRentTypesToOption()} onChange={(e) => mapRentTypeToOption(e as ReactSelectOptionModel) } />
+                                    <div className="text-period">Price (ETH/{rentType?.rentTypeText})</div>
                                     <div className="input-period-div">
-                                        <input type="text" className='input-period' />
+                                        <input type="text" className='input-period' value={price} onChange={onChangeSellPrice} />
                                     </div>
                                 </div>
                                 <div className='fee-div'>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>Platform Fee (2.5%)</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{fee} ETH</p></div>
                                     </div>
                                     <div className='fee-item'>
                                         <div className='fee-label'><p className='fee-label-text'>You will receive</p></div>
-                                        <div className='fee-value'><p className='fee-value-text'>0.0 ETH</p></div>
+                                        <div className='fee-value'><p className='fee-value-text'>{totalReceive} ETH</p></div>
                                     </div>
                                 </div>
-                                <div className='button-rent-div'><button className='button-sell'>Rent out</button></div>
+                                <div className='button-rent-div'><button className='button-sell' onClick={() => rentLandOnMarket()}>Rent out</button></div>
                             </div>
                         }
                     </div>

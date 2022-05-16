@@ -4,4 +4,5 @@ export default class ListLandOnMarketRequestModel {
     public marketType: number = Number();
     public price: number = Number();
     public period: number | null = null;
+    public rentType: number | null = null;
 }
