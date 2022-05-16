@@ -219,7 +219,7 @@ export default function ShowLands(props: Props) {
                     <div className='show-my-land'>
                     {ownedRentLand.map((item: LandRentResponseModel) => {
                         return(
-                        <div className='land-card'>
+                        <div className='land-card' key={item.landTokenId.landTokenId}>
                             <div className='land-image-div'>
                                 <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                             </div>
