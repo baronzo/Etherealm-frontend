@@ -199,7 +199,7 @@ export default function Market() {
       <div className='pagination-container'>
         <div className='pagination'></div>
       </div>
-      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>}
+      {/* {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>} */}
     </div>
   )
 }
