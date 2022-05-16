@@ -22,6 +22,7 @@ import TransactionsResponseModel from '../../../models/notifications/Transaction
 import ModalOfferList from '../../ModalOfferList/ModalOfferList'
 import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
 import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
+import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
 
 interface IParams {
     userTokenId: string
@@ -40,7 +41,9 @@ export default observer(function Profile({ }: Props) {
     const userService: UserService = new UserService()
     const transactionService: TransactionService = new TransactionService()
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+    const [ownedLandRent, setownedLandRent] = useState<Array<LandRentResponseModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
+    const [selectedLandRent, setselectedLandRent] = useState<LandRentResponseModel>(new LandRentResponseModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
     const [transactions, setTransactions] = useState<Array<TransactionsResponseModel>>([])
     const history = useHistory()
@@ -50,6 +53,11 @@ export default observer(function Profile({ }: Props) {
     useEffect(() => {
         getDataFromAPI()
     }, [])
+
+    function test (value: boolean) {
+        console.log(value);
+        setIsShowModalDetailRenting(value)
+    }
 
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
@@ -178,9 +186,11 @@ export default observer(function Profile({ }: Props) {
                 <div className='my-land'>
                     <ShowLands
                         allLands={ownedLand}
+                        allLandRent={ownedLandRent}
                         setselectedLand={setselectedLand}
+                        setselectedLandRent={setselectedLandRent}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
-                        setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                        setIsShowModalDetailRenting={test}
                         setIsShowModalOfferList={setIsShowModalOfferList}
                     />
                 </div>
