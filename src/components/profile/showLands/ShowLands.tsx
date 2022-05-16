@@ -14,7 +14,8 @@ type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
     setIsShowModalOfferList: (value: boolean) => void;
-    setselectedLand: (land: LandModel) => void
+    setselectedLand: (land: LandModel) => void;
+    setselectedLandRent: (rent: LandRentResponseModel) => void;
 }
 
 export default function ShowLands(props: Props) {
@@ -41,6 +42,12 @@ export default function ShowLands(props: Props) {
     async function getRentLandByRenterTokenId(): Promise<void> {
         const result: Array<LandRentResponseModel> = await rentService.getRentLandByRenterTokenId(authStore.account.userTokenId)
         setownedRentLand(result)
+    }
+    
+    function onClickShowModalLandRent(selectedLandRent: LandRentResponseModel, e: React.MouseEvent<HTMLDivElement>): void {
+        e.stopPropagation()
+        props.setselectedLand(selectedLandRent.landTokenId)
+        props.setIsShowModalDetailRenting(true)
     }
 
     const history = useHistory()
@@ -203,8 +210,6 @@ export default function ShowLands(props: Props) {
     }
 
     function landRent(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
-        const dataRent: Array<LandRentResponseModel> = props.allLandRent
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -212,7 +217,7 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Land Rent</p>
                     </div>
                     <div className='show-my-land'>
-                    {dataRent.map((item: LandRentResponseModel) => {
+                    {ownedRentLand.map((item: LandRentResponseModel) => {
                         return(
                         <div className='land-card'>
                             <div className='land-image-div'>
@@ -225,12 +230,12 @@ export default function ShowLands(props: Props) {
                                     </div>
                                     <div className='location-div'>
                                         <MdLocationOn className='location-icon' />
-                                        <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[1]}</p>
+                                        <p className='location'>X: {item.landTokenId.landLocation.x}, Y: {item.landTokenId.landLocation.y}</p>
                                     </div>
                                 </div>
                                 <div className='status-div'>
-                                    <div className='view-detail'>
-                                        <p className='button-text-detail' onClick={() => props.setIsShowModalDetailRenting(true)}>Land are renting Deatil</p>
+                                    <div className='view-detail' onClick={(e) => onClickShowModalLandRent(item, e)}>
+                                        <p className='button-text-detail'>Land are renting Deatil</p>
                                     </div>
                                 </div>
                                 <div className='offer-div'>

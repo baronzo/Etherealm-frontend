@@ -1,3 +1,4 @@
+import LandModel from "../lands/LandModel";
 import LandTokenIdModel from "../lands/LandTokenIdModel";
 import OwnerUserTokenIdModel from "../lands/OwnerUserTokenIdModel";
 import PeriodTypeModel from "./PeriodTypeModel";
@@ -14,7 +15,7 @@ export default class LandRentResponseModel {
     public endDate: Date = new Date();
     public lastPayment: Date = new Date();
     public isDelete: boolean = Boolean();
-    public landTokenId:LandTokenIdModel = new LandTokenIdModel()
+    public landTokenId:LandModel = new LandModel()
     public rentType: RentTypeModel = new RentTypeModel()
     public periodType: PeriodTypeModel = new PeriodTypeModel()
     public renterTokenId: OwnerUserTokenIdModel = new OwnerUserTokenIdModel()

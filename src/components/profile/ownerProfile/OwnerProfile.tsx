@@ -43,6 +43,7 @@ export default observer(function Profile({ }: Props) {
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
     const [ownedLandRent, setownedLandRent] = useState<Array<LandRentResponseModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
+    const [selectedLandRent, setselectedLandRent] = useState<LandRentResponseModel>(new LandRentResponseModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
     const [transactions, setTransactions] = useState<Array<TransactionsResponseModel>>([])
     const history = useHistory()
@@ -52,6 +53,11 @@ export default observer(function Profile({ }: Props) {
     useEffect(() => {
         getDataFromAPI()
     }, [])
+
+    function test (value: boolean) {
+        console.log(value);
+        setIsShowModalDetailRenting(value)
+    }
 
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
@@ -182,8 +188,9 @@ export default observer(function Profile({ }: Props) {
                         allLands={ownedLand}
                         allLandRent={ownedLandRent}
                         setselectedLand={setselectedLand}
+                        setselectedLandRent={setselectedLandRent}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
-                        setIsShowModalDetailRenting={setIsShowModalDetailRenting}
+                        setIsShowModalDetailRenting={test}
                         setIsShowModalOfferList={setIsShowModalOfferList}
                     />
                 </div>
