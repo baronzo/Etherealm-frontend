@@ -34,25 +34,25 @@ export default function Market() {
     setIsTab(isTab)
   }
 
-  function setLoading(loading: boolean, index: number): void {
-    let newLand: Array<LandMarketModel> = [...landsMarket]
-    newLand[index].isLoading = loading
-    newLand.forEach((item: LandMarketModel, loopIndex: number) => {
+  function setSellLoading(loading: boolean, index: number): void {
+    let newLand: LandMarketPaginateResponseModel = {...landsSell!}
+    newLand.data[index].isLoading = loading
+    newLand.data.forEach((item: LandMarketModel, loopIndex: number) => {
       item.isActive = loopIndex === index ? true : false
     })
-    setLandsMarket(newLand)
+    setLandsSell(newLand)
   }
 
   async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
-    setLoading(true, index)
+    setSellLoading(true, index)
     e.stopPropagation()
     if(authStore.account.userTokenId !== landsMarket[index].ownerUserTokenId.userTokenId) {
       const isSuccess: boolean = await contractStore.buyLand(landsMarket[index].landTokenId.landTokenId, landsMarket[index].ownerUserTokenId.userTokenId, landsMarket[index].price)
       if (isSuccess) {
-        getLandOnMarketFromAPI()
+        await getLandSellOnMarketByMarketType()
       }
     }
-    setLoading(false, index)
+    setSellLoading(false, index)
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
@@ -74,6 +74,10 @@ export default function Market() {
       marketType: 1
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
+    result.data.forEach(item => {
+      item.isActive = item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? false : true
+      item.isLoading = false
+    })
     setLandsSell(result)
   }
 
@@ -83,6 +87,10 @@ export default function Market() {
       marketType: 2
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
+    result.data.forEach(item => {
+      item.isActive = item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? false : true
+      item.isLoading = false
+    })
     setLandsRent(result)
   }
 
@@ -120,7 +128,7 @@ export default function Market() {
                   </div>
                     {!item.isLoading
                     ?
-                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
+                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? e.stopPropagation() : buyLandOnMarketFromApi(e, index)}>
                         { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                           ?
                             <>
