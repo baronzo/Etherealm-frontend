@@ -46,7 +46,6 @@ export default observer(function Profile({ }: Props) {
     const history = useHistory()
     const params: IParams = useParams()
     const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
-    const [isShowModalRentingOnRent, setIsShowModalRentingOnRent] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
@@ -183,15 +182,13 @@ export default observer(function Profile({ }: Props) {
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                         setIsShowModalOfferList={setIsShowModalOfferList}
-                        setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}
                     />
                 </div>
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
-                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting}/>}
+                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand}/>}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
                 {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer}/>}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
-                {isShowModalRentingOnRent && <ModalRentingOnRent setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}/>}
             </div>
         )
     }

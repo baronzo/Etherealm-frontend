@@ -32,8 +32,6 @@ export default function OthersProfile({ }: Props) {
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
     const offerService: OfferService = new OfferService()
-    const [isShowModalRentingOnRent, setIsShowModalRentingOnRent] = useState<boolean>(false)
-
     useEffect(() => {
         getDataFromAPI()
     }, [])
@@ -101,12 +99,10 @@ export default function OthersProfile({ }: Props) {
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                     fetchDetail={getDataFromAPI}
                     setIsShowModalOffer={setIsShowModalOffer}
-                    setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}
                 />
             </div>
             {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand} fetchOffer={getDataFromAPI}/>}
-            {isShowModalRentingOnRent && <ModalRentingOnRent setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}/>}
-            {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting}/>}
+            {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand}/>}
         </div>
     )
 }
