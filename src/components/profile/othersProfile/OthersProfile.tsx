@@ -13,6 +13,8 @@ import ModalOffer from '../../ModalOffer/ModalOffer'
 import CancelOfferLandRequestModel from '../../../models/offer/CancelOfferLandRequestModel'
 import OffersDataOfLandModel from '../../../models/offer/OffersDataOfLandModel'
 import OfferService from '../../../services/offer/OfferService'
+import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
+import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 
 interface IParams {
     userTokenId: string
@@ -30,6 +32,7 @@ export default function OthersProfile({ }: Props) {
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
     const offerService: OfferService = new OfferService()
+    const [isShowModalRentingOnRent, setIsShowModalRentingOnRent] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
@@ -98,9 +101,12 @@ export default function OthersProfile({ }: Props) {
                     setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                     fetchDetail={getDataFromAPI}
                     setIsShowModalOffer={setIsShowModalOffer}
+                    setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}
                 />
             </div>
             {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand} fetchOffer={getDataFromAPI}/>}
+            {isShowModalRentingOnRent && <ModalRentingOnRent setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}/>}
+            {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting}/>}
         </div>
     )
 }

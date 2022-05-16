@@ -20,6 +20,7 @@ type Props = {
     setselectedLand: (land: LandModel) => void;
     setIsShowModalOffer: (value: boolean) => void;
     fetchDetail: () => void;
+    setIsShowModalRentingOnRent: (value: boolean) => void
 };
 
 export default function ShowLandsOtherProfile(props: Props) {
@@ -330,16 +331,13 @@ export default function ShowLandsOtherProfile(props: Props) {
                                         <p className="location">X: 99, Y: 199</p>
                                     </div>
                                 </div>
-                                <div className="status-div">
-                                    <div className="view-detail">
-                                        <p className="button-text-detail">Land Detail</p>
-                                    </div>
-                                    <div className="list-to-market">
-                                        <p className="button-text-list">View on Market</p>
+                                <div className='status-div'>
+                                    <div className='view-detail'>
+                                        <p className='button-text-detail' onClick={() => { props.setIsShowModalRentingOnRent(true) }}>Land are renting Deatil</p>
                                     </div>
                                 </div>
-                                <div className="offer-div">
-                                    <p className="offer-text">Best Offer : 0.15 ETH</p>
+                                <div className='offer-div'>
+                                    <p className='offer-text'>Best Offer : 0.15 ETH</p>
                                 </div>
                             </div>
                         </div>
@@ -420,14 +418,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                                 </div>
                                 <div className="status-div">
                                     <div className="view-detail">
-                                        <p
-                                            className="button-text-detail"
-                                            onClick={() => {
-                                                props.setIsShowModalDetailRenting(true);
-                                            }}
-                                        >
-                                            Land are renting Deatil
-                                        </p>
+                                        <p className='button-text-detail' onClick={() => { props.setIsShowModalDetailRenting(true) }}>Land are renting Deatil</p>
                                     </div>
                                 </div>
                                 <div className="offer-div">

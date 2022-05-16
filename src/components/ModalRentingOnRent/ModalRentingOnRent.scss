@@ -1,0 +1,206 @@
+#ModalRentingOnRent {
+    position: fixed;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.534);
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    #detailBox {
+        width: 700px;
+        height: 410px;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0.5px 0.5px 3px 2px rgba(100, 100, 100, 0.25);
+        border-radius: 13px;
+        background-color: white;
+        #header {
+            display: flex;
+            background-color: #7645D9;
+            height: 55px;
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+            margin: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            .title-div {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                width: 90%;
+                .title-text {
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 0;
+                }
+            }
+            .close-div {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                width: 10%;
+                .close-icon {
+                    color: white;
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 0;
+                    &:hover {
+                        color: #c3b1e7;
+                        cursor: pointer;
+                    }
+                }
+            }
+            
+        }
+        #detailSectionOnRent {
+            display: flex;
+            padding: 20px;
+            margin: 0;
+            .image-section {
+                margin: 0;
+                padding: 0;
+                .land-image  {
+                    width: 280px;
+                    height: 280px;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 10px;
+                }
+                .land-name {
+                    display: flex;
+                    margin: 0;
+                    padding: 0;
+                    align-items: center;
+                    justify-content: center;
+                    .land-name-text {
+                        margin: 0 5px 0 0;
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: #7645D9;
+                    }
+                    .icon-info {
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #9A9A9A;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            .detail-section {
+                display: flex;
+                flex-direction: column;
+                width: 380px;
+                height: 280px;
+                margin: 0;
+                padding: 0 0 0 20px;
+                .land-detail {
+                    display: flex;
+                    flex-direction: column;
+                    height: 40%;
+                    margin: 0;
+                    padding: 0;
+                    .detail-item {
+                        display: flex;
+                        margin: 0;
+                        padding: 0;
+                        .detail-label {
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            width: 40%;
+                            margin: 0;
+                            padding: 0;
+                            .detail-label-text {
+                                margin: 0;
+                                font-size: 16px;
+                                font-weight: bold;
+                                color: #7645D9;
+                            }
+                        }
+                        .detail-value {
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            width: 60%;
+                            margin: 0;
+                            padding: 0;
+                            .detail-value-text {
+                                margin: 0;
+                                font-size: 16px;
+                                font-weight: normal;
+                                color: #787878;
+                            }
+                        }
+                    }
+                }
+                .receive-detail {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    height: 30%;
+                    margin: 0;
+                    padding: 0;
+                    .receive-item {
+                        display: flex;
+                        margin: 0;
+                        padding: 0;
+                        .receive-label {
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            width: 40%;
+                            margin: 0;
+                            padding: 0;
+                            .receive-label-text {
+                                margin: 0;
+                                font-size: 16px;
+                                font-weight: bold;
+                                color: black;
+                            }
+                        }
+                        .receive-value {
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            width: 60%;
+                            margin: 0;
+                            padding: 0;
+                            .receive-value-text {
+                                margin: 0;
+                                font-size: 16px;
+                                font-weight: normal;
+                                color: #787878;
+                            }
+                        }
+                    }
+                }
+                .log {
+                    display: flex;
+                    align-items: flex-end;
+                    height: 70%;
+                    .log-container {
+                        width: 100%;
+                        height: 100%;
+                        border: 1px solid #E5E5E5;
+                        background-color: #F6F6F6;
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -21,6 +21,7 @@ import TransactionService from '../../../services/notification/TransactionServic
 import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
 import ModalOfferList from '../../ModalOfferList/ModalOfferList'
 import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
+import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
 
 interface IParams {
     userTokenId: string
@@ -45,6 +46,7 @@ export default observer(function Profile({ }: Props) {
     const history = useHistory()
     const params: IParams = useParams()
     const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
+    const [isShowModalRentingOnRent, setIsShowModalRentingOnRent] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
@@ -181,6 +183,7 @@ export default observer(function Profile({ }: Props) {
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                         setIsShowModalOfferList={setIsShowModalOfferList}
+                        setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}
                     />
                 </div>
                 {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
@@ -188,6 +191,7 @@ export default observer(function Profile({ }: Props) {
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
                 {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer}/>}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
+                {isShowModalRentingOnRent && <ModalRentingOnRent setIsShowModalRentingOnRent={setIsShowModalRentingOnRent}/>}
             </div>
         )
     }
