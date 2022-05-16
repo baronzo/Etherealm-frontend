@@ -166,6 +166,7 @@ export default function Market() {
                         <p className='owner-wallet'>{item.landTokenId.landTokenId}</p>
                       </div>
                     </div>
+                    {console.log(item)}
                       {!item.isLoading
                       ?
                         <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
@@ -199,7 +200,7 @@ export default function Market() {
       <div className='pagination-container'>
         <div className='pagination'></div>
       </div>
-      {/* {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>} */}
+      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>}
     </div>
   )
 }
