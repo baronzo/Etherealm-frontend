@@ -188,6 +188,8 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Land Rent</p>
                     </div>
                     <div className='show-my-land'>
+                    {data.map((item: LandModel) => {
+                        return(
                         <div className='land-card'>
                             <div className='land-image-div'>
                                 <img className='land-image' src="/map.jpg" alt="" />
@@ -212,6 +214,8 @@ export default function ShowLands(props: Props) {
                                 </div>
                             </div>
                         </div>
+                        )
+                    })}
                     </div>
                 </div>
             </>
@@ -261,7 +265,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landPeopleAreRenting(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 7)
+        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -269,6 +273,8 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>People are Renting</p>
                     </div>
                     <div className='show-my-land'>
+                    {data.map((item: LandModel) => {
+                        return(
                         <div className='land-card'>
                             <div className='land-image-div'>
                                 <img className='land-image' src="/map.jpg" alt="" />
@@ -293,6 +299,8 @@ export default function ShowLands(props: Props) {
                                 </div>
                             </div>
                         </div>
+                        )
+                    })}
                     </div>
                 </div>
             </>
