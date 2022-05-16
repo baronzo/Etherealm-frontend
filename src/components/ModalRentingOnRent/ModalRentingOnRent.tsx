@@ -1,25 +1,25 @@
 import React from 'react'
-import './ModalRentingDetail.scss'
+import './ModalRentingOnRent.scss'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 
 type Props = {
-    setIsShowModalDetailRenting: (value: boolean) => void
+    setIsShowModalRentingOnRent: (value: boolean) => void
 }
 
-export default function ModalRentingDetail({ setIsShowModalDetailRenting }: Props) {
+export default function ModalRentingOnRent({ setIsShowModalRentingOnRent }: Props) {
     return (
-        <div id='modalRentindDetail'>
+        <div id='ModalRentingOnRent'>
             <div id="detailBox">
                 <div id="header">
                     <div className='title-div'>
                         <p className="title-text">Renting Details</p>
                     </div>
                     <div className='close-div'>
-                        <MdClose className='close-icon' onClick={() => setIsShowModalDetailRenting(false)} />
+                        <MdClose className='close-icon' onClick={() => setIsShowModalRentingOnRent(false)} />
                     </div>
                 </div>
-                <div id="detailSection">
+                <div id="detailSectionOnRent">
                     <div className="image-section">
                         <img className='land-image' src="/map.jpg" alt="" />
                         <div className='land-name'>
@@ -48,20 +48,6 @@ export default function ModalRentingDetail({ setIsShowModalDetailRenting }: Prop
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
                                 <div className='detail-value'><p className='detail-value-text'>6 Month 10 day</p></div>
-                            </div>
-                        </div>
-                        <div className='receive-detail'>
-                            <div className='receive-item'>
-                                <div className='receive-label'><p className='receive-label-text'>Total receive</p></div>
-                                <div className='receive-value'><p className='receive-value-text'>0.000000003 ETH</p></div>
-                            </div>
-                            <div className='receive-item'>
-                                <div className='receive-label'><p className='receive-label-text'>Total fee</p></div>
-                                <div className='receive-value'><p className='receive-value-text'>0.00000000000001 ETH</p></div>
-                            </div>
-                            <div className='receive-item'>
-                                <div className='receive-label'><p className='receive-label-text'>Net amount</p></div>
-                                <div className='receive-value'><p className='receive-value-text'>0.00000000299999 ETH</p></div>
                             </div>
                         </div>
                         <div className='log'>
