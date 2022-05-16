@@ -22,6 +22,7 @@ import TransactionsResponseModel from '../../../models/notifications/Transaction
 import ModalOfferList from '../../ModalOfferList/ModalOfferList'
 import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
 import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
+import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
 
 interface IParams {
     userTokenId: string
@@ -40,6 +41,7 @@ export default observer(function Profile({ }: Props) {
     const userService: UserService = new UserService()
     const transactionService: TransactionService = new TransactionService()
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+    const [ownedLandRent, setownedLandRent] = useState<Array<LandRentResponseModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [notifications, setNotifications] = useState<Array<NotificationsResponseModel>>([])
     const [transactions, setTransactions] = useState<Array<TransactionsResponseModel>>([])
@@ -178,6 +180,7 @@ export default observer(function Profile({ }: Props) {
                 <div className='my-land'>
                     <ShowLands
                         allLands={ownedLand}
+                        allLandRent={ownedLandRent}
                         setselectedLand={setselectedLand}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}

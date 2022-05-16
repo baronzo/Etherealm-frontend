@@ -10,6 +10,7 @@ import './ShowLands.scss'
 
 type Props = {
     allLands: Array<LandModel>
+    allLandRent: Array<LandRentResponseModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
     setIsShowModalOfferList: (value: boolean) => void;
@@ -32,7 +33,6 @@ export default function ShowLands(props: Props) {
 
     async function getDataFromAPI(): Promise<void> {
         await getRentLandByRenterTokenId()
-        console.log(ownedRentLand);
     }
 
     const [ownedRentLand, setownedRentLand] = useState<Array<LandRentResponseModel>>([])
@@ -204,6 +204,7 @@ export default function ShowLands(props: Props) {
 
     function landRent(): JSX.Element {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
+        const dataRent: Array<LandRentResponseModel> = props.allLandRent
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -211,20 +212,20 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Land Rent</p>
                     </div>
                     <div className='show-my-land'>
-                    {data.map((item: LandModel) => {
+                    {dataRent.map((item: LandRentResponseModel) => {
                         return(
                         <div className='land-card'>
                             <div className='land-image-div'>
-                                <img className='land-image' src="/map.jpg" alt="" />
+                                <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                             </div>
                             <div className='land-detail'>
                                 <div className='name-location'>
                                     <div className='land-name'>
-                                        <p className='land-name-text'>LAND (99, 199)</p>
+                                        <p className='land-name-text'>{item.landTokenId.landName}</p>
                                     </div>
                                     <div className='location-div'>
                                         <MdLocationOn className='location-icon' />
-                                        <p className='location'>X: 99, Y: 199</p>
+                                        <p className='location'>X: {item.landTokenId.landLocation.split(',')[0]}, Y: {item.landTokenId.landLocation.split(',')[1]}</p>
                                     </div>
                                 </div>
                                 <div className='status-div'>
@@ -233,7 +234,7 @@ export default function ShowLands(props: Props) {
                                     </div>
                                 </div>
                                 <div className='offer-div'>
-                                    <p className='offer-text'>Best Offer : 0.15 ETH</p>
+                                    <p className='offer-text'>Price : {item.price} ETH/{item.rentType.rentTypeText}</p>
                                 </div>
                             </div>
                         </div>
