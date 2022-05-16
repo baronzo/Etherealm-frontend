@@ -1,4 +1,4 @@
 export default class ReactSelectOptionModel {
-    public value: string = String()
-    public label: string = String()
+    public value: number | undefined = Number()
+    public label: string | undefined = String()
 }

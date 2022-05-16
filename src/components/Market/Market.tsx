@@ -10,6 +10,8 @@ import authStore from '../../store/auth'
 import { useHistory } from 'react-router-dom'
 import ContractStore from '../../store/contract'
 import ModalRenting from '../ModalRenting/ModalRenting'
+import LandMarketPaginateRequestModel from '../../models/market/LandMarketPaginateRequestModel'
+import LandMarketPaginateResponseModel from '../../models/market/LandMarketPaginateResponseModel'
 
 export default function Market() {
   const contractStore = useMemo(() => new ContractStore, [])
@@ -18,9 +20,13 @@ export default function Market() {
   const [landsMarket, setLandsMarket] = useState<Array<LandMarketModel>>([])
   const [isShowModalRenting, setIsShowModalRenting] = useState<boolean>(true)
   const history = useHistory()
+  const [landsRent, setLandsRent] = useState<LandMarketPaginateResponseModel>()
+  const [landsSell, setLandsSell] = useState<LandMarketPaginateResponseModel>()
 
   useEffect(() => {
     getLandOnMarketFromAPI()
+    getLandRentOnMarketByMarketType()
+    getLandSellOnMarketByMarketType()
   }, [])
 
 
@@ -62,6 +68,24 @@ export default function Market() {
     history.push(`/lands/${landToketId}/details`)
   }
 
+  async function getLandSellOnMarketByMarketType(): Promise<void> {
+    const body: LandMarketPaginateRequestModel = {
+      page: 1,
+      marketType: 1
+    }
+    const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
+    setLandsSell(result)
+  }
+
+  async function getLandRentOnMarketByMarketType(): Promise<void> {
+    const body: LandMarketPaginateRequestModel = {
+      page: 1,
+      marketType: 2
+    }
+    const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
+    setLandsRent(result)
+  }
+
   return (
     <div id='market'>
       <div id="menu">
@@ -75,7 +99,7 @@ export default function Market() {
           <p className='topic-text'>NFTs Lands</p>
         </div>
         <div className='market-land-container'>
-          {isTab && landsMarket.map((item: LandMarketModel, index:number) => {
+          {isTab && landsSell?.data.map((item: LandMarketModel, index:number) => {
             return(
               <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                 <div className='land-image-div'>
@@ -123,7 +147,7 @@ export default function Market() {
             )
           })}
           {
-            !isTab && landsMarket.map((item: LandMarketModel, index:number) => {
+            !isTab && landsRent?.data.map((item: LandMarketModel, index:number) => {
               return(
                 <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                   <div className='land-image-div'>

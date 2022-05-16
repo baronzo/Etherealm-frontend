@@ -245,12 +245,12 @@ export default function LandDetail() {
                     <p className='text-price'>Payable {landDetails.price} eth/month</p>
                   </div>
                 }
-                {isOwner && isRenting && 
+                {/* {isOwner && isRenting && 
                   <div className='payable'>
                     <p className='text-price'>Payable {landDetails.price} eth/month (Next payment 19/05/2022)</p>
                     <button className="button-payable">Pay {landDetails.price} ETH</button>
                   </div>
-                }
+                } */}
               </div>
             </div>
           </div>
