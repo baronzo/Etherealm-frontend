@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
 import LandMarketModel from "../../models/market/LandMarketModel";
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel";
 import RentService from "../../services/rent/RentService";
+import ContractStore from "../../store/contract";
 import "./ModalRenting.scss";
 
 type Props = {
@@ -18,6 +19,7 @@ interface Options {
 }
 
 export default function ModalRenting(props: Props) {
+  const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [rentingType, setRentingType] = useState<number>(1);
   const [peroid, setPeroid] = useState<number>(1)
@@ -50,21 +52,24 @@ export default function ModalRenting(props: Props) {
 
   async function confirmRenting() {
     setisLoading(true)
-    const body: AddLandRentRequestModel = {
-      landTokenId: props.landDetails.landTokenId.landTokenId,
-      rentType: props.landDetails.rentType.rentTypeId!,
-      periodType: rentingType,
-      period: peroid,
-      price: props.landDetails.price,
-      hash: '0x9f526330448a8343a39969b0635ec589b3e7be46c4e9896856f5614c13c6041e'
+    const hash: string = await contractStore.transferEther(props.landDetails.ownerUserTokenId.userTokenId, props.landDetails.price)
+    if (hash) {
+      const body: AddLandRentRequestModel = {
+        landTokenId: props.landDetails.landTokenId.landTokenId,
+        rentType: props.landDetails.rentType.rentTypeId!,
+        periodType: rentingType,
+        period: peroid,
+        price: props.landDetails.price,
+        hash: hash
+      }
+      const result = await rentService.confirmRenting(body)
+      if (result) {
+        props.fetchDetail()
+        props.setIsShowModalHirePurchase(false)
+        setisLoading(false)
+      }
     }
-    const result = await rentService.confirmRenting(body)
-    console.log(result)
-    setTimeout(() => {
-      setisLoading(false)
-      props.fetchDetail()
-      props.setIsShowModalHirePurchase(false)
-    }, 2000)  
+    
   }
 
   return (
