@@ -118,6 +118,12 @@ class ContractStore {
     return receipt[0]
   }
 
+  @action
+  public async transferEther(toUserTokenId: string, price: number): Promise<string> {
+    const tx = await this.contract.transferEther(toUserTokenId, {value: ethers.utils.parseEther(String(price))})
+    return tx.hash
+  }
+
   private async updateUserPoints(): Promise<void> {
     const points: number = await this.getPoint(authStore.account.userTokenId)
     authStore.setPoint(points)
