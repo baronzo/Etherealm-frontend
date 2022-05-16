@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { Redirect, useHistory } from 'react-router-dom'
 import LandModel from '../../../models/lands/LandModel'
 import ActiveFillterStatusModel from '../../../models/showLand/ActiveFillterStatusModel'
+import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
+import RentService from '../../../services/rent/RentService'
+import authStore from '../../../store/auth'
 import './ShowLands.scss'
 
 type Props = {
@@ -23,6 +26,23 @@ export default function ShowLands(props: Props) {
         landRentPurchase: false,
         landPeopleAreRenting: false
     })
+
+    useEffect(() => {
+        getDataFromAPI()
+    }, [])
+
+    async function getDataFromAPI(): Promise<void> {
+        await getRentLandByRenterTokenId()
+        console.log(ownedRentLand);
+    }
+
+    const [ownedRentLand, setownedRentLand] = useState<Array<LandRentResponseModel>>([])
+    const rentService: RentService = new RentService()
+
+    async function getRentLandByRenterTokenId(): Promise<void> {
+        const result: Array<LandRentResponseModel> = await rentService.getRentLandByRenterTokenId(authStore.account.userTokenId)
+        setownedRentLand(result)
+    }
 
     const history = useHistory()
 
