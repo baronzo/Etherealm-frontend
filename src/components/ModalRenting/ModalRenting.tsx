@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
 import LandMarketModel from "../../models/market/LandMarketModel";
+import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel";
+import RentService from "../../services/rent/RentService";
 import "./ModalRenting.scss";
 
 type Props = {
   landDetails: LandMarketModel;
   setIsShowModalHirePurchase: (value: boolean) => void;
+  fetchDetail: () => void
 };
 
 interface Options {
@@ -18,6 +21,7 @@ export default function ModalRenting(props: Props) {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [rentingType, setRentingType] = useState<number>(1);
   const [peroid, setPeroid] = useState<number>(1)
+  const rentService: RentService = new RentService
 
   useEffect(() => {
     console.log(rentingType)
@@ -43,6 +47,25 @@ export default function ModalRenting(props: Props) {
     { value: 11, label: '11' },
     { value: 12, label: '12' }
   ]
+
+  async function confirmRenting() {
+    setisLoading(true)
+    const body: AddLandRentRequestModel = {
+      landTokenId: props.landDetails.landTokenId.landTokenId,
+      rentType: props.landDetails.rentType.rentTypeId!,
+      periodType: rentingType,
+      period: peroid,
+      price: props.landDetails.price,
+      hash: '0x9f526330448a8343a39969b0635ec589b3e7be46c4e9896856f5614c13c6041e'
+    }
+    const result = await rentService.confirmRenting(body)
+    console.log(result)
+    setTimeout(() => {
+      setisLoading(false)
+      props.fetchDetail()
+      props.setIsShowModalHirePurchase(false)
+    }, 2000)  
+  }
 
   return (
     <div id="renting">
@@ -103,10 +126,10 @@ export default function ModalRenting(props: Props) {
           </div>
         </div>
         <div className="checkbox">
-          <div className="checkbox-div">
+          {/* <div className="checkbox-div">
             <input className="checkbox-icon" type="checkbox" />
             <p className="accept">Auto Re-renting on market</p>
-          </div>
+          </div> */}
           <div className="checkbox-div">
             <input className="checkbox-icon" type="checkbox" />
             <p className="accept">Accept the terms of use</p>
@@ -114,8 +137,8 @@ export default function ModalRenting(props: Props) {
         </div>
         <div className="button-save-div">
           {!isLoading ? (
-            <button className="button-save" onClick={() => {}}>
-              Confirm Renting (0.005 ETH/Month)
+            <button className="button-save" onClick={confirmRenting}>
+              Confirm Renting {props.landDetails.price} ETH/{props.landDetails.rentType.rentTypeText}
             </button>
           ) : (
             <button className="button-save">
