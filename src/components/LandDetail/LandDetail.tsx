@@ -152,7 +152,7 @@ export default function LandDetail() {
             <BiArrowBack className="icon-back" onClick={history.goBack} />
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
-              {isOwner && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
+              {isOwner && landDetails.landStatus.landStatusId !== 3 || landDetails.landStatus.landStatusId !== 4 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
               {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
@@ -209,12 +209,9 @@ export default function LandDetail() {
                       :
                       <>
                         {!isCancelLoading ?
-                          (
-                            <button className='cancel-offer' onClick={() => cancelOffering(landDetails.landTokenId)}>Cancel Offering</button>)
+                          (<button className='cancel-offer' onClick={() => cancelOffering(landDetails.landTokenId)}>Cancel Offering</button>)
                           :
-                          (
-                            <button className="cancel-offer"><i className="fas fa-spinner fa-spin"></i></button>
-                          )
+                          (<button className="cancel-offer"><i className="fas fa-spinner fa-spin"></i></button>)
                         }
                       </>
                     }
@@ -225,7 +222,7 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
                     <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
-                    {!isLoading ?
+                    {!isLoading ? 
                       <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
                       :
                       <button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>
@@ -237,7 +234,11 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 4 && 
                   <div className='cancel-rent'>
                     <p className='text-price'>Listed on market for {landDetails.price} eth/month</p>
-                    <button className="button-cancel-land">Cancel Listing</button>
+                    {!isLoading ?
+                      (<button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>)
+                      :
+                      (<button className="button-cancel-land"><i className="fas fa-spinner fa-spin"></i></button>)
+                    }
                   </div>
                 }
                 {!isOwner && landDetails.landStatus.landStatusId === 4 && 
