@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel"
+import RentingDetailsModel from "../../models/rent/RentingDetailsModel"
 import Host from "../Host"
 
 class RentService {
@@ -9,6 +10,12 @@ class RentService {
     let response = await axios.post(`${this.host}/market/lands/rent`, bodyRequest)
     return response.data
   }
+
+  public async getRentingDetailsByLandTokenId(landTokenId: string): Promise<RentingDetailsModel> {
+    let rentingResponse: AxiosResponse<RentingDetailsModel> = await axios.get(`${this.host}/lands/rent/details/${landTokenId}`)
+    return rentingResponse.data
+  }
+
 }
 
 export default RentService

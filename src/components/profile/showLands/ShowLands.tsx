@@ -9,7 +9,6 @@ type Props = {
     allLands: Array<LandModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
-    setIsShowModalRentingOnRent: (value: boolean) => void
     setIsShowModalOfferList: (value: boolean) => void;
     setselectedLand: (land: LandModel) => void
 }
@@ -208,7 +207,7 @@ export default function ShowLands(props: Props) {
                                 </div>
                                 <div className='status-div'>
                                     <div className='view-detail'>
-                                        <p className='button-text-detail' onClick={() => { props.setIsShowModalRentingOnRent(true) }}>Land are renting Deatil</p>
+                                        <p className='button-text-detail' onClick={() => props.setIsShowModalDetailRenting(true)}>Land are renting Deatil</p>
                                     </div>
                                 </div>
                                 <div className='offer-div'>
