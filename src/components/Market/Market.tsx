@@ -18,10 +18,11 @@ export default function Market() {
   const [isTab, setIsTab] = useState<boolean>(true)
   const landMarketService: LandMarketService = new LandMarketService()
   const [landsMarket, setLandsMarket] = useState<Array<LandMarketModel>>([])
-  const [isShowModalRenting, setIsShowModalRenting] = useState<boolean>(true)
+  const [isShowModalRenting, setIsShowModalRenting] = useState<boolean>(false)
   const history = useHistory()
   const [landsRent, setLandsRent] = useState<LandMarketPaginateResponseModel>()
   const [landsSell, setLandsSell] = useState<LandMarketPaginateResponseModel>()
+  const [selectedRentLand, setSelectedRentLand] = useState<LandMarketModel>()
 
   useEffect(() => {
     getLandOnMarketFromAPI()
@@ -92,6 +93,12 @@ export default function Market() {
       item.isLoading = false
     })
     setLandsRent(result)
+  }
+
+  function onClickRent(e: React.MouseEvent<HTMLDivElement>, item: LandMarketModel) {
+    e.stopPropagation()
+    setIsShowModalRenting(true)
+    setSelectedRentLand(item)
   }
 
   return (
@@ -177,7 +184,7 @@ export default function Market() {
                     {console.log(item)}
                       {!item.isLoading
                       ?
-                        <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)}>
+                        <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? e.stopPropagation() : onClickRent(e, item) }>
                           { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                             ?
                               <>
@@ -187,7 +194,7 @@ export default function Market() {
                             :
                             <>
                               <i className="fab fa-ethereum icon"></i>
-                              <div className='button-buy'>Rent 0.5 eth/month</div>
+                              <div className='button-buy'>Rent {item.price} eth/{item.rentType.rentTypeText}</div>
                             </>
                               
                           }
@@ -208,7 +215,7 @@ export default function Market() {
       <div className='pagination-container'>
         <div className='pagination'></div>
       </div>
-      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={landsMarket[0]}/>}
+      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={selectedRentLand!} fetchDetail={getLandRentOnMarketByMarketType} />}
     </div>
   )
 }
