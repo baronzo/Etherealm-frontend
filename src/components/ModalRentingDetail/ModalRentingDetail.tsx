@@ -86,11 +86,11 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Rental start date</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.startDate}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{new Date(rentingDetails.startDate).toLocaleString().replace(',', '')}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Rental end date</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.endDate}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{new Date(rentingDetails.endDate).toLocaleString().replace(',', '')}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Period</p></div>
