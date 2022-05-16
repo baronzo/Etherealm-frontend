@@ -267,6 +267,19 @@
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "transferEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "from",
 				"type": "address"
 			},
