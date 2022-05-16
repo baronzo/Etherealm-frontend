@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel"
+import LandRentResponseModel from "../../models/rent/LandRentResponseModel"
 import RentingDetailsModel from "../../models/rent/RentingDetailsModel"
 import Host from "../Host"
 
@@ -9,6 +10,10 @@ class RentService {
   public async confirmRenting(bodyRequest: AddLandRentRequestModel) {
     let response = await axios.post(`${this.host}/lands/rent`, bodyRequest)
     return response.data
+  }
+  public async getRentLandByRenterTokenId(userTokenId: string): Promise<Array<LandRentResponseModel>> {
+    let RentLandresponse: AxiosResponse<Array<LandRentResponseModel>> = await axios.get(`${this.host}/lands/rent/owned?renterTokenId=${userTokenId}`)
+    return RentLandresponse.data;
   }
 
   public async getRentingDetailsByLandTokenId(landTokenId: string): Promise<RentingDetailsModel> {

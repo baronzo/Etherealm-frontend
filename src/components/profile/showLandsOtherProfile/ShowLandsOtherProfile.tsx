@@ -422,7 +422,7 @@ export default function ShowLandsOtherProfile(props: Props) {
 
   function landPeopleAreRenting(): JSX.Element {
     const data: Array<LandModel> = props.allLands.filter(
-      (item) => item.landStatus.landStatusId === 7
+      (item) => item.landStatus.landStatusId === 5
     );
     return (
       <>
