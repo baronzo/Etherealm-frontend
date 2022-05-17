@@ -14,8 +14,10 @@ import ButtonStatusModel from "../../models/offer/ButtonStatusModel";
 import OffersDataOfLandModel from "../../models/offer/OffersDataOfLandModel";
 import OffersLandRequestModel from "../../models/offer/OffersLandRequestModel";
 import OffersLandResponseModel from "../../models/offer/OffersLandResponseModel";
+import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
 import OfferService from "../../services/offer/OfferService";
 import ContractStore from "../../store/contract";
+import Select from 'react-select'
 import "./ModalOfferList.scss";
 
 type Props = {
@@ -31,16 +33,23 @@ export default function ModalOfferList(props: Props) {
   const [sortByValue, setSortByValue] = useState<number>(1)
   const [buttonStatus, setButtonStatus] = useState<Array<ButtonStatusModel>>(new Array<ButtonStatusModel>())
   const history = useHistory();
+  const [optionSortBy, setOptionSortBy] = useState<Array<ReactSelectOptionModel>>([
+    { value: 1, label: 'Latest'  },
+    { value: 2, label: 'Oldest' },
+    { value: 3, label: 'Highest price' },
+    { value: 4, label: 'Lowest price' },
+  ])
+  const [sortBy, setSortBy] = useState<ReactSelectOptionModel>({ value: 1, label: 'Latest'  })
 
   useEffect(() => {
     getOfferForThisLand();
-  }, [sortByValue]);
+  }, [sortBy?.value]);
 
   const getOfferForThisLand = async (): Promise<void> => {
     const bodyOffersRequest: OffersLandRequestModel = {
       landTokenId: props.land.landTokenId,
       page: 1,
-      sortBy: sortByValue,
+      sortBy: sortBy?.value!,
     };
     const offersLandResponse: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(bodyOffersRequest);
     console.log(offersLandResponse.data)
@@ -125,6 +134,25 @@ export default function ModalOfferList(props: Props) {
     navigator.clipboard.writeText(userTokenId)
   }
 
+  const mapSortByToOption = ():Array<ReactSelectOptionModel> => {
+    const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
+    optionSortBy.forEach((sort) => {
+        const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
+        reactSelectOption.label = sort.label
+        reactSelectOption.value = sort.value
+        options.push(reactSelectOption)
+    })
+    return options
+  }
+
+  const mapEventSortByToOption = (e:ReactSelectOptionModel): void => {
+    const reactSelectOption: ReactSelectOptionModel = e
+    let sortBy = new ReactSelectOptionModel
+    sortBy!.label = reactSelectOption.label
+    sortBy!.value = reactSelectOption.value
+    setSortBy(sortBy)
+  }
+
   return (
     <div id="modalOfferList">
       <div id="offerBox">
@@ -139,15 +167,7 @@ export default function ModalOfferList(props: Props) {
         </div>
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
-          <select className=" select-fillter"
-            value={sortByValue}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
-          >
-            <option value="1">Latest</option>
-            <option value="2">Oldest</option>
-            <option value="3">High offer price</option>
-            <option value="4">Low offer price</option>
-          </select>
+          <Select id="selectSort" options={mapSortByToOption()} onChange={(e) => mapEventSortByToOption(e as ReactSelectOptionModel)} />
         </div>
         <div className="show-offer-list">
           {offerlist.map((item: OffersDataOfLandModel, index: number) => {

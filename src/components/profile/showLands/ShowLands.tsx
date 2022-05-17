@@ -179,14 +179,15 @@ export default function ShowLands(props: Props) {
                                                 <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
                                             </div>
                                         </div>
+                                        <div className="land-description">{item.landDescription}</div>
                                         <div className='status-div'>
                                             <div className='go-to-market' onClick={(e) => goToMarketPage(e)}>
                                                 <p className='button-text'>View on Market</p>
                                             </div>
                                         </div>
-                                        <div className='offer-div'>
+                                        {/* <div className='offer-div'>
                                             <p className='offer-text'></p>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             )
@@ -225,13 +226,14 @@ export default function ShowLands(props: Props) {
                                                 <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
                                             </div>
                                         </div>
+                                        <div className="land-description">{item.landDescription}</div>
                                         <div className='status-div'>
                                             <div className='go-to-market' onClick={(e) => goToMarketPage(e)}>
                                                 <p className='button-text' >View on Market</p>
                                             </div>
                                         </div>
-                                        <div className='offer-div'>
-                                        </div>
+                                        {/* <div className='offer-div'>
+                                        </div> */}
                                     </div>
                                 </div>
                             )

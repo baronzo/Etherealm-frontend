@@ -14,7 +14,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #7645D9;
+      background-color: #8a5ae9;
       color: #ffffff;
       cursor: pointer;
       margin-left: 5px;
@@ -23,13 +23,13 @@
         margin-left: 0;
       }
       &:hover, &.active {
-        background-color: #6933d4;
+        background-color: #41109b;
       }
       &.active {
         cursor: default;
       }
       &.disable {
-        background-color: #8e6dcf;
+        background-color: #9d84ce;
         cursor: no-drop;
       }
       &.hidden {
