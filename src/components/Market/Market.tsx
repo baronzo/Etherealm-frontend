@@ -209,7 +209,7 @@ export default function Market() {
                             :
                             <>
                               <i className="fab fa-ethereum icon"></i>
-                              <div className='button-buy'>Rent {item.price} eth/{item.rentType.rentTypeText}</div>
+                              <div className='button-buy'>Rent {item.price} ETH/{item.rentType.rentTypeText}</div>
                             </>
                               
                           }
