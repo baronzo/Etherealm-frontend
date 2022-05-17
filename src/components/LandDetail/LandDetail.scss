@@ -76,6 +76,9 @@
           border-radius: 4px;
           width: 30px;
           height: 30px;
+          &:hover {
+            cursor: pointer;
+          }
           .icon-doc {
             color: #000;
             font-size: 16px

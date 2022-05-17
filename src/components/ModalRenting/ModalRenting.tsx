@@ -3,6 +3,8 @@ import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
 import LandMarketModel from "../../models/market/LandMarketModel";
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel";
+import LandMarketService from "../../services/market/LandMarketService";
+import Market from "../Market/Market";
 import RentTypeModel from "../../models/rent/RentTypeModel";
 import RentService from "../../services/rent/RentService";
 import ContractStore from "../../store/contract";
@@ -11,9 +13,9 @@ import "./ModalRenting.scss";
 import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
 
 type Props = {
-  landDetails: LandMarketModel;
-  setIsShowModalHirePurchase: (value: boolean) => void;
+  setIsShowModalRenting: (value: boolean) => void;
   fetchDetail: () => void
+  land: LandMarketModel
 };
 
 interface Options {
@@ -28,10 +30,12 @@ export default function ModalRenting(props: Props) {
   const [period, setPeriod] = useState<Options>({ value: 3, label: '3'  })
   const rentService: RentService = new RentService
   const [isChecked, setIsChecked] = useState<boolean>(false)
+
   const [optionsPeroidType, setOptionsPeroidType] = useState<Array<Options>>([
     { value: 1, label: "Set time period" },
     { value: 2, label: "No time limit"},
   ])
+  
   const [optionsPeroid, setOptionsPeroid] = useState<Array<Options>>([
     { value: 3, label: '3'  },
     { value: 4, label: '4' },
@@ -47,20 +51,20 @@ export default function ModalRenting(props: Props) {
 
   async function confirmRenting() {
     setisLoading(true)
-    const hash: string = await contractStore.transferEther(props.landDetails.ownerUserTokenId.userTokenId, props.landDetails.price)
+    const hash: string = await contractStore.transferEther(props.land.ownerUserTokenId.userTokenId, props.land.price)
     if (hash) {
       const body: AddLandRentRequestModel = {
-        landTokenId: props.landDetails.landTokenId.landTokenId,
-        rentType: props.landDetails.rentType.rentTypeId!,
+        landTokenId: props.land.landTokenId.landTokenId,
+        rentType: props.land.rentType.rentTypeId!,
         periodType: periodType?.value!,
         period: period.value!,
-        price: props.landDetails.price,
+        price: props.land.price,
         hash: hash
       }
       const result = await rentService.confirmRenting(body)
       if (result) {
         props.fetchDetail()
-        props.setIsShowModalHirePurchase(false)
+        props.setIsShowModalRenting(false)
         setisLoading(false)
       }
     }
@@ -107,7 +111,7 @@ export default function ModalRenting(props: Props) {
     newPeriod!.label = reactSelectOption.label
     newPeriod!.value = reactSelectOption.value
     setPeriod(newPeriod)
-    if(props.landDetails.rentType.rentTypeId === 2) {
+    if(props.land.rentType.rentTypeId === 2) {
       let month = new ReactSelectOptionModel
       month.label = reactSelectOption.label
       month.value = reactSelectOption!.value! * 30
@@ -120,18 +124,18 @@ export default function ModalRenting(props: Props) {
       <div id="rentingBox">
         <div className="topic-label-div">
           <div className="topic">
-            <p className="topic-label-text">Hire Purchase</p>
+            <p className="topic-label-text">Renting</p>
           </div>
           <MdClose
             className="close-icon"
-            onClick={() => props.setIsShowModalHirePurchase(false)}
+            onClick={() => props.setIsShowModalRenting(false)}
           />
         </div>
         <div className="image-upload-or-link">
           <div className="image-div">
             <img className="image-profile" src={"/map.jpg"} alt="" />
           </div>
-          <p className="text-land-name">Land</p>
+          <p className="text-land-name">{props.land.landTokenId.landName}</p>
         </div>
         <div className="name-description">
           <div className="name-input-div">
@@ -140,7 +144,7 @@ export default function ModalRenting(props: Props) {
           </div>
           <div className="name-input-div">
             <p className="label-name">Peroid</p>
-            {console.log("rentType"+props.landDetails.rentType.rentTypeId+"period"+period.value)}
+            {console.log("rentType"+props.land.rentType.rentTypeId+"period"+period.value)}
             <Select options={mapPeriodToOption()} onChange={(e) => mapEventPeriodToOption(e as ReactSelectOptionModel) } isDisabled={periodType?.value === 2} />
           </div>
         </div>
@@ -157,7 +161,7 @@ export default function ModalRenting(props: Props) {
         <div className="button-save-div">
           {!isLoading ? (
             <button className="button-save" onClick={confirmRenting}>
-              Confirm Renting {props.landDetails.price} ETH/{props.landDetails.rentType.rentTypeText}
+              Confirm Renting {props.land.price} ETH/{props.land.rentType.rentTypeText}
             </button>
           ) : (
             <button className="button-save">
