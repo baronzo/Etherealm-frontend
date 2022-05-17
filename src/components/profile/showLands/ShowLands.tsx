@@ -56,6 +56,12 @@ export default function ShowLands(props: Props) {
         history.push(`/lands/${landTokenId}/details`)
     }
 
+    function onClickShowModalPeopleRening(selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>): void {
+        e.stopPropagation()
+        props.setselectedLand(selectedLand)
+        props.setIsShowModalDetailRenting(true)
+    }
+
     function onClickListOnMarket(selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>): void {
         e.stopPropagation()
         props.setselectedLand(selectedLand)
@@ -320,11 +326,11 @@ export default function ShowLands(props: Props) {
                                         </div>
                                         <div className='status-div'>
                                             <div className='view-detail'>
-                                                <p className='button-text-detail' onClick={() => { props.setIsShowModalDetailRenting(true) }}>Land are renting Deatil</p>
+                                                <p className='button-text-detail' onClick={(e) => onClickShowModalPeopleRening(item, e)}>Land are renting Deatil</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>{item.price}</p>
+                                            <p className='offer-text'>Price : {item.price} ETH/</p>
                                         </div>
                                     </div>
                                 </div>

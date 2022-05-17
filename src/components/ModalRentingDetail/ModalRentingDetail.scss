@@ -197,19 +197,26 @@
                         height: 100%;
                         border: 1px solid #E5E5E5;
                         background-color: #F6F6F6;
-                        border-radius: 10px;
+                        border-radius: 5px;
                         overflow-y: scroll;
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-start;
                         align-items: flex-start;
+                        padding: 7px;
                         .log-text {
                             margin: 0;
                             font-size: 11px;
                             font-weight: normal;
                             color: #737272;
+                            width: 320px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            margin: 0 5px 0 0;
                             &:hover {
                                 text-decoration: underline;
+                                cursor: pointer;
                             }
                         }
                     }
