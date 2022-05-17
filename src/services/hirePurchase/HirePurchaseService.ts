@@ -9,7 +9,7 @@ class HirePurchaseService {
   private readonly host: string = new Host().host
 
   public async getHirePurchaseDetail(landTokenId: string): Promise<HirePurchaseDetailResponseModel> {
-    let response: AxiosResponse<HirePurchaseDetailResponseModel> = await axios.get(`${this.host}lands/hire/details/${landTokenId}`)
+    let response: AxiosResponse<HirePurchaseDetailResponseModel> = await axios.get(`${this.host}/lands/hire/details/${landTokenId}`)
     return response.data
   }
 
