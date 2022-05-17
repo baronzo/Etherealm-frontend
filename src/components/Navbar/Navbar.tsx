@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { FaEthereum, FaCopy } from "react-icons/fa";
-import { MdControlPoint } from "react-icons/md";
+import { MdAttachMoney, MdControlPoint } from "react-icons/md";
 import { RiCoinFill } from "react-icons/ri";
 import "./Navbar.scss";
 import { observer } from "mobx-react";
 import ContractStore from "../../store/contract";
 import AccountModel from "../../models/auth/AccountModel";
 import authStore from "../../store/auth";
+import { BiTransferAlt } from "react-icons/bi";
 
 interface IProps { }
 
@@ -15,8 +16,11 @@ export default observer(function Navbar(props: IProps) {
   const contractStore = useMemo(() => new ContractStore(), []);
   const [isShowModalMenu, setIsShowModalMenu] = useState<boolean>(false);
   const [isShowAddPoint, setIsShowAddPoint] = useState<boolean>(false);
+  const [isShowWithdrawPoint, setisShowWithdrawPoint] = useState<boolean>(false)
   const [point, setpoint] = useState<number>(0.00001)
   const [isAddPointLoading, setisAddPointLoading] = useState<boolean>(false)
+  const [isWithDrawPointLoading, setisWithDrawPointLoading] = useState(false)
+  const [withdrawPoint, setwithdrawPoint] = useState(0.00001)
 
   const history = useHistory();
 
@@ -52,9 +56,33 @@ export default observer(function Navbar(props: IProps) {
     const isSuccess = await contractStore.depositPoints(point)
     if (isSuccess) {
       const result = await contractStore.getPoint(authStore.account.userTokenId)
+      await authStore.updateAccount()
       authStore.setPoint(result)
+      setIsShowAddPoint(false)
     }
     setisAddPointLoading(false)
+  }
+
+  async function onWithdrawPointClick(): Promise<void> {
+    setisWithDrawPointLoading(true)
+    const isSuccess = await contractStore.withdrawPoints(withdrawPoint)
+    if (isSuccess) {
+      const result = await contractStore.getPoint(authStore.account.userTokenId)
+      await authStore.updateAccount()
+      authStore.setPoint(result)
+      setisShowWithdrawPoint(false)
+    }
+    setisWithDrawPointLoading(false)
+  }
+
+  function onWithdrawIconClick(): void {
+    setisShowWithdrawPoint(!isShowWithdrawPoint)
+    setIsShowAddPoint(false)
+  }
+
+  function onAddPointIconClick(): void {
+    setisShowWithdrawPoint(false)
+    setIsShowAddPoint(!isShowAddPoint)
   }
 
   (window as any).ethereum.on("accountsChanged", onAccountChangeHandler);
@@ -104,7 +132,11 @@ export default observer(function Navbar(props: IProps) {
                 <p className="eth">ETH</p>
               </div>
               <div className="add-point">
-                <MdControlPoint className="add-point-icon" onClick={() => setIsShowAddPoint(!isShowAddPoint)}/>
+                <MdControlPoint className="add-point-icon" onClick={() => onAddPointIconClick()}/>
+              </div>
+              <div className="add-point">
+                {/* <i className="far fa-coins"></i> */}
+                <BiTransferAlt className="add-point-icon" onClick={() => onWithdrawIconClick()}/>
               </div>
               {isShowAddPoint && (
                 <div id="addPoint">
@@ -112,9 +144,21 @@ export default observer(function Navbar(props: IProps) {
                   <input type="number" className="input-point" value={point} onChange={event => setpoint(Number(event.target.value))} step={0.00001}/>
                   {!isAddPointLoading
                     ?
-                      <button className="add-point-button" onClick={onAddPointClick}>Add Point</button>
+                      <button className="add-point-button" onClick={onAddPointClick}>Deposit Point</button>
                     :
                       <button className={`add-point-button ${isAddPointLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
+                  }
+                </div>
+              )}
+              {isShowWithdrawPoint && (
+                <div id="addPoint">
+                  <p className="label">Points (ETH)</p>
+                  <input type="number" className="input-point" value={withdrawPoint} onChange={event => setwithdrawPoint(Number(event.target.value))} step={0.00001}/>
+                  {!isWithDrawPointLoading
+                    ?
+                      <button className="add-point-button withdraw" onClick={onWithdrawPointClick}>Withdraw Point</button>
+                    :
+                      <button className={`add-point-button withdraw ${isAddPointLoading ? 'disable' : ''}`}><i className="fas fa-spinner fa-spin"></i></button>
                   }
                 </div>
               )}

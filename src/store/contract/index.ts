@@ -119,6 +119,13 @@ class ContractStore {
   }
 
   @action
+  public async withdrawPoints(value: number): Promise<boolean> {
+    const tx = await this.contract.withdrawPoint(ethers.utils.parseEther(String(value)))
+    const receipt = await this.waitTransactionConfirm(tx)
+    return receipt[0]
+  }
+
+  @action
   public async transferEther(toUserTokenId: string, price: number): Promise<string> {
     const tx = await this.contract.transferEther(toUserTokenId, {value: ethers.utils.parseEther(String(price))})
     return tx.hash
