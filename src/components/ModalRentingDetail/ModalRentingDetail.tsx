@@ -94,7 +94,7 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Period</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.period} {rentingDetails.rentType.rentTypeText}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.rentType.rentTypeId === 1 ? rentingDetails.period : rentingDetails.period/30} {rentingDetails.rentType.rentTypeText}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
@@ -119,9 +119,9 @@ export default function ModalRentingDetail(props: Props) {
                         }
                         <div className='log'>
                             <div className='log-container'>
-                                {paymentHistories.map((item: PaymentHistoryModel) => {
+                                {paymentHistories.map((item: PaymentHistoryModel, index: number) => {
                                     return(
-                                        <p className='log-text' onClick={() => goToEtherScan(item.logTransactionsId.transactionBlock)}>{item.logTransactionsId.transactionBlock}</p>
+                                        <p className='log-text' key={index} onClick={() => goToEtherScan(item.logTransactionsId.transactionBlock)}>{item.logTransactionsId.transactionBlock}</p>
                                     )
                                 })}
                             </div>

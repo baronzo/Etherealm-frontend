@@ -59,6 +59,7 @@ export default function LandDetail() {
   const [isShowModalrenting, setIsShowModalrenting] = useState<boolean>(false)
   const [landDetailsForRenting, setLandDetailsForRenting] = useState<LandMarketModel>(new LandMarketModel())
   const marketService = new LandMarketService()
+  const [renter, setRenter] = useState<RentingDetailsModel>(new RentingDetailsModel)
 
   useEffect(() => {
     getDataFromApi()
@@ -76,6 +77,7 @@ export default function LandDetail() {
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
+    await getIsRenter(result.landTokenId)
   }
 
   async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
@@ -163,6 +165,11 @@ export default function LandDetail() {
       setLandDetailsForRenting(landResponse)
     }
   }
+  
+  async function getIsRenter(landTokenId: string): Promise<void> {
+    const result: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(landTokenId)
+    setRenter(result)
+  }
 
   return (
     <>
@@ -173,7 +180,7 @@ export default function LandDetail() {
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
               {isOwner && landDetails.landStatus.landStatusId === 2 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
-              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
+              {!isOwner && landDetails.landStatus.landStatusId === 5 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
@@ -267,12 +274,15 @@ export default function LandDetail() {
                     <button className="button-price-land" onClick={() => setIsShowModalrenting(true)}>Rent {landDetails.price} ETH / {landDetailsForRenting.rentType.rentTypeText}</button>
                   </div>
                 }
-                {/* {isOwner && isRenting && 
+                { authStore.account.userTokenId === renter.renterTokenId.userTokenId ?
                   <div className='payable'>
-                    <p className='text-price'>Payable {landDetails.price} eth/month (Next payment 19/05/2022)</p>
-                    <button className="button-payable">Pay {landDetails.price} ETH</button>
+                    <p className='text-price'>Payable {landDetails.price} ETH / {renter.rentType.rentTypeText}</p>
+                    <p className='text-price'>Next payment {new Date(renter.nextPayment!).toLocaleString().replace(',', '')}</p>
+                    { new Date(Date.now()) === renter.nextPayment ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
+                    {console.log(new Date(Date.now()))}
                   </div>
-                } */}
+                  : ''
+                }
               </div>
             </div>
           </div>
