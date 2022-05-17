@@ -54,6 +54,11 @@ export default function ModalRentingDetail(props: Props) {
         setNetAmount(netAmount)
     }
 
+    const goToEtherScan = (transactionHash: string) => {
+        let url = 'https://rinkeby.etherscan.io/tx/' + transactionHash
+        window.open(url, '_blank')
+    }
+
     return (
         <div id='modalRentindDetail'>
             <div id="detailBox">
@@ -89,7 +94,7 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Period</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.period} {rentingDetails.rentType.rentTypeText}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.rentType.rentTypeId === 1 ? rentingDetails.period : rentingDetails.period/30} {rentingDetails.rentType.rentTypeText}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
@@ -114,6 +119,11 @@ export default function ModalRentingDetail(props: Props) {
                         }
                         <div className='log'>
                             <div className='log-container'>
+                                {paymentHistories.map((item: PaymentHistoryModel, index: number) => {
+                                    return(
+                                        <p className='log-text' key={index} onClick={() => goToEtherScan(item.logTransactionsId.transactionBlock)}>{item.logTransactionsId.transactionBlock}</p>
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>

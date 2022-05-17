@@ -23,8 +23,11 @@ import OfferService from '../../services/offer/OfferService'
 import CancelOfferLandRequestModel from '../../models/offer/CancelOfferLandRequestModel'
 import OffersDataOfLandModel from '../../models/offer/OffersDataOfLandModel'
 import ModalOfferList from '../ModalOfferList/ModalOfferList'
+import ModalRentingDetail from '../ModalRentingDetail/ModalRentingDetail'
 import RentService from '../../services/rent/RentService'
 import RentingDetailsModel from '../../models/rent/RentingDetailsModel'
+import ModalRenting from '../ModalRenting/ModalRenting'
+import LandMarketModel from '../../models/market/LandMarketModel'
 
 interface IParams {
   landTokenId: string
@@ -49,7 +52,13 @@ export default function LandDetail() {
   const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
-  const rentService: RentService = new RentService()
+  const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
+  const [isRenting, setIsRenting] = useState<boolean>(true) //ทดสอบว่าเป็นผู้เช่า
+  const rentService = new RentService()
+  const [rentingDetails, setRentingDetails] = useState<RentingDetailsModel>(new RentingDetailsModel())
+  const [isShowModalrenting, setIsShowModalrenting] = useState<boolean>(false)
+  const [landDetailsForRenting, setLandDetailsForRenting] = useState<LandMarketModel>(new LandMarketModel())
+  const marketService = new LandMarketService()
   const [renter, setRenter] = useState<RentingDetailsModel>(new RentingDetailsModel)
 
   useEffect(() => {
@@ -58,6 +67,7 @@ export default function LandDetail() {
 
   async function getDataFromApi(): Promise<void> {
     await getLandDetailsFromApi()
+    await getLandRentingAPI()
   }
 
   async function getLandDetailsFromApi(): Promise<void> {
@@ -148,6 +158,14 @@ export default function LandDetail() {
     }
   }
 
+  const getLandRentingAPI = async (): Promise<void> => {
+    const landResponse = await marketService.getLandForRintingDetail(params.landTokenId)
+    console.log(landResponse)
+    if (landResponse) {
+      setLandDetailsForRenting(landResponse)
+    }
+  }
+  
   async function getIsRenter(landTokenId: string): Promise<void> {
     const result: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(landTokenId)
     setRenter(result)
@@ -162,7 +180,7 @@ export default function LandDetail() {
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
               {isOwner && landDetails.landStatus.landStatusId === 2 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
-              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
+              {!isOwner && landDetails.landStatus.landStatusId === 5 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
@@ -252,12 +270,14 @@ export default function LandDetail() {
                 }
                 {!isOwner && landDetails.landStatus.landStatusId === 4 && 
                   <div className='cancel-rent'>
-                    <p className='text-price'>Payable {landDetails.price} eth/month</p>
+                    <p className='text-price'>Payable {landDetails.price} ETH / {landDetailsForRenting.rentType.rentTypeText}</p>
+                    <button className="button-price-land" onClick={() => setIsShowModalrenting(true)}>Rent {landDetails.price} ETH / {landDetailsForRenting.rentType.rentTypeText}</button>
                   </div>
                 }
                 { authStore.account.userTokenId === renter.renterTokenId.userTokenId ?
                   <div className='payable'>
-                    <p className='text-price'>Payable {landDetails.price} eth/{renter.rentType.rentTypeText} (Next payment {renter.nextPayment})</p>
+                    <p className='text-price'>Payable {landDetails.price} ETH / {renter.rentType.rentTypeText}</p>
+                    <p className='text-price'>Next payment {new Date(renter.nextPayment!).toLocaleString().replace(',', '')}</p>
                     { new Date(Date.now()) === renter.nextPayment ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
                     {console.log(new Date(Date.now()))}
                   </div>
@@ -272,6 +292,8 @@ export default function LandDetail() {
       {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails} />}
       {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails} fetchOffer={getLandDetailsFromApi} />}
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
+      {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails}/>}
+      {isShowModalrenting && <ModalRenting setIsShowModalRenting={setIsShowModalrenting} land={landDetailsForRenting} fetchDetail={getDataFromApi}/>}
     </>
   )
 }

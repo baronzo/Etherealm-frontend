@@ -215,7 +215,7 @@ export default function Market() {
       <div className='pagination-container'>
         <div className='pagination'></div>
       </div>
-      {isShowModalRenting && <ModalRenting setIsShowModalHirePurchase={setIsShowModalRenting} landDetails={selectedRentLand!} fetchDetail={getLandRentOnMarketByMarketType} />}
+      {isShowModalRenting && <ModalRenting setIsShowModalRenting={setIsShowModalRenting} land={selectedRentLand!} fetchDetail={getLandRentOnMarketByMarketType}/>}
     </div>
   )
 }
