@@ -154,8 +154,8 @@ export default function LandDetail() {
             <BiArrowBack className="icon-back" onClick={history.goBack} />
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
-              {isOwner && landDetails.landStatus.landStatusId !== 3 || landDetails.landStatus.landStatusId !== 4 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
-              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
+              {isOwner && landDetails.landStatus.landStatusId === 2 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
+              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
