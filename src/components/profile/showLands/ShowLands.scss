@@ -157,6 +157,20 @@
                         }
                     }
                 }
+                .land-rent-remaining {
+                    width: 100%;
+                    height: 28px;
+                    background-color: rgb(216, 216, 216);
+                    // border-radius: 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 0 10px;
+                    color: #424242;
+                    font-size: 13px;
+                    font-weight: bold;
+                    cursor: default;
+                }
                 .land-description {
                     height: 60px;
                     width: 100%;
@@ -165,6 +179,9 @@
                     font-size: 13px;
                     color: #525252;
                     margin: 0 0 3px 0;
+                    &.rent {
+                        height: 30px;
+                    }
                 }
                 .status-div {
                     display: flex;
@@ -179,13 +196,13 @@
                         align-items: center;
                         margin: 0;
                         padding: 0;
-                        height: 50px;
+                        height: 28px;
                         width: 180px;
-                        background-color: #1080E4;
+                        background-color: #00c4aa;
                         border-radius: 5px;
                         &:hover {
                             cursor: pointer;
-                            background-color: #288fe8;
+                            background-color: #17dac0;
                         }
                         .button-text-detail {
                             margin: 0;
