@@ -179,5 +179,5 @@ class ContractStore {
 
 export const ContractStoreContext = createContext(new ContractStore())
 const contractStore: ContractStore = new ContractStore()
-export type AuthStoreType = typeof contractStore
+export type ContractStoreType = typeof contractStore
 export default ContractStore

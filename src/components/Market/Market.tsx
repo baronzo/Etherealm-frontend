@@ -48,13 +48,17 @@ export default function Market() {
   async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
     setSellLoading(true, index)
     e.stopPropagation()
-    if(authStore.account.userTokenId !== landsMarket[index].ownerUserTokenId.userTokenId) {
-      const isSuccess: boolean = await contractStore.buyLand(landsMarket[index].landTokenId.landTokenId, landsMarket[index].ownerUserTokenId.userTokenId, landsMarket[index].price)
+    if(authStore.account.userTokenId !== landsSell?.data[index].ownerUserTokenId.userTokenId) {
+      const isSuccess: boolean = await contractStore.buyLand(landsSell?.data[index].landTokenId.landTokenId!, landsSell?.data[index].ownerUserTokenId.userTokenId!, landsSell?.data[index].price!)
       if (isSuccess) {
         await getLandSellOnMarketByMarketType()
+
+        const point: number = await contractStore.getPoint(authStore.account.userTokenId)
+        await authStore.updateAccount()
+        await authStore.setPoint(point)
       }
     }
-    setSellLoading(false, index)
+    // setSellLoading(false, index)
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
@@ -70,7 +74,7 @@ export default function Market() {
     history.push(`/lands/${landToketId}/details`)
   }
 
-  async function getLandSellOnMarketByMarketType(page: number = 1): Promise<void> {
+  async function getLandSellOnMarketByMarketType(page: number = 1): Promise<LandMarketPaginateResponseModel> {
     const body: LandMarketPaginateRequestModel = {
       page: page,
       marketType: 1
@@ -81,6 +85,7 @@ export default function Market() {
       item.isLoading = false
     })
     setLandsSell(result)
+    return result
   }
 
   async function getLandRentOnMarketByMarketType(page: number = 1): Promise<void> {
