@@ -86,6 +86,7 @@
             box-sizing: border-box;
             &:hover {
                 box-shadow: 0.5px 0.5px 3px 2px #7645d9af;
+                cursor: pointer;
             }
             .land-image-div {
                 background-color: #b6ffff;
