@@ -87,6 +87,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Owned Lands</p>
                     </div>
+                    {!data.length &&
+                            <div className="no-land-data">No Land</div>
+                    }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
@@ -135,6 +138,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Lands for Sell on Market</p>
                     </div>
+                    {!data.length &&
+                            <div className="no-land-data">No Land</div>
+                    }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
@@ -181,6 +187,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Lands for Rent  on Market</p>
                     </div>
+                    {!data.length &&
+                            <div className="no-land-data">No Land</div>
+                    }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
@@ -227,6 +236,9 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Land Rent</p>
                     </div>
                     <div className='show-my-land'>
+                    {!ownedRentLand.length &&
+                            <div className="no-land-data">No Land</div>
+                    }
                     {ownedRentLand.map((item: LandRentResponseModel) => {
                         return(
                         <div className='land-card' key={item.landTokenId.landTokenId}>
@@ -269,6 +281,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Land Rent Purchase</p>
                     </div>
+                    {/* {!data.length &&
+                            <div className="no-land-data">No Land</div>
+                    } */}
                     <div className='show-my-land'>
                         <div className='land-card'>
                             <div className='land-image-div'>
@@ -311,6 +326,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>People are Renting</p>
                     </div>
+                    {!data.length &&
+                            <div className="no-land-data">No Land</div>
+                    }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
