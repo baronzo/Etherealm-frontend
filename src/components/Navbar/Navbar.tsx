@@ -111,11 +111,11 @@ export default observer(function Navbar(props: IProps) {
               Market
             </NavLink>
           </div>
-          <div className="path">
+          {/* <div className="path">
             <NavLink to={"/auction"} activeClassName="active">
               Auction
             </NavLink>
-          </div>
+          </div> */}
           <div className="path">
             <div>About</div>
           </div>
