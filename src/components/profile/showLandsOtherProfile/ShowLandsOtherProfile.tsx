@@ -235,16 +235,18 @@ export default function ShowLandsOtherProfile(props: Props) {
                         </p>
                       </div>
                     </div>
+                    <div className="land-description">{item.landDescription}</div>
                     <div className="status-div">
                       <div className="buy-land" onClick={(e) =>
                         authStore.account.userTokenId === item.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)
                       }>
+                        <i className="fab fa-ethereum icon"></i>
                         <p className="button-text">Buy {item.price} ETH</p>
                       </div>
                     </div>
-                    <div className="offer-div">
+                    {/* <div className="offer-div">
                       <p className="offer-text"></p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               );
@@ -280,14 +282,15 @@ export default function ShowLandsOtherProfile(props: Props) {
                         <p className="location">X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
                       </div>
                     </div>
+                    <div className="land-description">{item.landDescription}</div>
                     <div className="status-div">
-                      <div className="land-detail" onClick={() => goToDetailsPage(item.landTokenId)}>
-                        <p className="button-text">Land Detail</p>
+                      <div className="land-detail" onClick={(e) => authStore.account.userTokenId === item.landOwnerTokenId ? undefined : goToDetailsPage(item.landTokenId)}>
+                        <p className="button-text">Land Details</p>
                       </div>
                     </div>
-                    <div className="offer-div">
+                    {/* <div className="offer-div">
                       <p className="offer-text"></p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               );
