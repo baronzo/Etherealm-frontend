@@ -124,7 +124,7 @@ export default observer(function Profile({ }: Props) {
                             <div className='value-div'>
                                 <div className='value-button'>
                                     <FaEthereum className='eth-icon' />
-                                    <p className='value'>{authStore.account.balance.toFixed(2)} ETH</p>
+                                    <p className='value'>{authStore.account.balance} ETH</p>
                                 </div>
                             </div>
                             <div className='wallet-div'>
