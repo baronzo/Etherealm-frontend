@@ -114,7 +114,7 @@ export default observer(function Profile({ }: Props) {
                 <div className='profile-and-log'>
                     <div className='profile-container'>
                         <div className='profile'>
-                            <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)} />
+                            <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)}/>
                             <div className='profile-image-div'>
                                 <img className='profle-image' src={authStore.account.userProfilePic ? authStore.account.userProfilePic : '/profile.jpg'} alt="" />
                             </div>

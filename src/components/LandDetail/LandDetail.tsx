@@ -23,6 +23,7 @@ import OfferService from '../../services/offer/OfferService'
 import CancelOfferLandRequestModel from '../../models/offer/CancelOfferLandRequestModel'
 import OffersDataOfLandModel from '../../models/offer/OffersDataOfLandModel'
 import ModalOfferList from '../ModalOfferList/ModalOfferList'
+import ModalRentingDetail from '../ModalRentingDetail/ModalRentingDetail'
 
 interface IParams {
   landTokenId: string
@@ -47,6 +48,7 @@ export default function LandDetail() {
   const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
+  const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
   const [isRenting, setIsRenting] = useState<boolean>(true) //ทดสอบว่าเป็นผู้เช่า
 
   useEffect(() => {
@@ -153,7 +155,7 @@ export default function LandDetail() {
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
               {isOwner && landDetails.landStatus.landStatusId !== 3 || landDetails.landStatus.landStatusId !== 4 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
-              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
+              {!isOwner && landDetails.landStatus.landStatusId === 4 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
@@ -261,6 +263,7 @@ export default function LandDetail() {
       {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails} />}
       {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails} fetchOffer={getLandDetailsFromApi} />}
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
+      {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails}/>}
     </>
   )
 }
