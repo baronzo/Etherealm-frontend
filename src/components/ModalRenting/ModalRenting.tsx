@@ -22,8 +22,9 @@ export default function ModalRenting(props: Props) {
   const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [rentingType, setRentingType] = useState<number>(1);
-  const [peroid, setPeroid] = useState<number>(1)
+  const [peroid, setPeroid] = useState<number | null>(3)
   const rentService: RentService = new RentService
+  const [isChecked, setIsChecked] = useState<boolean>(false)
 
   useEffect(() => {
     console.log(rentingType)
@@ -32,13 +33,13 @@ export default function ModalRenting(props: Props) {
 
   const options: Array<Options> = [
     { value: 1, label: "Set time period" },
-    { value: 2, label: "No time limit" },
+    { value: 2, label: "No time limit"},
   ];
 
   const optionsPeroid: Array<Options> = [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
+    // { value: 1, label: '1' },
+    // { value: 2, label: '2' },
+    { value: 3, label: '3'  },
     { value: 4, label: '4' },
     { value: 5, label: '5' },
     { value: 6, label: '6' },
@@ -58,7 +59,7 @@ export default function ModalRenting(props: Props) {
         landTokenId: props.landDetails.landTokenId.landTokenId,
         rentType: props.landDetails.rentType.rentTypeId!,
         periodType: rentingType,
-        period: peroid,
+        period: peroid!,
         price: props.landDetails.price,
         hash: hash
       }
@@ -69,7 +70,6 @@ export default function ModalRenting(props: Props) {
         setisLoading(false)
       }
     }
-    
   }
 
   return (
@@ -115,7 +115,8 @@ export default function ModalRenting(props: Props) {
               name="selectPeriod"
               id="selectPeriod"
               className={`input-select ${rentingType === 2 ? 'disabled' : ''}`}
-              value={peroid}
+              value={peroid!}
+              disabled={rentingType === 2 ? true : false}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setPeroid(Number(e.target.value))
               }
@@ -136,7 +137,7 @@ export default function ModalRenting(props: Props) {
             <p className="accept">Auto Re-renting on market</p>
           </div> */}
           <div className="checkbox-div">
-            <input className="checkbox-icon" type="checkbox" />
+            <input className="checkbox-icon" type="checkbox" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} />
             <p className="accept">Accept the terms of use</p>
           </div>
         </div>
@@ -147,7 +148,7 @@ export default function ModalRenting(props: Props) {
             </button>
           ) : (
             <button className="button-save">
-              <i className="fas fa-spinner fa-spin"></i>
+              <i className="fas fa-spinner fa-spin icon"></i>
             </button>
           )}
         </div>
