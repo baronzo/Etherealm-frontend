@@ -86,6 +86,7 @@ class AuthStore {
     return result
   }
 
+
   @action
   public async updateAccountData(): Promise<void> {
     await this.login()
@@ -97,6 +98,13 @@ class AuthStore {
     this.account = await this.getAccount()
     window.localStorage.setItem('account', JSON.stringify(this.account))
     this.setAxiosHeader()
+  }
+
+  @action
+  public async updateAccount(): Promise<void> {
+    this.account = await this.getAccount()
+    Cookies.set('is_login', 'true', {expires: 1})
+    window.localStorage.setItem('account', JSON.stringify(this.account))
   }
 
   @action

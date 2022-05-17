@@ -12,6 +12,7 @@ import ContractStore from '../../store/contract'
 import ModalRenting from '../ModalRenting/ModalRenting'
 import LandMarketPaginateRequestModel from '../../models/market/LandMarketPaginateRequestModel'
 import LandMarketPaginateResponseModel from '../../models/market/LandMarketPaginateResponseModel'
+import Pagination from '../pagination/Pagination'
 
 export default function Market() {
   const contractStore = useMemo(() => new ContractStore, [])
@@ -69,9 +70,9 @@ export default function Market() {
     history.push(`/lands/${landToketId}/details`)
   }
 
-  async function getLandSellOnMarketByMarketType(): Promise<void> {
+  async function getLandSellOnMarketByMarketType(page: number = 1): Promise<void> {
     const body: LandMarketPaginateRequestModel = {
-      page: 1,
+      page: page,
       marketType: 1
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
@@ -82,9 +83,9 @@ export default function Market() {
     setLandsSell(result)
   }
 
-  async function getLandRentOnMarketByMarketType(): Promise<void> {
+  async function getLandRentOnMarketByMarketType(page: number = 1): Promise<void> {
     const body: LandMarketPaginateRequestModel = {
-      page: 1,
+      page: page,
       marketType: 2
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
@@ -101,6 +102,14 @@ export default function Market() {
     setSelectedRentLand(item)
   }
 
+  async function handleOnSelectPage(pageNumber: number, type: number) {
+    if (type === 1) {
+      await getLandSellOnMarketByMarketType(pageNumber)
+    } else {
+      await getLandRentOnMarketByMarketType(pageNumber)
+    }
+  }
+
   return (
     <div id='market'>
       <div id="menu">
@@ -113,6 +122,12 @@ export default function Market() {
         <div className='topic-div'>
           <p className='topic-text'>NFTs Lands</p>
         </div>
+        {(isTab && !landsSell?.data.length) &&
+          <div className="no-land">No Land For Buy</div>
+        }
+        { (!isTab && !landsRent?.data.length) &&
+          <div className="no-land">No Land For Rent</div>
+        }
         <div className='market-land-container'>
           {isTab && landsSell?.data.map((item: LandMarketModel, index:number) => {
             return(
@@ -213,7 +228,26 @@ export default function Market() {
         </div>
       </div>
       <div className='pagination-container'>
-        <div className='pagination'></div>
+        {/* <div className='pagination'></div> */}
+        {isTab
+        ?
+          <Pagination 
+            currentPage={landsSell?.currentPage!} 
+            isFirst={landsSell?.currentPage === 1 || landsSell?.currentPage === 0}
+            isLast={landsSell?.currentPage === landsSell?.totalPage}
+            totalPage={landsSell?.totalPage!}
+            sendPageNumber={pageNumber => handleOnSelectPage(pageNumber, 1)}
+          />
+        :
+          <Pagination 
+          currentPage={landsRent?.currentPage!} 
+          isFirst={landsRent?.currentPage === 1 || landsRent?.currentPage === 0}
+          isLast={landsRent?.currentPage === landsRent?.totalPage}
+          totalPage={landsRent?.totalPage!}
+          sendPageNumber={pageNumber => handleOnSelectPage(pageNumber, 2)}
+      />
+        }
+        
       </div>
       {isShowModalRenting && <ModalRenting setIsShowModalRenting={setIsShowModalRenting} land={selectedRentLand!} fetchDetail={getLandRentOnMarketByMarketType}/>}
     </div>
