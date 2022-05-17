@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel"
 import LandRentResponseModel from "../../models/rent/LandRentResponseModel"
+import PeopleRentingOwnedModel from "../../models/rent/PeopleRentingOwnedModel"
 import RentingDetailsModel from "../../models/rent/RentingDetailsModel"
 import Host from "../Host"
 
@@ -19,6 +20,11 @@ class RentService {
   public async getRentingDetailsByLandTokenId(landTokenId: string): Promise<RentingDetailsModel> {
     let rentingResponse: AxiosResponse<RentingDetailsModel> = await axios.get(`${this.host}/lands/rent/details/${landTokenId}`)
     return rentingResponse.data
+  }
+
+  public async getPeopleAreRentingByOwnerLandTokenId(ownerTokenId: string): Promise<Array<PeopleRentingOwnedModel>> {
+    let response: AxiosResponse<Array<PeopleRentingOwnedModel>> = await axios.get(`${this.host}/lands/rent/owned/people?landOwnerTokenId=${ownerTokenId}`)
+    return response.data
   }
 
 }
