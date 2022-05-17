@@ -374,7 +374,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                 <div className="status-div">
                   <div className="view-detail-rent" onClick={(e) => onClickShowModalLandRent(item, e)}>
                     <p className="button-text-detail">
-                      Land are renting Deatil
+                    View Renting Details
                     </p>
                   </div>
                 </div>
@@ -468,7 +468,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                         props.setIsShowModalDetailRenting(true);
                       }}
                     >
-                      Land are renting Deatil
+                      View Renting Details
                     </p>
                   </div>
                 </div>
