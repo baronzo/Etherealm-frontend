@@ -7,6 +7,9 @@ import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
 import RentService from '../../../services/rent/RentService'
 import authStore from '../../../store/auth'
 import './ShowLands.scss'
+import HirePurchaseOwnedModel from '../../../models/hirePurchase/HirePurchaseOwnedModel'
+import HirePurchaseService from '../../../services/hirePurchase/HirePurchaseService'
+import PeopleRentingOwnedModel from '../../../models/rent/PeopleRentingOwnedModel'
 
 type Props = {
     allLands: Array<LandModel>
@@ -18,6 +21,11 @@ type Props = {
 }
 
 export default function ShowLands(props: Props) {
+    const [ownedRentLand, setOwnedRentLand] = useState<Array<LandRentResponseModel>>([])
+    const [ownedHireLand, setOwnedHireLand] = useState<Array<HirePurchaseOwnedModel>>([])
+    const [ownedPeopleAreRenting, setOwnedPeopleAreRenting] = useState<Array<PeopleRentingOwnedModel>>([])
+    const rentService: RentService = new RentService()
+    const hirePurchaseService = new HirePurchaseService()
     const [isActive, setIsActive] = useState<ActiveFillterStatusModel>({
         mapOwnedLands: true,
         landForSellOnMarket: false,
@@ -33,18 +41,29 @@ export default function ShowLands(props: Props) {
 
     async function getDataFromAPI(): Promise<void> {
         await getRentLandByRenterTokenId()
-        
+        await getOwnedHirePurchaseAPI()
+        await getPeopleAreRentingByOwnerLandTokenId()
     }
 
-    const [ownedRentLand, setownedRentLand] = useState<Array<LandRentResponseModel>>([])
-    const rentService: RentService = new RentService()
+    async function getOwnedHirePurchaseAPI(): Promise<void> {
+        const hireResponse: Array<HirePurchaseOwnedModel> = await hirePurchaseService.getOwnedHirePurchase(authStore.account.userTokenId)
+        if (hireResponse) {
+            setOwnedHireLand(hireResponse)
+        }
+    }
+
+    async function getPeopleAreRentingByOwnerLandTokenId(): Promise<void> {
+        const response: Array<PeopleRentingOwnedModel> = await rentService.getPeopleAreRentingByOwnerLandTokenId(authStore.account.userTokenId)
+        if (response) {
+            setOwnedPeopleAreRenting(response)
+        }
+    }
 
     async function getRentLandByRenterTokenId(): Promise<void> {
         const result: Array<LandRentResponseModel> = await rentService.getRentLandByRenterTokenId(authStore.account.userTokenId)
-        console.log(result)
-        setownedRentLand(result)
+        setOwnedRentLand(result)
     }
-    
+
     function onClickShowModalLandRent(selectedLandRent: LandRentResponseModel, e: React.MouseEvent<HTMLDivElement>): void {
         e.stopPropagation()
         props.setselectedLand(selectedLandRent.landTokenId)
@@ -62,9 +81,9 @@ export default function ShowLands(props: Props) {
         history.push(`/market`)
     }
 
-    function onClickShowModalPeopleRening(selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>): void {
+    function onClickShowModalPeopleRening(selectedLand: PeopleRentingOwnedModel, e: React.MouseEvent<HTMLDivElement>): void {
         e.stopPropagation()
-        props.setselectedLand(selectedLand)
+        props.setselectedLand(selectedLand.landTokenId)
         props.setIsShowModalDetailRenting(true)
     }
 
@@ -90,7 +109,7 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Owned Lands</p>
                     </div>
                     {!data.length &&
-                            <div className="no-land-data">Not have Land</div>
+                        <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
@@ -141,7 +160,7 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Lands for Sell on Market</p>
                     </div>
                     {!data.length &&
-                            <div className="no-land-data">Not have Land</div>
+                        <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
@@ -188,7 +207,7 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Lands for Rent  on Market</p>
                     </div>
                     {!data.length &&
-                            <div className="no-land-data">Not have Land</div>
+                        <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
@@ -226,6 +245,7 @@ export default function ShowLands(props: Props) {
     }
 
     function landRent(): JSX.Element {
+        console.log(ownedRentLand)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -233,37 +253,37 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>Renting Lands</p>
                     </div>
                     {!ownedRentLand.length &&
-                            <div className="no-land-data">Not have Land</div>
+                        <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
-                    {ownedRentLand.map((item: LandRentResponseModel) => {
-                        return(
-                        <div className='land-card' key={item.landTokenId.landTokenId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
-                            <div className='land-image-div'>
-                                <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
-                            </div>
-                            <div className='land-detail'>
-                                <div className='name-location'>
-                                    <div className='land-name'>
-                                        <p className='land-name-text'>{item.landTokenId.landName}</p>
+                        {ownedRentLand.map((item: LandRentResponseModel) => {
+                            return (
+                                <div className='land-card' key={item.landTokenId.landTokenId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
+                                    <div className='land-image-div'>
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                                     </div>
-                                    <div className='location-div'>
-                                        <MdLocationOn className='location-icon' />
-                                        <p className='location'>X: {item.landTokenId.landLocation.x}, Y: {item.landTokenId.landLocation.y}</p>
+                                    <div className='land-detail'>
+                                        <div className='name-location'>
+                                            <div className='land-name'>
+                                                <p className='land-name-text'>{item.landTokenId.landName}</p>
+                                            </div>
+                                            <div className='location-div'>
+                                                <MdLocationOn className='location-icon' />
+                                                <p className='location'>X: {item.landTokenId.landLocation.x}, Y: {item.landTokenId.landLocation.y}</p>
+                                            </div>
+                                        </div>
+                                        <div className='status-div'>
+                                            <div className='view-detail-rent' onClick={(e) => onClickShowModalLandRent(item, e)}>
+                                                <p className='button-text-detail'>View Renting Details</p>
+                                            </div>
+                                        </div>
+                                        <div className='offer-div'>
+                                            <p className='offer-text'>Price : {item.price} ETH/{item.rentType.rentTypeText}</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='status-div'>
-                                    <div className='view-detail-rent' onClick={(e) => onClickShowModalLandRent(item, e)}>
-                                        <p className='button-text-detail'>View Renting Details</p>
-                                    </div>
-                                </div>
-                                <div className='offer-div'>
-                                    <p className='offer-text'>Price : {item.price} ETH/{item.rentType.rentTypeText}</p>
-                                </div>
-                            </div>
-                        </div>
-                        )
-                    })}
+                            )
+                        })}
                     </div>
                 </div>
             </>
@@ -271,44 +291,47 @@ export default function ShowLands(props: Props) {
     }
 
     function landRentPurchase(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 6)
         return (
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Land Rent Purchase</p>
                     </div>
-                    {!data.length &&
+                    {!ownedHireLand.length &&
                         <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
-                        <div className='land-card'>
-                            <div className='land-image-div'>
-                                <img className='land-image' src="/map.jpg" alt="" />
-                            </div>
-                            <div className='land-detail'>
-                                <div className='name-location'>
-                                    <div className='land-name'>
-                                        <p className='land-name-text'>LAND (99, 199)</p>
+                        {ownedHireLand.map((item: HirePurchaseOwnedModel) => {
+                            return (
+                                <div className='land-card' key={item.hirePurchaseId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
+                                    <div className='land-image-div'>
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                                     </div>
-                                    <div className='location-div'>
-                                        <MdLocationOn className='location-icon' />
-                                        <p className='location'>X: 99, Y: 199</p>
+                                    <div className='land-detail'>
+                                        <div className='name-location'>
+                                            <div className='land-name'>
+                                                <p className='land-name-text'>{item.landTokenId.landName}</p>
+                                            </div>
+                                            <div className='location-div'>
+                                                <MdLocationOn className='location-icon' />
+                                                <p className='location'>X: {item.landTokenId.landLocation.x}, Y: {item.landTokenId.landLocation.y}</p>
+                                            </div>
+                                        </div>
+                                        <div className='status-div'>
+                                            <div className='view-detail'>
+                                                <p className='button-text-detail'>Land Detail</p>
+                                            </div>
+                                            <div className='list-to-market'>
+                                                <p className='button-text-list'>View on Market</p>
+                                            </div>
+                                        </div>
+                                        <div className='offer-div'>
+                                            <p className='offer-text'>{item.price} ETH / Month</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='status-div'>
-                                    <div className='view-detail'>
-                                        <p className='button-text-detail'>Land Detail</p>
-                                    </div>
-                                    <div className='list-to-market'>
-                                        <p className='button-text-list'>View on Market</p>
-                                    </div>
-                                </div>
-                                <div className='offer-div'>
-                                    <p className='offer-text'>Best Offer : 0.15 ETH</p>
-                                </div>
-                            </div>
-                        </div>
+                            )
+                        })}
                     </div>
                 </div>
             </>
@@ -316,31 +339,31 @@ export default function ShowLands(props: Props) {
     }
 
     function landPeopleAreRenting(): JSX.Element {
-        const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 5)
+        console.log(ownedPeopleAreRenting)
         return (
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>People are Renting</p>
                     </div>
-                    {!data.length &&
+                    {!ownedPeopleAreRenting.length &&
                         <div className="no-land-data">Not have Land</div>
                     }
                     <div className='show-my-land'>
-                        {data.map((item: LandModel) => {
+                        {ownedPeopleAreRenting.map((item: PeopleRentingOwnedModel) => {
                             return (
-                                <div className='land-card' onClick={() => goToDetailsPage(item.landTokenId)}>
+                                <div className='land-card' key={item.rentId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landAssets ? item.landAssets : "/map.jpg"} alt="" />
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
                                             <div className='land-name'>
-                                                <p className='land-name-text'>{item.landName}</p>
+                                                <p className='land-name-text'>{item.landTokenId.landName}</p>
                                             </div>
                                             <div className='location-div'>
                                                 <MdLocationOn className='location-icon' />
-                                                <p className='location'>X: {item.landLocation.x}, Y: {item.landLocation.y}</p>
+                                                <p className='location'>X: {item.landTokenId.landLocation.x}, Y: {item.landTokenId.landLocation.y}</p>
                                             </div>
                                         </div>
                                         <div className='status-div'>
@@ -349,7 +372,7 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>Price : {item.price} ETH/</p>
+                                            <p className='offer-text'>Price : {item.price} ETH / {item.rentType.rentTypeText}</p>
                                         </div>
                                     </div>
                                 </div>
