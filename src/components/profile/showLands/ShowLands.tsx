@@ -211,7 +211,6 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>{item.price}</p>
                                         </div>
                                     </div>
                                 </div>
