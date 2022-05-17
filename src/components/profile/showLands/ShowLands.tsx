@@ -56,6 +56,10 @@ export default function ShowLands(props: Props) {
         history.push(`/lands/${landTokenId}/details`)
     }
 
+    function goToMarketPage() {
+        history.push(`/market`)
+    }
+
     function onClickShowModalPeopleRening(selectedLand: LandModel, e: React.MouseEvent<HTMLDivElement>): void {
         e.stopPropagation()
         props.setselectedLand(selectedLand)
@@ -199,7 +203,7 @@ export default function ShowLands(props: Props) {
                                                 <p className='button-text-detail'>Land Detail</p>
                                             </div>
                                             <div className='list-to-market'>
-                                                <p className='button-text-list'>View on Market</p>
+                                                <p className='button-text-list' onClick={() => goToMarketPage()} >View on Market</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
