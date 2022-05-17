@@ -1,6 +1,7 @@
 
 import LandTokenIdModel from "../lands/LandTokenIdModel";
 import OwnerUserTokenIdModel from "../lands/OwnerUserTokenIdModel";
+import PaymentHistoryModel from "./PaymentHistoryModel";
 import PeriodTypeModel from "./PeriodTypeModel";
 import RentTypeModel from "./RentTypeModel";
 
@@ -20,4 +21,5 @@ export default class AddLandRentResponseModel {
     public periodType: PeriodTypeModel = new PeriodTypeModel()
     public renterTokenId: OwnerUserTokenIdModel = new OwnerUserTokenIdModel()
     public nextPayment: Date = new Date()
+    public paymentHistories: Array<PaymentHistoryModel> = new Array<PaymentHistoryModel>();
 }
