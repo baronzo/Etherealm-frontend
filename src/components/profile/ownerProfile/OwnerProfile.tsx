@@ -150,6 +150,9 @@ export default observer(function Profile({ }: Props) {
                                     <p className='topic-text'>Notifications</p>
                                 </div>
                                 <div className='log-notifications-div'>
+                                    {!notifications.length &&
+                                        <div className="no-notification">Not have Notification</div>
+                                    }
                                     {notifications.map((item: NotificationsResponseModel, index: number) => {
                                         return (
                                             <div className='log-item' key={index}>
@@ -169,6 +172,9 @@ export default observer(function Profile({ }: Props) {
                                     <p className='topic-text'>Transactions</p>
                                 </div>
                                 <div className='log-notifications-div'>
+                                    {!transactions.length &&
+                                        <div className="no-notification">Not have Transaction</div>
+                                    }
                                     {transactions.map((item: TransactionsResponseModel) => {
                                         return (
                                             <div className='log-item' key={item.logTransactionsId}>

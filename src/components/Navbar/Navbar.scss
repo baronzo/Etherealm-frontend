@@ -71,9 +71,9 @@
           background-color: #f1eeeefb;
           border-radius: 5px;
           height: 35px;
-          width: 210px;
+          // width: 210px;
           margin: 0 15px 0 0;
-          padding: 0;
+          padding: 0 5px;
           &:hover {
             cursor: pointer;
           }
@@ -85,13 +85,13 @@
             height: 25px;
             margin: 0;
             padding-left: 2px;
-            font-size: 16px;
+            font-size: 14px;
             color: #7645D9;
             font-weight: bold;
             border-right: 1px solid #8b898f;
           }
           .points {
-            width: 115px;
+            // width: 115px;
             height: 35px;
             display: flex;
             justify-content: flex-start;
@@ -125,7 +125,7 @@
             align-items: center;
             margin: 0;
             .add-point-icon {
-              font-size: 27px;
+              font-size: 24px;
               color: #5ABFBC;
               font-weight: bold;
               margin: 0;
@@ -190,6 +190,16 @@
               background-color: #976ee9;
               cursor: wait;
             }
+            &.withdraw {
+              background-color: #00c997;
+              &:hover {
+                background-color: #00bb8c;
+              }
+              &.disable {
+                background-color: #9fdfcf;
+                cursor: wait;
+              }
+            }
           }
         }
         #profileBalance {
@@ -199,7 +209,7 @@
           background-color: #f1eeeefb;
           border-radius: 5px;
           height: 35px;
-          width: 140px;
+          // width: 140px;
           margin: 0 15px 0 0;
           padding: 0;
           &:hover {
@@ -208,9 +218,10 @@
           .profile {
             width: 35px;
             height: 35px;
-            border-radius: 5px;
+            border-radius: 5px 0 0 5px;
             margin: 0;
             padding: 0;
+            background-color: #dbdbdb;
             .profile-img {
               width: 35px;
               height: 35px;
@@ -221,13 +232,12 @@
             }
           }
           .accountBalance {
-            width: 105px;
+            // width: 105px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             margin: 0;
-            padding-left: 5px;
-            padding-right: 6px;
+            padding: 0 10px 0 5px;
             .eth-icon {
               font-size: 16px;
               color: #7645D9;
