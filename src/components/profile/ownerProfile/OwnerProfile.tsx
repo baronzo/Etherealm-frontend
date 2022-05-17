@@ -186,7 +186,6 @@ export default observer(function Profile({ }: Props) {
                 <div className='my-land'>
                     <ShowLands
                         allLands={ownedLand}
-                        allLandRent={ownedLandRent}
                         setselectedLand={setselectedLand}
                         setselectedLandRent={setselectedLandRent}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}

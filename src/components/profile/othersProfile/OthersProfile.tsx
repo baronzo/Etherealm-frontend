@@ -15,6 +15,7 @@ import OffersDataOfLandModel from '../../../models/offer/OffersDataOfLandModel'
 import OfferService from '../../../services/offer/OfferService'
 import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
+import LandRentResponseModel from '../../../models/rent/LandRentResponseModel'
 
 interface IParams {
     userTokenId: string
@@ -26,6 +27,7 @@ export default function OthersProfile({ }: Props) {
     const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
     const [ownedLand, setownedLand] = useState<Array<LandModel>>([])
+    const [ownedRentLand, setownedRentLand] = useState<Array<LandRentResponseModel>>([])
     const [userDetails, setUserDetails] = useState<UserModel>(new UserModel())
     const [isShowModalOffer, setIsShowModalOffer] = useState<boolean>(false)
     const landService: LandService = new LandService()

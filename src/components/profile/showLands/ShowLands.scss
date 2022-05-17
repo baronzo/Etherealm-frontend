@@ -156,6 +156,27 @@
                     margin: 0;
                     padding: 5px 0 5px 0;
                     height: 65px;
+                    .view-detail-rent{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0;
+                        padding: 0;
+                        height: 30px;
+                        width: 180px;
+                        background-color: #1080E4;
+                        border-radius: 5px;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #288fe8;
+                        }
+                        .button-text-detail {
+                            margin: 0;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                    }
                     .view-detail {
                         display: flex;
                         justify-content: center;
