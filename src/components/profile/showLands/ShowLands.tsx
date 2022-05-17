@@ -10,7 +10,6 @@ import './ShowLands.scss'
 
 type Props = {
     allLands: Array<LandModel>
-    allLandRent: Array<LandRentResponseModel>
     setIsShowModalListOnMarket: (value: boolean) => void
     setIsShowModalDetailRenting: (value: boolean) => void
     setIsShowModalOfferList: (value: boolean) => void;
@@ -34,6 +33,7 @@ export default function ShowLands(props: Props) {
 
     async function getDataFromAPI(): Promise<void> {
         await getRentLandByRenterTokenId()
+        
     }
 
     const [ownedRentLand, setownedRentLand] = useState<Array<LandRentResponseModel>>([])
@@ -234,7 +234,7 @@ export default function ShowLands(props: Props) {
                                     </div>
                                 </div>
                                 <div className='status-div'>
-                                    <div className='view-detail' onClick={(e) => onClickShowModalLandRent(item, e)}>
+                                    <div className='view-detail-rent' onClick={(e) => onClickShowModalLandRent(item, e)}>
                                         <p className='button-text-detail'>Land are renting Deatil</p>
                                     </div>
                                 </div>
