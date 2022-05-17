@@ -3,9 +3,12 @@ import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
 import LandMarketModel from "../../models/market/LandMarketModel";
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel";
+import RentTypeModel from "../../models/rent/RentTypeModel";
 import RentService from "../../services/rent/RentService";
 import ContractStore from "../../store/contract";
+import Select from 'react-select'
 import "./ModalRenting.scss";
+import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
 
 type Props = {
   landDetails: LandMarketModel;
@@ -14,31 +17,22 @@ type Props = {
 };
 
 interface Options {
-  value: number;
-  label: string;
+  value: number | undefined;
+  label: string | undefined;
 }
 
 export default function ModalRenting(props: Props) {
   const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [rentingType, setRentingType] = useState<number>(1);
-  const [peroid, setPeroid] = useState<number | null>(3)
+  const [periodType, setPeriodType] = useState<Options>();
+  const [period, setPeriod] = useState<Options>({ value: 3, label: '3'  })
   const rentService: RentService = new RentService
   const [isChecked, setIsChecked] = useState<boolean>(false)
-
-  useEffect(() => {
-    console.log(rentingType)
-  }, [rentingType])
-  
-
-  const options: Array<Options> = [
+  const [optionsPeroidType, setOptionsPeroidType] = useState<Array<Options>>([
     { value: 1, label: "Set time period" },
     { value: 2, label: "No time limit"},
-  ];
-
-  const optionsPeroid: Array<Options> = [
-    // { value: 1, label: '1' },
-    // { value: 2, label: '2' },
+  ])
+  const [optionsPeroid, setOptionsPeroid] = useState<Array<Options>>([
     { value: 3, label: '3'  },
     { value: 4, label: '4' },
     { value: 5, label: '5' },
@@ -49,7 +43,7 @@ export default function ModalRenting(props: Props) {
     { value: 10, label: '10' },
     { value: 11, label: '11' },
     { value: 12, label: '12' }
-  ]
+  ])
 
   async function confirmRenting() {
     setisLoading(true)
@@ -58,8 +52,8 @@ export default function ModalRenting(props: Props) {
       const body: AddLandRentRequestModel = {
         landTokenId: props.landDetails.landTokenId.landTokenId,
         rentType: props.landDetails.rentType.rentTypeId!,
-        periodType: rentingType,
-        period: peroid!,
+        periodType: periodType?.value!,
+        period: period.value!,
         price: props.landDetails.price,
         hash: hash
       }
@@ -70,6 +64,50 @@ export default function ModalRenting(props: Props) {
         setisLoading(false)
       }
     }
+  }
+
+  const mapPeriodTypesToOption = ():Array<ReactSelectOptionModel> => {
+    const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
+    optionsPeroidType.forEach((type) => {
+        const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
+        reactSelectOption.label = type.label
+        reactSelectOption.value = type.value
+        options.push(reactSelectOption)
+    })
+    return options
+  }
+
+  const mapPeriodToOption = ():Array<ReactSelectOptionModel> => {
+    const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
+    optionsPeroid.forEach((period) => {
+        const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
+        reactSelectOption.label = period.label
+        reactSelectOption.value = period.value
+        options.push(reactSelectOption)
+    })
+    return options
+  }
+
+  const mapEventPeriodTypesToOption = (e:ReactSelectOptionModel): void => {
+    const reactSelectOption: ReactSelectOptionModel = e
+    let newPeriodType = new ReactSelectOptionModel
+    newPeriodType!.label = reactSelectOption.label
+    newPeriodType!.value = reactSelectOption.value
+    setPeriodType(newPeriodType)
+  }
+
+  const mapEventPeriodToOption = (e:ReactSelectOptionModel): void => {
+    const reactSelectOption: ReactSelectOptionModel = e
+    let newPeriod = new ReactSelectOptionModel
+    newPeriod!.label = reactSelectOption.label
+    newPeriod!.value = reactSelectOption.value
+    setPeriod(newPeriod)
+    if(props.landDetails.rentType.rentTypeId === 2) {
+      let month = new ReactSelectOptionModel
+      month.label = reactSelectOption.label
+      month.value = reactSelectOption!.value! * 30
+      setPeriod(month)
+    }  
   }
 
   return (
@@ -92,43 +130,13 @@ export default function ModalRenting(props: Props) {
         </div>
         <div className="name-description">
           <div className="name-input-div">
-            <p className="label-name">Renting Type</p>
-            <select
-              name="selectPeriod"
-              id="selectPeriod"
-              className="input-select"
-              value={rentingType}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRentingType(Number(e.target.value))}
-            >
-              {options.map((item: Options) => {
-                return (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                );
-              })}
-            </select>
+            <p className="label-name">Period Type</p>
+            <Select options={mapPeriodTypesToOption()} onChange={(e) => mapEventPeriodTypesToOption(e as ReactSelectOptionModel)} />
           </div>
           <div className="name-input-div">
             <p className="label-name">Peroid</p>
-            <select
-              name="selectPeriod"
-              id="selectPeriod"
-              className={`input-select ${rentingType === 2 ? 'disabled' : ''}`}
-              value={peroid!}
-              disabled={rentingType === 2 ? true : false}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setPeroid(Number(e.target.value))
-              }
-            >
-              {optionsPeroid.map((item: Options) => {
-                return (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                );
-              })}
-            </select>
+            {console.log("rentType"+props.landDetails.rentType.rentTypeId+"period"+period.value)}
+            <Select options={mapPeriodToOption()} onChange={(e) => mapEventPeriodToOption(e as ReactSelectOptionModel) } isDisabled={periodType?.value === 2} />
           </div>
         </div>
         <div className="checkbox">

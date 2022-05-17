@@ -23,6 +23,8 @@ import OfferService from '../../services/offer/OfferService'
 import CancelOfferLandRequestModel from '../../models/offer/CancelOfferLandRequestModel'
 import OffersDataOfLandModel from '../../models/offer/OffersDataOfLandModel'
 import ModalOfferList from '../ModalOfferList/ModalOfferList'
+import RentService from '../../services/rent/RentService'
+import RentingDetailsModel from '../../models/rent/RentingDetailsModel'
 
 interface IParams {
   landTokenId: string
@@ -47,7 +49,8 @@ export default function LandDetail() {
   const [isShowCancelOffer, setIsShowCancelOffer] = useState<boolean>(false)
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
-  const [isRenting, setIsRenting] = useState<boolean>(true) //ทดสอบว่าเป็นผู้เช่า
+  const rentService: RentService = new RentService()
+  const [renter, setRenter] = useState<RentingDetailsModel>(new RentingDetailsModel)
 
   useEffect(() => {
     getDataFromApi()
@@ -64,6 +67,7 @@ export default function LandDetail() {
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
+    await getIsRenter(result.landTokenId)
   }
 
   async function getOwnerDetailsFromUserTokenId(ownerTokenId: string): Promise<void> {
@@ -142,6 +146,11 @@ export default function LandDetail() {
     if (result.bestOffer?.fromUserTokenId.userTokenId === authStore.account.userTokenId) {
       setIsYourBestOffer(true)
     }
+  }
+
+  async function getIsRenter(landTokenId: string): Promise<void> {
+    const result: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(landTokenId)
+    setRenter(result)
   }
 
   return (
@@ -246,12 +255,14 @@ export default function LandDetail() {
                     <p className='text-price'>Payable {landDetails.price} eth/month</p>
                   </div>
                 }
-                {/* {isOwner && isRenting && 
+                { authStore.account.userTokenId === renter.renterTokenId.userTokenId ?
                   <div className='payable'>
-                    <p className='text-price'>Payable {landDetails.price} eth/month (Next payment 19/05/2022)</p>
-                    <button className="button-payable">Pay {landDetails.price} ETH</button>
+                    <p className='text-price'>Payable {landDetails.price} eth/{renter.rentType.rentTypeText} (Next payment {renter.nextPayment})</p>
+                    { new Date(Date.now()) === renter.nextPayment ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
+                    {console.log(new Date(Date.now()))}
                   </div>
-                } */}
+                  : ''
+                }
               </div>
             </div>
           </div>
