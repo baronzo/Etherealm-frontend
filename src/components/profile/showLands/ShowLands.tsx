@@ -18,6 +18,7 @@ type Props = {
     setIsShowModalOfferList: (value: boolean) => void;
     setselectedLand: (land: LandModel) => void;
     setselectedLandRent: (rent: LandRentResponseModel) => void;
+    setIsHirePurchase: (value: boolean) => void
 }
 
 export default function ShowLands(props: Props) {
@@ -83,6 +84,13 @@ export default function ShowLands(props: Props) {
 
     function onClickShowModalPeopleRening(selectedLand: PeopleRentingOwnedModel, e: React.MouseEvent<HTMLDivElement>): void {
         e.stopPropagation()
+        props.setselectedLand(selectedLand.landTokenId)
+        props.setIsShowModalDetailRenting(true)
+    }
+
+    function onClickShowModalHiringDetails(selectedLand: HirePurchaseOwnedModel, e: React.MouseEvent<HTMLDivElement>): void {
+        e.stopPropagation()
+        props.setIsHirePurchase(true)
         props.setselectedLand(selectedLand.landTokenId)
         props.setIsShowModalDetailRenting(true)
     }
@@ -334,7 +342,7 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='status-div'>
-                                            <div className='view-detail-rent'>
+                                            <div className='view-detail-rent' onClick={(e) => onClickShowModalHiringDetails(item, e)}>
                                                 <p className='button-text-detail'>View Hiring Details</p>
                                             </div>
                                         </div>
