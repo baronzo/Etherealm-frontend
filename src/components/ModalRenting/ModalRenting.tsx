@@ -94,6 +94,11 @@ export default function ModalRenting(props: Props) {
     newPeriodType!.label = reactSelectOption.label
     newPeriodType!.value = reactSelectOption.value
     setPeriodType(newPeriodType)
+    if(newPeriodType.value === 2) {
+      let month = new ReactSelectOptionModel
+      month!.value = 30
+      setPeriod(month)
+    }
   }
 
   const mapEventPeriodToOption = (e:ReactSelectOptionModel): void => {
