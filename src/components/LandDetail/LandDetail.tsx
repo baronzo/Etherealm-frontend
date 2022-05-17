@@ -278,8 +278,7 @@ export default function LandDetail() {
                   <div className='payable'>
                     <p className='text-price'>Payable {landDetails.price} ETH / {renter.rentType.rentTypeText}</p>
                     <p className='text-price'>Next payment {new Date(renter.nextPayment!).toLocaleString().replace(',', '')}</p>
-                    { new Date(Date.now()) === renter.nextPayment ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
-                    {console.log(new Date(Date.now()))}
+                    { new Date(Date.now()).toLocaleString().replace(',', '').slice(0, 9) === new Date(renter.nextPayment!).toLocaleString().replace(',', '').slice(0, 9) ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
                   </div>
                   : ''
                 }
