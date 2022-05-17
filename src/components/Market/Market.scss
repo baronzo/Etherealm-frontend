@@ -80,7 +80,7 @@
         grid-template-columns: repeat(5, 1fr);
         column-gap: 15px;
         row-gap: 15px;
-        margin: 0;
+        margin: 10px 0 20px 0;
         padding: 15px 0 0 0;
         .land-card {
             margin: 0;
@@ -140,17 +140,20 @@
                         display: flex;
                         justify-content: flex-start;
                         align-items: center;
-                        margin: 0;
-                        padding: 0;
+                        background-color: #3FD2CE;
+                        width: fit-content;
+                        padding: 2px 10px 2px 5px;
+                        margin: 5px 0 0;
+                        border-radius: 5px;
                         .location-icon {
                             margin-right: 2px;
-                            font-size: 21px;
-                            color: #7645D9;
+                            font-size: 16px;
+                            color: #ffffff;
                         }
                         .location {
                             margin: 0;
-                            font-size: 15px;
-                            color: black;
+                            font-size: 12px;
+                            color: #ffffff;
                             font-weight: 500;
                         }
                     }
@@ -175,14 +178,14 @@
                     justify-content: center;
                     padding: 5px;
                     background-color: #7645D9;
-                    border-radius: 10px;
+                    border-radius: 5px;
                     width: 180px;
                     height: 31px;
                     .button-buy {
                         text-align: center;
                         color: #fff;
                         font-weight: 500;
-                        font-size: 14px;
+                        font-size: 12px;
                         margin: 0;
                     }
                     &:hover {
