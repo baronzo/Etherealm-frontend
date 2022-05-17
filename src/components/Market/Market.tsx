@@ -70,9 +70,9 @@ export default function Market() {
     history.push(`/lands/${landToketId}/details`)
   }
 
-  async function getLandSellOnMarketByMarketType(): Promise<void> {
+  async function getLandSellOnMarketByMarketType(page: number = 1): Promise<void> {
     const body: LandMarketPaginateRequestModel = {
-      page: 1,
+      page: page,
       marketType: 1
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
@@ -80,13 +80,12 @@ export default function Market() {
       item.isActive = item.ownerUserTokenId.userTokenId === authStore.account.userTokenId ? false : true
       item.isLoading = false
     })
-    console.log(result)
     setLandsSell(result)
   }
 
-  async function getLandRentOnMarketByMarketType(): Promise<void> {
+  async function getLandRentOnMarketByMarketType(page: number = 1): Promise<void> {
     const body: LandMarketPaginateRequestModel = {
-      page: 1,
+      page: page,
       marketType: 2
     }
     const result: LandMarketPaginateResponseModel = await landMarketService.getLandOnMarketByMarketType(body)
@@ -103,8 +102,12 @@ export default function Market() {
     setSelectedRentLand(item)
   }
 
-  function handleOnSelectPage(pageNumber: number) {
-    console.log(pageNumber)
+  async function handleOnSelectPage(pageNumber: number, type: number) {
+    if (type === 1) {
+      await getLandSellOnMarketByMarketType(pageNumber)
+    } else {
+      await getLandRentOnMarketByMarketType(pageNumber)
+    }
   }
 
   return (
@@ -233,7 +236,7 @@ export default function Market() {
             isFirst={landsSell?.currentPage === 1 || landsSell?.currentPage === 0}
             isLast={landsSell?.currentPage === landsSell?.totalPage}
             totalPage={landsSell?.totalPage!}
-            sendPageNumber={handleOnSelectPage}
+            sendPageNumber={pageNumber => handleOnSelectPage(pageNumber, 1)}
           />
         :
           <Pagination 
@@ -241,7 +244,7 @@ export default function Market() {
           isFirst={landsRent?.currentPage === 1 || landsRent?.currentPage === 0}
           isLast={landsRent?.currentPage === landsRent?.totalPage}
           totalPage={landsRent?.totalPage!}
-          sendPageNumber={handleOnSelectPage}
+          sendPageNumber={pageNumber => handleOnSelectPage(pageNumber, 2)}
       />
         }
         
