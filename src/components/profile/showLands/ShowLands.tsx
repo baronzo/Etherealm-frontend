@@ -56,7 +56,8 @@ export default function ShowLands(props: Props) {
         history.push(`/lands/${landTokenId}/details`)
     }
 
-    function goToMarketPage() {
+    function goToMarketPage(e: React.MouseEvent<HTMLDivElement>) {
+        e.stopPropagation()
         history.push(`/market`)
     }
 
@@ -144,7 +145,7 @@ export default function ShowLands(props: Props) {
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
-                                <div className='land-card' key={item.landTokenId}>
+                                <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
                                         <img className='land-image' src={item.landAssets ? item.landAssets : '/map.jpg'} alt="" />
                                     </div>
@@ -159,11 +160,8 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='status-div'>
-                                            <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                                <p className='button-text-detail'>Land Details</p>
-                                            </div>
-                                            <div className='list-to-market'>
-                                                <p className='button-text-list'>View on Market</p>
+                                            <div className='go-to-market' onClick={(e) => goToMarketPage(e)}>
+                                                <p className='button-text'>View on Market</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
@@ -193,7 +191,7 @@ export default function ShowLands(props: Props) {
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
-                                <div className='land-card' key={item.landTokenId}>
+                                <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
                                         <img className='land-image' src={item.landAssets ? item.landAssets : "/map.jpg"} alt="" />
                                     </div>
@@ -208,11 +206,8 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='status-div'>
-                                            <div className='view-detail' onClick={() => goToDetailsPage(item.landTokenId)}>
-                                                <p className='button-text-detail'>Land Detail</p>
-                                            </div>
-                                            <div className='list-to-market'>
-                                                <p className='button-text-list' onClick={() => goToMarketPage()} >View on Market</p>
+                                            <div className='go-to-market' onClick={(e) => goToMarketPage(e)}>
+                                                <p className='button-text' >View on Market</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>
@@ -241,7 +236,7 @@ export default function ShowLands(props: Props) {
                     }
                     {ownedRentLand.map((item: LandRentResponseModel) => {
                         return(
-                        <div className='land-card' key={item.landTokenId.landTokenId}>
+                        <div className='land-card' key={item.landTokenId.landTokenId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
                             <div className='land-image-div'>
                                 <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
                             </div>
@@ -327,12 +322,12 @@ export default function ShowLands(props: Props) {
                         <p className='topic-my-land-text'>People are Renting</p>
                     </div>
                     {!data.length &&
-                            <div className="no-land-data">No Land</div>
+                        <div className="no-land-data">No Land</div>
                     }
                     <div className='show-my-land'>
                         {data.map((item: LandModel) => {
                             return (
-                                <div className='land-card'>
+                                <div className='land-card' onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
                                         <img className='land-image' src={item.landAssets ? item.landAssets : "/map.jpg"} alt="" />
                                     </div>
@@ -347,8 +342,8 @@ export default function ShowLands(props: Props) {
                                             </div>
                                         </div>
                                         <div className='status-div'>
-                                            <div className='view-detail'>
-                                                <p className='button-text-detail' onClick={() => { props.setIsShowModalDetailRenting(true) }}>View Renting Details</p>
+                                            <div className='view-detail-rent'>
+                                                <p className='button-text-detail' onClick={(e) => onClickShowModalPeopleRening(item, e)}>View Renting Details</p>
                                             </div>
                                         </div>
                                         <div className='offer-div'>

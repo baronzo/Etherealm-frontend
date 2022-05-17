@@ -3,14 +3,16 @@ import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
 import LandMarketModel from "../../models/market/LandMarketModel";
 import AddLandRentRequestModel from "../../models/rent/AddLandRentRequestModel";
+import LandMarketService from "../../services/market/LandMarketService";
 import RentService from "../../services/rent/RentService";
 import ContractStore from "../../store/contract";
+import Market from "../Market/Market";
 import "./ModalRenting.scss";
 
 type Props = {
-  landDetails: LandMarketModel;
-  setIsShowModalHirePurchase: (value: boolean) => void;
+  setIsShowModalRenting: (value: boolean) => void;
   fetchDetail: () => void
+  land: LandMarketModel
 };
 
 interface Options {
@@ -27,19 +29,19 @@ export default function ModalRenting(props: Props) {
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log(rentingType)
-  }, [rentingType])
-  
+    
+  }, [])
+
 
   const options: Array<Options> = [
     { value: 1, label: "Set time period" },
-    { value: 2, label: "No time limit"},
+    { value: 2, label: "No time limit" },
   ];
 
   const optionsPeroid: Array<Options> = [
     // { value: 1, label: '1' },
     // { value: 2, label: '2' },
-    { value: 3, label: '3'  },
+    { value: 3, label: '3' },
     { value: 4, label: '4' },
     { value: 5, label: '5' },
     { value: 6, label: '6' },
@@ -53,20 +55,20 @@ export default function ModalRenting(props: Props) {
 
   async function confirmRenting() {
     setisLoading(true)
-    const hash: string = await contractStore.transferEther(props.landDetails.ownerUserTokenId.userTokenId, props.landDetails.price)
+    const hash: string = await contractStore.transferEther(props.land.ownerUserTokenId.userTokenId, props.land.price)
     if (hash) {
       const body: AddLandRentRequestModel = {
-        landTokenId: props.landDetails.landTokenId.landTokenId,
-        rentType: props.landDetails.rentType.rentTypeId!,
+        landTokenId: props.land.landTokenId.landTokenId,
+        rentType: props.land.rentType.rentTypeId!,
         periodType: rentingType,
         period: peroid!,
-        price: props.landDetails.price,
+        price: props.land.price,
         hash: hash
       }
       const result = await rentService.confirmRenting(body)
       if (result) {
         props.fetchDetail()
-        props.setIsShowModalHirePurchase(false)
+        props.setIsShowModalRenting(false)
         setisLoading(false)
       }
     }
@@ -77,18 +79,18 @@ export default function ModalRenting(props: Props) {
       <div id="rentingBox">
         <div className="topic-label-div">
           <div className="topic">
-            <p className="topic-label-text">Hire Purchase</p>
+            <p className="topic-label-text">Renting</p>
           </div>
           <MdClose
             className="close-icon"
-            onClick={() => props.setIsShowModalHirePurchase(false)}
+            onClick={() => props.setIsShowModalRenting(false)}
           />
         </div>
         <div className="image-upload-or-link">
           <div className="image-div">
             <img className="image-profile" src={"/map.jpg"} alt="" />
           </div>
-          <p className="text-land-name">Land</p>
+          <p className="text-land-name">{props.land.landTokenId.landName}</p>
         </div>
         <div className="name-description">
           <div className="name-input-div">
@@ -144,7 +146,7 @@ export default function ModalRenting(props: Props) {
         <div className="button-save-div">
           {!isLoading ? (
             <button className="button-save" onClick={confirmRenting}>
-              Confirm Renting {props.landDetails.price} ETH/{props.landDetails.rentType.rentTypeText}
+              Confirm Renting {props.land.price} ETH/{props.land.rentType.rentTypeText}
             </button>
           ) : (
             <button className="button-save">

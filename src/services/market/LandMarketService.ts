@@ -43,6 +43,11 @@ class LandMarketService {
     return marketResponse.data
   }
 
+  public async getLandForRintingDetail(landTokenId: string): Promise<LandMarketModel> {
+    let landsMarket: AxiosResponse<LandMarketModel> = await axios.get(`${this.host}/market/land/${landTokenId}`)
+    return landsMarket.data
+  }
+
 }
 
 export default LandMarketService
