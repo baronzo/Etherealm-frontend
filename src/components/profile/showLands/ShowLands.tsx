@@ -275,9 +275,9 @@ export default function ShowLands(props: Props) {
                     <div className='topic-my-land-div'>
                         <p className='topic-my-land-text'>Land Rent Purchase</p>
                     </div>
-                    {/* {!data.length &&
-                            <div className="no-land-data">Not have Land</div>
-                    } */}
+                    {!data.length &&
+                        <div className="no-land-data">Not have Land</div>
+                    }
                     <div className='show-my-land'>
                         <div className='land-card'>
                             <div className='land-image-div'>

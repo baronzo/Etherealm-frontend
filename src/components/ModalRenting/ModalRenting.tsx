@@ -28,6 +28,7 @@ export default function ModalRenting(props: Props) {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [periodType, setPeriodType] = useState<Options>();
   const [period, setPeriod] = useState<Options>({ value: 3, label: '3'  })
+  const [periodDay, setPeriodDay] = useState<Options>({ value: 1, label: '1'  })
   const rentService: RentService = new RentService
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
@@ -49,6 +50,23 @@ export default function ModalRenting(props: Props) {
     { value: 12, label: '12' }
   ])
 
+  const [optionsPeroidDay, setOptionsPeroidDay] = useState<Array<Options>>([
+    { value: 1, label: '1'  },
+    { value: 2, label: '2'  },
+    { value: 3, label: '3'  },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+    { value: 6, label: '6' },
+    { value: 7, label: '7' },
+    { value: 8, label: '8' },
+    { value: 9, label: '9' },
+    { value: 10, label: '10' },
+    { value: 11, label: '11' },
+    { value: 12, label: '12' },
+    { value: 13, label: '13' },
+    { value: 14, label: '14' }
+  ])
+
   async function confirmRenting() {
     setisLoading(true)
     const hash: string = await contractStore.transferEther(props.land.ownerUserTokenId.userTokenId, props.land.price)
@@ -57,7 +75,7 @@ export default function ModalRenting(props: Props) {
         landTokenId: props.land.landTokenId.landTokenId,
         rentType: props.land.rentType.rentTypeId!,
         periodType: periodType?.value!,
-        period: period.value!,
+        period: props.land.rentType.rentTypeId === 1 ? periodDay.value! : period.value!,
         price: props.land.price,
         hash: hash
       }
@@ -84,6 +102,17 @@ export default function ModalRenting(props: Props) {
   const mapPeriodToOption = ():Array<ReactSelectOptionModel> => {
     const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
     optionsPeroid.forEach((period) => {
+        const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
+        reactSelectOption.label = period.label
+        reactSelectOption.value = period.value
+        options.push(reactSelectOption)
+    })
+    return options
+  }
+
+  const mapPeriodDayToOption = ():Array<ReactSelectOptionModel> => {
+    const options: Array<ReactSelectOptionModel> = new Array<ReactSelectOptionModel>()
+    optionsPeroidDay.forEach((period) => {
         const reactSelectOption: ReactSelectOptionModel = new ReactSelectOptionModel()
         reactSelectOption.label = period.label
         reactSelectOption.value = period.value
@@ -119,6 +148,20 @@ export default function ModalRenting(props: Props) {
     }  
   }
 
+  const mapEventPeriodDayToOption = (e:ReactSelectOptionModel): void => {
+    const reactSelectOption: ReactSelectOptionModel = e
+    let newPeriod = new ReactSelectOptionModel
+    newPeriod!.label = reactSelectOption.label
+    newPeriod!.value = reactSelectOption.value
+    setPeriodDay(newPeriod)
+    if(props.land.rentType.rentTypeId === 1) {
+      let day = new ReactSelectOptionModel
+      day.label = reactSelectOption.label
+      day.value = reactSelectOption!.value!
+      setPeriod(day)
+    }  
+  }
+
   return (
     <div id="renting">
       <div id="rentingBox">
@@ -145,7 +188,7 @@ export default function ModalRenting(props: Props) {
           <div className="name-input-div">
             <p className="label-name">Peroid</p>
             {console.log("rentType"+props.land.rentType.rentTypeId+"period"+period.value)}
-            <Select options={mapPeriodToOption()} onChange={(e) => mapEventPeriodToOption(e as ReactSelectOptionModel) } isDisabled={periodType?.value === 2} />
+            <Select options={props.land.rentType.rentTypeId === 1 ? mapPeriodDayToOption() : mapPeriodToOption()} onChange={(e) => {props.land.rentType.rentTypeId === 1 ? mapEventPeriodDayToOption(e as ReactSelectOptionModel) : mapEventPeriodToOption(e as ReactSelectOptionModel)}} isDisabled={periodType?.value === 2} />
           </div>
         </div>
         <div className="checkbox">
