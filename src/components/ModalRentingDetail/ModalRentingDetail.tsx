@@ -21,6 +21,7 @@ export default function ModalRentingDetail(props: Props) {
     const [netAmount, setNetAmount] = useState<number>(0)
     const [paymentHistories, setPaymentHistories] = useState<Array<PaymentHistoryModel>>([])
     const [isOwnerOfLand, setIsOwnerOfLand] = useState<boolean>(false)
+    const [remainingText, setremainingText] = useState('')
 
     useEffect(() => {
         getRentingDetailsAPI()
@@ -38,6 +39,7 @@ export default function ModalRentingDetail(props: Props) {
             setPaymentHistories(rentingResponse.paymentHistories)
             setIsOwnerOfLand(rentingResponse.landTokenId.landOwnerTokenId === authStore.account.userTokenId ? true : false)
             calculatNetAmount()
+            showRemaining(rentingResponse.endDate)
         }
     }
 
@@ -57,6 +59,22 @@ export default function ModalRentingDetail(props: Props) {
     const goToEtherScan = (transactionHash: string) => {
         let url = 'https://rinkeby.etherscan.io/tx/' + transactionHash
         window.open(url, '_blank')
+    }
+
+    function showRemaining(endDate: Date) {
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = new Date(endDate).getTime() - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if (distance < 0) {
+                clearInterval(x);
+            }
+            setremainingText(`${days}d ${hours}h ${minutes}m ${seconds}s`)
+            // console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`)
+        }, 1000);
     }
 
     return (
@@ -98,7 +116,7 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
-                                <div className='detail-value'><p className='detail-value-text'></p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{remainingText}</p></div>
                             </div>
                         </div>
                         {isOwnerOfLand &&

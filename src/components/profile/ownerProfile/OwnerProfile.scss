@@ -340,6 +340,12 @@
                             &.Offer {
                                 background-color: #1A8EF3;
                             }
+                            &.Payout {
+                                background-color: #f845ec;
+                            }
+                            &.Rent {
+                                background-color: #8e1af3;
+                            }
                             .status-text {
                                 margin: 0;
                                 font-size: 14px;

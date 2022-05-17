@@ -210,7 +210,7 @@ export default function LandDetail() {
               <div id="profile">
                 <div className="profile-box" onClick={() => goToProfile(ownerDetails.userTokenId)}>
                   <div className="image-box">
-                    <img className="profile-image" src="https://cdn.wallpapersafari.com/7/36/98MpYN.jpg" alt="" />
+                    <img className="profile-image" src={ownerDetails.userProfilePic || '/profile.jpg'} alt="" />
                   </div>
                   <div className="detail-profile">
                     <div className="name">{ownerDetails.userName ? ownerDetails.userName : '-'}</div>
