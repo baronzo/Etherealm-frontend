@@ -265,7 +265,7 @@ export default function ShowLands(props: Props) {
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
-                        <p className='topic-my-land-text'>Renting Lands</p>
+                        <p className='topic-my-land-text'>Rented Lands</p>
                     </div>
                     {!ownedRentLand.length &&
                         <div className="no-land-data">Not have Land</div>
@@ -311,7 +311,7 @@ export default function ShowLands(props: Props) {
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
-                        <p className='topic-my-land-text'>Land Rent Purchase</p>
+                        <p className='topic-my-land-text'>Hire Purchased Land</p>
                     </div>
                     {!ownedHireLand.length &&
                         <div className="no-land-data">Not have Land</div>
@@ -340,7 +340,7 @@ export default function ShowLands(props: Props) {
                                         </div>
                                         <div className="land-rent-remaining">Ended Date: {new Date(item.endDate).toLocaleString().replace(',', '').split(' ')[0]}</div>
                                         <div className='offer-div'>
-                                            <p className='offer-text'>{item.price} ETH / Month</p>
+                                            <p className='offer-text'>Price : {item.price} ETH / Month</p>
                                         </div>
                                     </div>
                                 </div>
@@ -358,7 +358,7 @@ export default function ShowLands(props: Props) {
             <>
                 <div id='ShowLandsMain'>
                     <div className='topic-my-land-div'>
-                        <p className='topic-my-land-text'>People are Renting</p>
+                        <p className='topic-my-land-text'>Rented Out Lands</p>
                     </div>
                     {!ownedPeopleAreRenting.length &&
                         <div className="no-land-data">Not have Land</div>
@@ -456,7 +456,7 @@ export default function ShowLands(props: Props) {
                             landPeopleAreRenting: false
                         })
                     }}>
-                    <p className='type-text'>Renting Lands</p>
+                    <p className='type-text'>Rented Lands</p>
                 </div>
                 <div className={`button-item ${isActive.landRentPurchase ? 'active' : ''}`}
                     onClick={() => {
@@ -470,7 +470,7 @@ export default function ShowLands(props: Props) {
                             landPeopleAreRenting: false
                         })
                     }}>
-                    <p className='type-text'>Land Rent Purchase</p>
+                    <p className='type-text'>Hire Purchased Lands</p>
                 </div>
                 <div className={`button-item ${isActive.landPeopleAreRenting ? 'active' : ''}`}
                     onClick={() => {
@@ -484,7 +484,7 @@ export default function ShowLands(props: Props) {
                             landPeopleAreRenting: true
                         })
                     }}>
-                    <p className='type-text'>People are Renting</p>
+                    <p className='type-text'>Rented Out Lands</p>
                 </div>
             </div>
             {isActive.mapOwnedLands && mapOwnedLands()}
