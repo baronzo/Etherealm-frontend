@@ -146,6 +146,15 @@
                         }
                     }
                 }
+                .land-description {
+                    height: 60px;
+                    width: 100%;
+                    background-color: rgb(233, 233, 233);
+                    padding: 5px;
+                    font-size: 13px;
+                    color: #525252;
+                    margin: 0 0 3px 0;
+                }
                 .status-div {
                     display: flex;
                     justify-content: flex-start;
@@ -154,7 +163,6 @@
                     justify-content: center;
                     margin: 0;
                     padding: 5px 0 5px 0;
-                    height: 65px;
                     .view-detail-rent {
                         display: flex;
                         justify-content: center;
@@ -203,13 +211,18 @@
                         align-items: center;
                         margin: 0;
                         padding: 0;
-                        height: 50px;
+                        height: 28px;
                         width: 180px;
                         background-color: #7645D9;
                         border-radius: 5px;
                         &:hover {
                             cursor: pointer;
                             background-color: #865bdd;
+                        }
+                        .icon {
+                            color: #ffffff;
+                            margin: 0 5px 0 0;
+                            font-size: 16px;
                         }
                         .button-text {
                             margin: 0;
@@ -224,7 +237,7 @@
                         align-items: center;
                         margin: 0;
                         padding: 0;
-                        height: 50px;
+                        height: 28px;
                         width: 180px;
                         background-color: #3FD2CE;
                         border-radius: 5px;
