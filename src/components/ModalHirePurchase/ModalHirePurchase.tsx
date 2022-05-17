@@ -21,7 +21,7 @@ interface Options {
 export default function ModalHirePurchase(props: Props) {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const hirePurchaseService = new HirePurchaseService()
-  const [period, setPeriod] = useState<Options>({ value: 1, label: '1' })
+  const [period, setPeriod] = useState<Options>({value: 2, label: '2'})
   const [platformFees, setPlatformFees] = useState<number>(0)
   const [interest, setInterest] = useState<number>(0)
   const [pay, setPay] = useState<number>(0)
@@ -30,7 +30,6 @@ export default function ModalHirePurchase(props: Props) {
   const [monthly, setMonthly] = useState<number>(0)
 
   const [optionsPeroid, setOptionsPeroid] = useState<Array<Options>>([
-    { value: 1, label: '1' },
     { value: 2, label: '2' },
     { value: 3, label: '3' },
     { value: 4, label: '4' },

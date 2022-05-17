@@ -7,15 +7,20 @@ import RentService from '../../services/rent/RentService'
 import RentingDetailsModel from '../../models/rent/RentingDetailsModel'
 import PaymentHistoryModel from '../../models/rent/PaymentHistoryModel'
 import authStore from '../../store/auth'
+import HirePurchaseService from '../../services/hirePurchase/HirePurchaseService'
+import HirePurchaseDetailResponseModel from '../../models/hirePurchase/HirePurchaseDetailResponseModel'
 
 type Props = {
     setIsShowModalDetailRenting: (value: boolean) => void
     land: LandModel
+    isHirePurchase?: boolean 
 }
 
 export default function ModalRentingDetail(props: Props) {
     const rentService = new RentService()
+    const hirePurchaseService = new HirePurchaseService()
     const [rentingDetails, setRentingDetails] = useState<RentingDetailsModel>(new RentingDetailsModel())
+    const [rentPurchaseDetails, setRentPurchaseDetails] = useState<HirePurchaseDetailResponseModel>(new HirePurchaseDetailResponseModel())
     const [totalReceive, setTotalReceive] = useState<number>(0)
     const [totalFee, setTotalFee] = useState<number>(0)
     const [netAmount, setNetAmount] = useState<number>(0)
@@ -24,15 +29,21 @@ export default function ModalRentingDetail(props: Props) {
     const [remainingText, setremainingText] = useState('')
 
     useEffect(() => {
+        console.log("55555")
+        console.log(props.land)
         getRentingDetailsAPI()
     }, [])
 
     async function getRentingDetailsAPI() {
-        await getRentingDetails()
+        if (props.isHirePurchase) {
+            await getRentPurchase()
+        }else{
+            await getRentingDetails()
+        }
     }
 
     const getRentingDetails = async (): Promise<void> => {
-        const rentingResponse = await rentService.getRentingDetailsByLandTokenId(props.land.landTokenId)
+        const rentingResponse: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(props.land.landTokenId)
         console.log(rentingResponse)
         if (rentingResponse) {
             setRentingDetails(rentingResponse)
@@ -40,6 +51,16 @@ export default function ModalRentingDetail(props: Props) {
             setIsOwnerOfLand(rentingResponse.landTokenId.landOwnerTokenId === authStore.account.userTokenId ? true : false)
             calculatNetAmount()
             showRemaining(rentingResponse.endDate)
+        }
+    }
+
+    const getRentPurchase = async(): Promise<void> => {
+        const responseData: HirePurchaseDetailResponseModel = await hirePurchaseService.getHirePurchaseDetail(props.land.landTokenId)
+        if (responseData) {
+            setRentPurchaseDetails(responseData)
+            setPaymentHistories(responseData.paymentHistories)
+            setIsOwnerOfLand(responseData.landTokenId.landOwnerTokenId === authStore.account.userTokenId ? true : false)
+            showRemaining(responseData.endDate)
         }
     }
 
@@ -96,11 +117,12 @@ export default function ModalRentingDetail(props: Props) {
                             <FaInfoCircle className='icon-info' />
                         </div>
                     </div>
+                    {!props.isHirePurchase ?
                     <div className="detail-section">
                         <div className='land-detail'>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Price (ETH/{rentingDetails.rentType.rentTypeText})</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.price} ETH/{rentingDetails.rentType.rentTypeText}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.price} ETH/{ rentingDetails.rentType.rentTypeText}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Rental start date</p></div>
@@ -108,11 +130,11 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Rental end date</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{new Date(rentingDetails.endDate).toLocaleString().replace(',', '')}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{new Date( rentingDetails.endDate).toLocaleString().replace(',', '')}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Period</p></div>
-                                <div className='detail-value'><p className='detail-value-text'>{rentingDetails.rentType.rentTypeId === 1 ? rentingDetails.period : rentingDetails.period/30} {rentingDetails.rentType.rentTypeText}</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{(rentingDetails.rentType.rentTypeId === 1 ? rentingDetails.period : rentingDetails.period/30)} {rentingDetails.rentType.rentTypeText}</p></div>
                             </div>
                             <div className='detail-item'>
                                 <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
@@ -145,6 +167,41 @@ export default function ModalRentingDetail(props: Props) {
                             </div>
                         </div>
                     </div>
+                    :
+                    <div className="detail-section">
+                        <div className='land-detail'>
+                            <div className='detail-item'>
+                                <div className='detail-label'><p className='detail-label-text'>Price (ETH/Month)</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{rentPurchaseDetails.price} ETH/Month</p></div>
+                            </div>
+                            <div className='detail-item'>
+                                <div className='detail-label'><p className='detail-label-text'>Rental start date</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{new Date(rentPurchaseDetails.startDate).toLocaleString().replace(',', '')}</p></div>
+                            </div>
+                            <div className='detail-item'>
+                                <div className='detail-label'><p className='detail-label-text'>Rental end date</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{new Date( rentPurchaseDetails.endDate).toLocaleString().replace(',', '')}</p></div>
+                            </div>
+                            <div className='detail-item'>
+                                <div className='detail-label'><p className='detail-label-text'>Period</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{rentPurchaseDetails.period/30} Month</p></div>
+                            </div>
+                            <div className='detail-item'>
+                                <div className='detail-label'><p className='detail-label-text'>Remaining Period</p></div>
+                                <div className='detail-value'><p className='detail-value-text'>{remainingText}</p></div>
+                            </div>
+                        </div>
+                        <div className='log'>
+                            <div className='log-container'>
+                                {paymentHistories.map((item: PaymentHistoryModel, index: number) => {
+                                    return(
+                                        <p className='log-text' key={index} onClick={() => goToEtherScan(item.logTransactionsId.transactionBlock)}>{item.logTransactionsId.transactionBlock}</p>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                    }
                 </div>
             </div>
         </div>
