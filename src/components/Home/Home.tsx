@@ -9,6 +9,11 @@ const Home = () => {
     history.push(`/market`)
   }
 
+  function goToRentPage(): void {
+    history.push(`/market`)
+    window.history.replaceState(null, '', window.location.pathname + "?marketType=2")
+  }
+
   function goToMapPage(): void {
     history.push(`/map`)
   }
@@ -41,7 +46,7 @@ const Home = () => {
         <div className="land-box">
           <div className="title">Rent in ETHEREALM</div>
           <div className="text-description">Don't want to sell at the moment? Rent it!</div>
-          <button className="buy-land" onClick={goToMarketPage}>Rent Land</button>
+          <button className="buy-land" onClick={goToRentPage}>Rent Land</button>
         </div>
         <div className="image-matket-div">
           <img className='image-market' src="/image3.png" alt="" />
