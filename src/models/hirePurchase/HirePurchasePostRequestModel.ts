@@ -3,5 +3,7 @@ export default class HirePurchasePostRequestModel {
     public period: number = Number();
     public price: number = Number();
     public hash: string = String();
-    // public fees: number = Number()
+    public startDate: Date = new Date()
+    public endDate: Date = new Date()
+    public fees: number = Number()
 }

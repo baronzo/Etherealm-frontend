@@ -74,6 +74,16 @@ class ContractStore {
   }
 
   @action
+  public async hirePurchase(landTokenId: string, price: number, endDate: number): Promise<string> {
+    if (this.contract) {
+      let uri: string = `http://etherealm1.ddns.net/api/lands/land/${landTokenId}`
+      let tx = await this.contract.hirePurchase(landTokenId, uri, endDate,{ value: ethers.utils.parseEther(String(price))})
+      return tx.hash
+    }
+    return ''
+  }
+
+  @action
   public async buyLand(landTokenId: string, ownerTokenId: string, price: number): Promise<boolean> {
     if (this.contract) {
       try {
