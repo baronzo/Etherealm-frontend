@@ -16,7 +16,7 @@
 
     .image-div {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       width: 450px;
       height: 450px;
@@ -27,19 +27,17 @@
         object-position: center;
         margin: 0;
         position: relative;
-        animation: myfirst 7s infinite;
-        animation-direction: alternate;
+        animation: myfirst 4s ease-out  infinite;
+        animation-direction: normal;
       }
     }
-
     @keyframes myfirst {
-      0%   {left: 0px; top: 50px;}
-      25%  {left: 0; top: 0px;}
-      50%  {left: 0; top: 50px;}
-      75%  {left: 0px; top: 0px;}
-      100% {left: 0px; top: 50px;}
+      0%   {transform: translate(0px, 0px);}
+      25%  {transform: translate(0px, 5px);}
+      50%  {transform: translate(0px, 0px);}
+      75%  {transform: translate(0px, 5px);}
+      100% {transform: translate(0px, 0px);}
     }
-
     .button {
       display: flex;
       margin-top: 20px;

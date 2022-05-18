@@ -3,6 +3,7 @@ import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from
 import CoordinatesModel from '../../models/lands/CoordinatesModel';
 import LandModel from '../../models/lands/LandModel';
 import LandService from '../../services/lands/LandService';
+import authStore from '../../store/auth';
 import LandModal from '../LandModal/LandModal';
 import './Map.scss'
 
@@ -301,7 +302,7 @@ export default function Map({ }: Props) {
         adjustZoom(null, null, cameraZoom + (0.025 * value))
     }
 
-    function onLandChangeFromModel(land: LandModel) {
+    async function onLandChangeFromModel(land: LandModel) {
         let newLands: Array<LandModel> = [...lands]
         let index: number = lands.findIndex(x => x.landTokenId === land.landTokenId)
         if (index != -1) {

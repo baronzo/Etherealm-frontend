@@ -59,19 +59,18 @@ class ContractStore {
   }
 
   @action
-  public async purchaseLand(landTokenId: string): Promise<boolean> {
+  public async purchaseLand(landTokenId: string, price: number): Promise<string> {
     if (this.contract) {
       try {
         console.log(landTokenId)
         let uri: string = `http://etherealm1.ddns.net/api/lands/land/${landTokenId}`
-        let tx = await this.contract.create(landTokenId, uri)
-        const result = await this.waitTransactionConfirm(tx)
-        return result[0]
+        let tx = await this.contract.create(landTokenId, uri, { value: ethers.utils.parseEther(String(price))})
+        return tx.hash
       } catch (error) {
         console.error(error)
       }
     }
-    return false
+    return ''
   }
 
   @action

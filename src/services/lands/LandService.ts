@@ -25,11 +25,12 @@ class LandService {
     return lands.data
   }
 
-  public async purchaseLand(landTokenId: string): Promise<LandModel> {
+  public async purchaseLand(landTokenId: string, hash: string): Promise<LandModel> {
     let account: AccountModel = await authStore.getAccount()
     let body: PurchaseLandRequestModel = {
       landTokenId: landTokenId,
-      ownerTokenId: account.userTokenId
+      ownerTokenId: account.userTokenId,
+      hash: hash
     }
     let land: AxiosResponse<LandModel> = await axios.post(`${this.host}/lands/purchase`, body)
     return land.data

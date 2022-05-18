@@ -103,6 +103,7 @@
         font-weight: bold;
         font-size: 16px;
         #hirePurchase, #purchase {
+          padding: 0 10px;
           cursor: pointer;
           height: 35px;
           outline: none;
@@ -120,7 +121,7 @@
           }
         }
         #purchase {
-          width: 100px;
+          width: fit-content;
           background-color: #61C939;
           &:hover {
             background-color: #46b41b;
