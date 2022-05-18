@@ -17,16 +17,16 @@ function App() {
     <BrowserRouter>
       <React.Fragment>
         <Switch>
-                <Route exact path='/'><Layout children={Home}/></Route>
-                <Route exact path='/map'><Layout children={Map}/></Route>
-                <Route exact path='/market'><Layout children={Market}/></Route>
-                <Route exact path='/auction'><Layout children={Auction}/></Route>
-                <Route exact path='/bid'><Layout children={Bid}/></Route>
-                <Route exact path='/profile/:userTokenId'><Layout children={OwnerProfile}/></Route>
-                <Route exact path='/lands/:landTokenId/edit'><Layout children={EditLand}/></Route>
-                <Route exact path='/lands/:landTokenId/details'><Layout children={LandDetail}/></Route>
-                <Route exact path='*'><Layout children={Home}/></Route>
-          </Switch>
+          <Route exact path='/'><Layout children={Home}/></Route>
+          <Route exact path='/map'><Layout children={Map}/></Route>
+          <Route exact path='/market'><Layout children={Market}/></Route>
+          <Route exact path='/auction'><Layout children={Auction}/></Route>
+          <Route exact path='/bid'><Layout children={Bid}/></Route>
+          <Route exact path='/profile/:userTokenId'><Layout children={OwnerProfile}/></Route>
+          <Route exact path='/lands/:landTokenId/edit'><Layout children={EditLand}/></Route>
+          <Route exact path='/lands/:landTokenId/details'><Layout children={LandDetail}/></Route>
+          <Route exact path='*'><Layout children={Home}/></Route>
+        </Switch>
       </React.Fragment>
     </BrowserRouter>
   );
