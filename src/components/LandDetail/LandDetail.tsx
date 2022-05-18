@@ -312,7 +312,6 @@ export default function LandDetail() {
                   </div>
                   : ''
                 }
-                {/* && authStore.account.userTokenId === renter.renterTokenId.userTokenId */}
                 {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && 
                   <div className='cancel-rent'>
                     <p className='text-price'>Payable {hirePurchase.price} ETH / Month (Next Payment {new Date(hirePurchase.nextPayment).toLocaleString().replace(',', '')})</p>
