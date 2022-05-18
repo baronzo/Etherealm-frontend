@@ -20,7 +20,9 @@ const Home = () => {
           <img src="/image1.png" alt="" className="image-main" />
         </div>
         <div id="text">ETHEREALM</div>
-        <div id="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur temporibus nostrum animi non voluptate</div>
+        <div id="description">Welcome to Ethrealm world,
+        Trading and Hire purchase of non-fungible token on the blockchain system
+        </div>
         <div className="button">
           <button className="map" onClick={goToMapPage}>View Map</button>
         </div>
@@ -31,14 +33,14 @@ const Home = () => {
         </div>
         <div className="land-box">
           <div className="title">Market in ETHEREALM</div>
-          <div className="text-description">$SAND is our main utility token that allows you to buy and sell LANDS and ASSETS in The Sandbox metaverse.</div>
+          <div className="text-description">Buy and sell LANDS and ASSETS in ETHEREALM world.</div>
           <button className="buy-land" onClick={goToMarketPage}>Buy Land</button>
         </div>
       </div>
       <div id="landRent">
         <div className="land-box">
           <div className="title">Rent in ETHEREALM</div>
-          <div className="text-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur temporibus nostrum animi non voluptate</div>
+          <div className="text-description">Don't want to sell at the moment? Rent it!</div>
           <button className="buy-land" onClick={goToMarketPage}>Rent Land</button>
         </div>
         <div className="image-matket-div">
