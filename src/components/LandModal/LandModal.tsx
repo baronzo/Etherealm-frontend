@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { useHistory } from 'react-router-dom'
@@ -14,7 +15,7 @@ interface IProps {
   onLandChange: (land: LandModel) => void
 }
 
-export default function LandModal(props: IProps) {
+export default observer(function LandModal(props: IProps) {
   const contractStore = useMemo(() => new ContractStore, [])
   const landService: LandService = new LandService
   const [land, setLand] = useState<LandModel>(new LandModel)
@@ -25,6 +26,7 @@ export default function LandModal(props: IProps) {
 
   useEffect(() => {
     setLand(props.land)
+    console.log(props.land)
   }, [props.land])
 
   function onBackgroundClick(): void {
@@ -50,7 +52,7 @@ export default function LandModal(props: IProps) {
         return (
           <div className="option">
             <button id="hirePurchase" className={isLoading ? 'disabled' : ''} onClick={() => {setIsShowModalHirePurchase(true)}}>Hire Purchase</button>
-            <button id="purchase" onClick={onPurchaseClick}>Purchase</button>
+            <button id="purchase" onClick={onPurchaseClick}>Purchase : {land.price} ETH</button>
           </div>
         )
       case 2:
@@ -73,11 +75,11 @@ export default function LandModal(props: IProps) {
 
   async function onPurchaseClick() {
     setisLoading(true)
-    let isSuccess: boolean = await contractStore.purchaseLand(land.landTokenId)
-    await authStore.updateAccountData()
-    if (isSuccess) {
-      let result: LandModel = await landService.purchaseLand(land.landTokenId)
+    let hash: string = await contractStore.purchaseLand(land.landTokenId, land.price!)
+    if (hash) {
+      let result: LandModel = await landService.purchaseLand(land.landTokenId, hash)
       setLand(result)
+      await authStore.updateAccount()
       props.onLandChange(result)
       setisLoading(false)
     }
@@ -120,4 +122,4 @@ export default function LandModal(props: IProps) {
       }
     </div>
   )
-}
+})

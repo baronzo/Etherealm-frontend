@@ -169,7 +169,7 @@ export default observer(function Navbar(props: IProps) {
             <div className="profile">
                 <img
                   className="profile-img"
-                  src={authStore.account.userProfilePic}
+                  src={authStore.account.userProfilePic || '/profile.jpg'}
                   alt=""
                 />
               </div>
