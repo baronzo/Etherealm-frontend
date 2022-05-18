@@ -122,15 +122,6 @@ export default function ModalMyOfferList(props: Props) {
         <div className="sortby-div">
           <p className="sort-by-label">Sort by</p>
           <Select id="selectSort" options={mapSortByToOption()} onChange={(e) => mapEventSortByToOption(e as ReactSelectOptionModel)} />
-          {/* <select className="select-fillter"
-            value={sortByValue}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortByValue(Number(e.target.value))}
-          >
-            <option value="1">Latest</option>
-            <option value="2">Oldest</option>
-            <option value="3">Highest price</option>
-            <option value="4">Lowest price</option>
-          </select> */}
         </div>
         <div className="show-offer-list">
           {offeringList.map((item: OffersDataOfLandModel, index: number) => {

@@ -49,15 +49,11 @@ export default observer(function Profile({ }: Props) {
     const history = useHistory()
     const params: IParams = useParams()
     const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
+    const [isHirePurchase, setIsHirePurchase] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
     }, [])
-
-    function test (value: boolean) {
-        console.log(value);
-        setIsShowModalDetailRenting(value)
-    }
 
     async function getDataFromAPI(): Promise<void> {
         await getLandByOwnerTokenId()
@@ -195,13 +191,14 @@ export default observer(function Profile({ }: Props) {
                         setselectedLand={setselectedLand}
                         setselectedLandRent={setselectedLandRent}
                         setIsShowModalListOnMarket={setIsShowModalListOnMarket}
-                        setIsShowModalDetailRenting={test}
+                        setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                         setIsShowModalOfferList={setIsShowModalOfferList}
+                        setIsHirePurchase={setIsHirePurchase}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
-                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={test} land={selectedLand}/>}
-                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket}/>}
+                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand} isHirePurchase={isHirePurchase}/>}
+                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile}/>}
                 {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer}/>}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
             </div>

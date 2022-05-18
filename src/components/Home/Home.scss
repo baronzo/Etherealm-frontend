@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     background-color: #F2F6FA;
-    height: 500px;
+    height: 650px;
     #text {
       font-size: 48px;
       font-weight: bold;
@@ -13,20 +13,37 @@
     #description {
       color: #280D5F;
     }
+
+    .image-div {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      width: 450px;
+      height: 450px;
+      .image-main {
+        width: 360px;
+        height: 390px;
+        object-fit: cover;
+        object-position: center;
+        margin: 0;
+        position: relative;
+        animation: myfirst 7s infinite;
+        animation-direction: alternate;
+      }
+    }
+
+    @keyframes myfirst {
+      0%   {left: 0px; top: 50px;}
+      25%  {left: 0; top: 0px;}
+      50%  {left: 0; top: 50px;}
+      75%  {left: 0px; top: 0px;}
+      100% {left: 0px; top: 50px;}
+    }
+
     .button {
       display: flex;
       margin-top: 20px;
-      .wallet {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #7645D9;
-        border-radius: 50px;
-        color: #fff;
-        border: none;
-        padding: 10px;
-        margin-right: 10px;
-      }
+      margin-bottom: 20px;
       .map {
         width: 150px;
         display: flex;
@@ -43,56 +60,142 @@
       }
     }
   }
-  #auction {
-    height: 300px;
+
+#landMarket {
+  height: 550px;
+  background: linear-gradient(279.22deg, #F1FFFF 3.66%, #A6FEC9 44.76%, #65D6D2 100%);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  .image-matket-div {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    .image-market {
+      width: 530px;
+      height: 400px;
+      object-fit: cover;
+      object-position: center;
+      margin: 0;
+    }
   }
-  #land {
-    height: 400px;
-    background: linear-gradient(0.25turn, #5ABFBC, #B4F5F3, #F1FFFF);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    .land-box {
-      padding: 10px;
-      .title {
-        font-size: 32px;
-        font-weight: bold;
-      }
-      .text-description {
-        margin-top: 20px 0 20px 0;
-      }
-      .buy-land {
-        border: none;
-        padding: 10px;
-        border-radius: 50px;
-        background-color: #7645D9;
-        width: 150px;
-        color: #fff;
-        margin-top: 20px;
+  .land-box {
+    width: 60%;
+    padding: 50px 90px 50px 50px;
+    .title {
+      color: black;
+      font-size: 45px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .text-description {
+      color: black;
+      font-size: 18px;
+      font-weight: normal;
+      margin: 20px 0 0 0;
+      height: 100px;
+    }
+    .buy-land {
+      border: none;
+      height: 45px;
+      border-radius: 20px;
+      background-color: #7645D9;
+      width: 200px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 30px;
+      &:hover {
+        cursor: pointer;
+        
       }
     }
   }
-  
-  @media screen and (max-width: 1024px) {
-    #home {
-      #description {
+}
+#landRent {
+  height: 550px;
+  background: linear-gradient(279.8deg, #E5E5E5 0%, #CFB8FD 42.04%, #69A3F1 100%);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  .image-matket-div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    .image-market {
+      width: 450px;
+      height: 470px;
+      object-fit: cover;
+      object-position: center;
+      margin: 0;
+    }
+  }
+  .land-box {
+    width: 60%;
+    padding: 50px 0px 50px 100px;
+    .title {
+      color: black;
+      font-size: 45px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .text-description {
+      color: black;
+      font-size: 18px;
+      font-weight: normal;
+      margin: 20px 0 0 0;
+      height: 100px;
+    }
+    .buy-land {
+      border: none;
+      height: 45px;
+      border-radius: 20px;
+      background-color: #7645D9;
+      width: 200px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 30px;
+      &:hover {
+        cursor: pointer;
+        
+      }
+    }
+  }
+}
+
+#footer {
+  height: 60px;
+  width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+  #home {
+    #description {
+      text-align: center;
+    }
+  }
+  #land {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .land-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .text-description {
         text-align: center;
       }
     }
-    #land {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      .land-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .text-description {
-          text-align: center;
-        }
-      }
-    }
   }
+}

@@ -28,6 +28,8 @@ import RentService from '../../services/rent/RentService'
 import RentingDetailsModel from '../../models/rent/RentingDetailsModel'
 import ModalRenting from '../ModalRenting/ModalRenting'
 import LandMarketModel from '../../models/market/LandMarketModel'
+import HirePurchaseDetailResponseModel from '../../models/hirePurchase/HirePurchaseDetailResponseModel'
+import HirePurchaseService from '../../services/hirePurchase/HirePurchaseService'
 
 interface IParams {
   landTokenId: string
@@ -53,13 +55,14 @@ export default function LandDetail() {
   const [isCancelLoading, setisCancelLoading] = useState<boolean>(false)
   const [isYourBestOffer, setIsYourBestOffer] = useState<boolean>(false)
   const [isShowModalDetailRenting, setIsShowModalDetailRenting] = useState<boolean>(false)
-  const [isRenting, setIsRenting] = useState<boolean>(true) //ทดสอบว่าเป็นผู้เช่า
   const rentService = new RentService()
   const [rentingDetails, setRentingDetails] = useState<RentingDetailsModel>(new RentingDetailsModel())
   const [isShowModalrenting, setIsShowModalrenting] = useState<boolean>(false)
   const [landDetailsForRenting, setLandDetailsForRenting] = useState<LandMarketModel>(new LandMarketModel())
   const marketService = new LandMarketService()
   const [renter, setRenter] = useState<RentingDetailsModel>(new RentingDetailsModel)
+  const hirePurchaseService: HirePurchaseService = new HirePurchaseService()
+  const [hirePurchase, setHirePurchase] = useState<HirePurchaseDetailResponseModel>(new HirePurchaseDetailResponseModel())
 
   useEffect(() => {
     getDataFromApi()
@@ -68,6 +71,7 @@ export default function LandDetail() {
   async function getDataFromApi(): Promise<void> {
     await getLandDetailsFromApi()
     await getLandRentingAPI()
+    await getDetailHiringAPI()
   }
 
   async function getLandDetailsFromApi(): Promise<void> {
@@ -165,10 +169,16 @@ export default function LandDetail() {
       setLandDetailsForRenting(landResponse)
     }
   }
-  
+
   async function getIsRenter(landTokenId: string): Promise<void> {
     const result: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(landTokenId)
     setRenter(result)
+  }
+
+  async function getDetailHiringAPI() {
+    const result: HirePurchaseDetailResponseModel = await hirePurchaseService.getHirePurchaseDetail(params.landTokenId)
+    setHirePurchase(result)
+    console.log(result)
   }
 
   return (
@@ -180,7 +190,10 @@ export default function LandDetail() {
             <div className="title-text">{landDetails.landName}</div>
             <div className="edit-and-tag">
               {isOwner && landDetails.landStatus.landStatusId === 2 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
+              {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && <button className='detail-rent'><i className="far fa-file-alt icon-doc"></i></button> }
+              {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && <div className="edit-land" onClick={() => goToEditPage(hirePurchase.landTokenId.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
               {!isOwner && landDetails.landStatus.landStatusId === 5 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
+              {authStore.account.userTokenId === renter.renterTokenId.userTokenId && <div className="edit-land" onClick={() => goToEditPage(renter.landTokenId.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>  }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
           </div>
@@ -208,6 +221,22 @@ export default function LandDetail() {
                 </button>
               </div>
               <div id="profile">
+                { landDetails.landStatus.landStatusId === 6 ?
+                <div className="profile-box" onClick={() => goToProfile(hirePurchase.renterTokenId.userTokenId)}>
+                  <div className="image-box">
+                    <img className="profile-image" src={hirePurchase.renterTokenId.userProfilePic || '/profile.jpg'} alt="" />
+                  </div>
+                  <div className="detail-profile">
+                    <div className="name">{hirePurchase.renterTokenId.userName ? hirePurchase.renterTokenId.userName : '-'}</div>
+                    <div className="box">
+                      <div className="token-id">{hirePurchase.renterTokenId.userTokenId}</div>
+                      <button className="copy" onClick={(e) => copyAddess(e)}>
+                        <FaCopy className='copy-icon' />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                :
                 <div className="profile-box" onClick={() => goToProfile(ownerDetails.userTokenId)}>
                   <div className="image-box">
                     <img className="profile-image" src={ownerDetails.userProfilePic || '/profile.jpg'} alt="" />
@@ -222,6 +251,7 @@ export default function LandDetail() {
                     </div>
                   </div>
                 </div>
+                }
               </div>
               <div className="offer">
                 {!isOwner && landDetails.landStatus.landStatusId === 2 &&
@@ -281,6 +311,17 @@ export default function LandDetail() {
                     { new Date(Date.now()).toLocaleString().replace(',', '').slice(0, 9) === new Date(renter.nextPayment!).toLocaleString().replace(',', '').slice(0, 9) ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
                   </div>
                   : ''
+                }
+                {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && 
+                  <div className='cancel-rent'>
+                    <p className='text-price'>Payable {hirePurchase.price} ETH / Month (Next Payment {new Date(hirePurchase.nextPayment).toLocaleString().replace(',', '')})</p>
+                    { new Date(Date.now()).toLocaleString().replace(',', '').slice(0, 9) === new Date(hirePurchase.nextPayment!).toLocaleString().replace(',', '').slice(0, 9) ? <button className="button-price-land">Pay {landDetails.price} ETH </button> : ''}
+                  </div>
+                }
+                {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId !== authStore.account.userTokenId &&
+                  <div className='cancel-rent'>
+                    <p className='text-price'>Payable {hirePurchase.price} ETH / Month </p>
+                  </div>
                 }
               </div>
             </div>
