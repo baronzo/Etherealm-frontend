@@ -26,7 +26,6 @@ export default observer(function LandModal(props: IProps) {
 
   useEffect(() => {
     setLand(props.land)
-    console.log(props.land)
   }, [props.land])
 
   function onBackgroundClick(): void {
@@ -88,6 +87,11 @@ export default observer(function LandModal(props: IProps) {
   function goToOffer(landTokenId: string) {
     history.push(`/lands/${landTokenId}/details`)
   }
+
+  function handleOnHirePurchaseSuccess(land: LandModel) {
+    setLand(land)
+    props.onLandChange(land)
+  }
   
   return (
     <div id='landModal' className={!land.landTokenId ? 'hide' : ''}>
@@ -117,7 +121,7 @@ export default observer(function LandModal(props: IProps) {
         </div>
       </div>
       ):(
-        <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase} onHirePurchaseSuccess={props.onLandChange}/>
+        <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase} onHirePurchaseSuccess={handleOnHirePurchaseSuccess}/>
       )
       }
     </div>

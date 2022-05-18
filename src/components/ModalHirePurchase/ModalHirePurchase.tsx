@@ -47,7 +47,6 @@ export default function ModalHirePurchase(props: Props) {
   ])
 
   useEffect(() => {
-    console.log(props.landDetails)
     calculate()
   }, [period.value])
 
@@ -72,12 +71,21 @@ export default function ModalHirePurchase(props: Props) {
   }
 
   async function postHirePuechaseLand(): Promise<void> {
+    // setisLoading(true)
+
+    // setTimeout(() => {
+    //   let newData = {...props.landDetails}
+    //   newData.landName = 'Testtt'
+    //   setisLoading(false)
+    //   props.onHirePurchaseSuccess(newData)
+    //   props.setIsShowModalHirePurchase(false)
+    // }, 3000);
     setisLoading(true)
     const currentDate: Date = new Date()
     const endDate: Date = calculateEndDate(currentDate, period.value!*30)
-    // const hash: string = await contractStore.hirePurchase(props.landDetails.landTokenId, props.landDetails.price!, endDate.getTime())
+    const hash: string = await contractStore.hirePurchase(props.landDetails.landTokenId, pay, endDate.getTime())
     const bodyRequest: HirePurchasePostRequestModel = {
-      hash: '',
+      hash: hash,
       landTokenId: props.landDetails.landTokenId!,
       period: period.value! * 30,
       price: props.landDetails.price!,
@@ -85,15 +93,15 @@ export default function ModalHirePurchase(props: Props) {
       endDate: endDate,
       fees: period.value! > 3 ? fees : platformFees
     }
-    console.log(bodyRequest)
+    // console.log(pay)
     if(checked) {
-      // const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
-      // if (hirePuechaseResponse) {
-      //   console.log(hirePuechaseResponse)
-      //   setisLoading(false)
-      //   props.setIsShowModalHirePurchase(false)
-      //   props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
-      // }
+      const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
+      if (hirePuechaseResponse) {
+        console.log(hirePuechaseResponse)
+        setisLoading(false)
+        props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
+        props.setIsShowModalHirePurchase(false)
+      }
     }
   }
 
@@ -115,16 +123,11 @@ export default function ModalHirePurchase(props: Props) {
   const calculate = ():void => {
     let willPay: number = 0
     let monthlyPay: number = props.landDetails.price! / period.value!
-    setMonthly(monthly)
-    let platform: number = monthlyPay * 0.025
-    let interest: number = monthlyPay * 0.01
+    let platform: number = props.landDetails.price! * 0.025
+    let interest: number = period.value! > 3 ? props.landDetails.price! * 0.01 : 0
     let fees: number = platform + interest
-    if (period.value! <= 3) {
-      willPay = monthlyPay + platformFees
-      setInterest(0)
-      setPay(willPay)
-    }
-    willPay = monthlyPay + platformFees + interest
+    willPay = monthlyPay + fees
+    setMonthly(monthlyPay)
     setFees(fees)
     setPlatformFees(platform)
     setInterest(interest)
