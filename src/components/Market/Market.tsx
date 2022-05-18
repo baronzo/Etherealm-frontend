@@ -24,15 +24,22 @@ export default function Market() {
   const [landsRent, setLandsRent] = useState<LandMarketPaginateResponseModel>()
   const [landsSell, setLandsSell] = useState<LandMarketPaginateResponseModel>()
   const [selectedRentLand, setSelectedRentLand] = useState<LandMarketModel>()
+  const searchParams: URLSearchParams = new URLSearchParams(window.location.search)
 
   useEffect(() => {
+    if (searchParams.get("marketType")) {
+      setIsTab( searchParams.get("marketType") === "1" ? true : false)
+    }else{
+      window.history.replaceState(null, '', window.location.pathname + "?marketType=1")
+      setIsTab(true)
+    }
     getLandOnMarketFromAPI()
     getLandRentOnMarketByMarketType()
     getLandSellOnMarketByMarketType()
   }, [])
 
-
   function onChangeTab(isTab: boolean) {
+    window.history.replaceState(null, '', window.location.pathname + `?marketType=${isTab ? 1 : 2}`)
     setIsTab(isTab)
   }
 
