@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     background-color: #F2F6FA;
-    height: 650px;
+    height: 100vh;
     #text {
       font-size: 48px;
       font-weight: bold;
@@ -16,28 +16,26 @@
 
     .image-div {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      width: 450px;
-      height: 450px;
+      width: 800px;
+      height: 560px;
       .image-main {
-        width: 360px;
-        height: 390px;
+        transform: scale(1.15);
         object-fit: cover;
         object-position: center;
-        margin: 0;
         position: relative;
-        animation: myfirst 7s infinite;
+        animation: myfirst ease-in-out 1s infinite;
         animation-direction: alternate;
       }
     }
 
     @keyframes myfirst {
-      0%   {left: 0px; top: 50px;}
-      25%  {left: 0; top: 0px;}
-      50%  {left: 0; top: 50px;}
-      75%  {left: 0px; top: 0px;}
-      100% {left: 0px; top: 50px;}
+      0%   {left: 0px; top: 0px;}
+      // 25%  {left: 0; top: 0px;}
+      // 50%  {left: 0; top: 10px;}
+      // 75%  {left: 0px; top: 0px;}
+      100% {left: 0px; top: 10px;}
     }
 
     .button {
