@@ -127,11 +127,11 @@ export default function ModalHirePurchase(props: Props) {
     let interest: number = period.value! > 3 ? props.landDetails.price! * 0.01 : 0
     let fees: number = platform + interest
     willPay = monthlyPay + fees
-    setMonthly(monthlyPay)
-    setFees(fees)
-    setPlatformFees(platform)
-    setInterest(interest)
-    setPay(willPay)
+    setMonthly(Number(monthlyPay.toFixed(12)))
+    setFees(Number(fees.toFixed(12)))
+    setPlatformFees(Number(platform.toFixed(12)))
+    setInterest(Number(interest.toFixed(12)))
+    setPay(Number(willPay.toFixed(12)))
   }
 
   const handleChange = ():void => { 
