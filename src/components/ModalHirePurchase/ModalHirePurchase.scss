@@ -1,14 +1,13 @@
 #hirePurchaseBox {
     position: absolute;
     z-index: 3;
-    width: 420px;
-    height: 600px;
+    width: 380px;
+    // height: 600px;
     margin: 0;
-    padding: 0;
+    padding: 5px 0 20px 0;
     box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
     border-radius: 13px;
     background-color: #ffffff;
-
     .topic-label-div {
         display: flex;
         height: 50px;
@@ -35,7 +34,7 @@
             color: #494949;
             font-size: 23px;
             font-weight: bold;
-            margin: 5px 5px 0 0;
+            margin: 5px 15px 0 0;
 
             &:hover {
                 cursor: pointer;

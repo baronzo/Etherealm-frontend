@@ -117,7 +117,7 @@ export default observer(function LandModal(props: IProps) {
         </div>
       </div>
       ):(
-        <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase}/>
+        <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase} onHirePurchaseSuccess={props.onLandChange}/>
       )
       }
     </div>

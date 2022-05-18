@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./ModalHirePurchase.scss";
 import { MdClose } from "react-icons/md";
 import LandModel from "../../models/lands/LandModel";
@@ -7,10 +7,12 @@ import HirePurchaseService from "../../services/hirePurchase/HirePurchaseService
 import HirePurchasePostRequestModel from "../../models/hirePurchase/HirePurchasePostRequestModel";
 import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
 import HirePurchasePostResponseModel from "../../models/hirePurchase/HirePurchasePostResponseModel";
+import ContractStore from "../../store/contract";
 
 type Props = {
   landDetails: LandModel;
   setIsShowModalHirePurchase: (value: boolean) => void
+  onHirePurchaseSuccess: (newLand: LandModel) => void
 };
 
 interface Options {
@@ -19,6 +21,7 @@ interface Options {
 }
 
 export default function ModalHirePurchase(props: Props) {
+  const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
   const hirePurchaseService = new HirePurchaseService()
   const [period, setPeriod] = useState<Options>({value: 2, label: '2'})
@@ -70,23 +73,39 @@ export default function ModalHirePurchase(props: Props) {
 
   async function postHirePuechaseLand(): Promise<void> {
     setisLoading(true)
+    const currentDate: Date = new Date()
+    const endDate: Date = calculateEndDate(currentDate, period.value!*30)
+    // const hash: string = await contractStore.hirePurchase(props.landDetails.landTokenId, props.landDetails.price!, endDate.getTime())
     const bodyRequest: HirePurchasePostRequestModel = {
-      hash: '0x9f526330448a8343a39969b0635ec589b3e7be46c4e9896856f5614c13c6041e',
+      hash: '',
       landTokenId: props.landDetails.landTokenId!,
       period: period.value! * 30,
-      price: 1
-      // fees: fees
+      price: props.landDetails.price!,
+      startDate: currentDate,
+      endDate: endDate,
+      fees: period.value! > 3 ? fees : platformFees
     }
+    console.log(bodyRequest)
     if(checked) {
-      console.log(bodyRequest)
-      const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
-      if (hirePuechaseResponse) {
-        console.log(hirePuechaseResponse)
-        setisLoading(false)
-        props.setIsShowModalHirePurchase(false)
-        window.location.reload()
-      }
+      // const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
+      // if (hirePuechaseResponse) {
+      //   console.log(hirePuechaseResponse)
+      //   setisLoading(false)
+      //   props.setIsShowModalHirePurchase(false)
+      //   props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
+      // }
     }
+  }
+
+  function calculateEndDate(date: Date, period: number) {
+    let newDate = new Date(date)
+    if (period > 14) {
+      const monthLength: number = period / 30
+      newDate.setMonth(date.getMonth() + monthLength)
+    } else {
+      newDate.setDate(date.getDate() + period)
+    }
+    return newDate
   }
 
   async function confirmHirePurchase() {
@@ -97,7 +116,7 @@ export default function ModalHirePurchase(props: Props) {
     let willPay: number = 0
     let monthlyPay: number = props.landDetails.price! / period.value!
     setMonthly(monthly)
-    let platform: number = monthlyPay * 0.25
+    let platform: number = monthlyPay * 0.025
     let interest: number = monthlyPay * 0.01
     let fees: number = platform + interest
     if (period.value! <= 3) {
