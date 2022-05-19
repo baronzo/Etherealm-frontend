@@ -53,11 +53,13 @@ export default function Map({ }: Props) {
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
 
     const [loadingPage, setLoadingPage] = useState<boolean>(false)
+    const searchParams: URLSearchParams = new URLSearchParams(window.location.search)
     
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
         cameraZoom = cameraZoomRef.current
         const update = () => {
+            setUrl()
             cameraZoomRef.current = drawboard()
             drawMinimap()
             callbackKeyRef.current = requestAnimationFrame(update);
@@ -73,19 +75,29 @@ export default function Map({ }: Props) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
-        // getMapDataFromApi()
+        mapSearchParamsToVariable()
+
         setLoadingPage(false)
     }, [])
+
+    function setUrl(): void {
+        window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}&currentTransformedCursor=${currentTransformedCursor.x},${currentTransformedCursor.y}`)
+    }
+
+    function mapSearchParamsToVariable(): void {
+        cameraZoom = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
+
+        const cameraOffSetParams: Array<string> = searchParams.get('cameraOffSet')?.split(',') ?? ['0', '0']
+        setCameraOffSet({x: Number(cameraOffSetParams[0]), y: Number(cameraOffSetParams[1])})
+
+        const currentTransformedCursorParams: Array<string> = searchParams.get('currentTransformedCursor')?.split(',') ?? ['0', '0']
+        currentTransformedCursor = {x: Number(currentTransformedCursorParams[0]), y: Number(currentTransformedCursorParams[1])}
+
+    }
 
     async function getMapDataFromApi() {
         try {
             let response: Array<LandModel> = await landService.getLands()
-            // console.log(response)
-            // response.forEach(item => {
-            //     if (item.landSize.landSize === 60) {
-            //         console.log(item)
-            //     }
-            // })
             setLands(response)
         } catch (error) {
             
