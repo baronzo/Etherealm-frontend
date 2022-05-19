@@ -36,6 +36,7 @@ export default function Market() {
       setIsTab(true)
     }
     getMarketAPI()
+
   }, [])
 
   async function getMarketAPI() {

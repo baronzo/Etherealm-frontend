@@ -58,8 +58,8 @@ export default function Map({ }: Props) {
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
         cameraZoom = cameraZoomRef.current
+        setUrl()
         const update = () => {
-            setUrl()
             cameraZoomRef.current = drawboard()
             drawMinimap()
             callbackKeyRef.current = requestAnimationFrame(update);
@@ -78,10 +78,17 @@ export default function Map({ }: Props) {
         mapSearchParamsToVariable()
 
         setLoadingPage(false)
+
+        return () => {
+            cancelAnimationFrame(callbackKeyRef.current)
+            window.cancelAnimationFrame
+            console.log('Clean up')
+        }
     }, [])
 
     function setUrl(): void {
-        window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}&currentTransformedCursor=${currentTransformedCursor.x},${currentTransformedCursor.y}`)
+        // window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}&currentTransformedCursor=${currentTransformedCursor.x},${currentTransformedCursor.y}`)
+        window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}`)
     }
 
     function mapSearchParamsToVariable(): void {
@@ -90,8 +97,8 @@ export default function Map({ }: Props) {
         const cameraOffSetParams: Array<string> = searchParams.get('cameraOffSet')?.split(',') ?? ['0', '0']
         setCameraOffSet({x: Number(cameraOffSetParams[0]), y: Number(cameraOffSetParams[1])})
 
-        const currentTransformedCursorParams: Array<string> = searchParams.get('currentTransformedCursor')?.split(',') ?? ['0', '0']
-        currentTransformedCursor = {x: Number(currentTransformedCursorParams[0]), y: Number(currentTransformedCursorParams[1])}
+        // const currentTransformedCursorParams: Array<string> = searchParams.get('currentTransformedCursor')?.split(',') ?? ['0', '0']
+        // currentTransformedCursor = {x: Number(currentTransformedCursorParams[0]), y: Number(currentTransformedCursorParams[1])}
 
     }
 
@@ -276,6 +283,8 @@ export default function Map({ }: Props) {
             cameraOffSet.x = getEventLocation(e)?.x / cameraZoom - dragStart.x
             cameraOffSet.y = getEventLocation(e)?.y / cameraZoom - dragStart.y
             isOnMouseDragging = true
+            console.log(cameraOffSet)
+            setUrl()
         }
         currentTransformedCursor = getTransformedPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
     }
@@ -315,10 +324,6 @@ export default function Map({ }: Props) {
     }
 
     function adjustZoom(e: any, zoomFactor: any, zoom: number | null = null) {
-        // let currentTargetRect = zoomAmount.currentTarget.getBoundingClientRect();
-        // const event_offsetX = zoomAmount.pageX - currentTargetRect.left,
-        // event_offsetY = zoomAmount.pageY - currentTargetRect.top;
-        // cameraMouseFocusRef.current = {x: event_offsetX, y: event_offsetY}
         if (!isDragging) {
             if (zoom) {
                 cameraZoom = zoom
@@ -336,6 +341,7 @@ export default function Map({ }: Props) {
             }
             cameraZoom = Math.min(cameraZoom, MAX_ZOOM)
             cameraZoom = Math.max(cameraZoom, MIN_ZOOM)
+            setUrl()
         }
     }
 
