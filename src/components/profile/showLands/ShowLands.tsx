@@ -118,13 +118,11 @@ export default function ShowLands(props: Props) {
             if (distance < 0) {
                 clearInterval(x);
             }
-            // console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`)
         }, 1000);
     }
 
     function mapOwnedLands(): JSX.Element {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 2)
-        console.log(data)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -175,7 +173,6 @@ export default function ShowLands(props: Props) {
 
     function landForSellOnMarket(): JSX.Element {
         const data: Array<LandModel> = props.allLands.filter(item => item.landStatus.landStatusId === 3)
-        console.log(data)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -268,7 +265,6 @@ export default function ShowLands(props: Props) {
     }
 
     function landRent(): JSX.Element {
-        console.log(ownedRentLand)
         return (
             <>
                 <div id='ShowLandsMain'>
@@ -361,7 +357,6 @@ export default function ShowLands(props: Props) {
     }
 
     function landPeopleAreRenting(): JSX.Element {
-        console.log(ownedPeopleAreRenting)
         return (
             <>
                 <div id='ShowLandsMain'>
