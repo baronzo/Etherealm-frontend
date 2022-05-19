@@ -33,7 +33,6 @@ export default function ModalOffer(props: Props) {
       requestUserTokenId: authStore.account.userTokenId
     }
     const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
-    console.log(result)
     setIsLoading(false)
     props.setIsShowModalOffer(false)
     props.fetchOffer()
@@ -108,7 +107,6 @@ export default function ModalOffer(props: Props) {
             <p className='text-format'>Platform Fee (2.5%)</p>
             <p className='text-format'>{Number(offerPrice) * 0.025} ETH</p>
           </div>
-          {console.log(props.landOffer)}
           <div className="bill-text">
             <p className='text-format'>You will receive</p>
             <p className='text-format'>{(Number(offerPrice) - Number(offerPrice) * 0.025).toFixed(6)} ETH</p>

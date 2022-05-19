@@ -43,7 +43,6 @@ export default function Bid({ }: Props) {
             }
             setCurrentIndex(currentIndex + 1)
         }
-        console.log(currentIndex)
     }
 
     const prevSlide = () => {
@@ -58,7 +57,6 @@ export default function Bid({ }: Props) {
             }
             setCurrentIndex(currentIndex - 1)
         }
-        console.log(currentIndex)
     }
 
     return (
