@@ -1,5 +1,6 @@
 import { action, makeAutoObservable, observable } from 'mobx'
 import { ethers } from 'ethers'
+import { BigNumber} from 'ethers'
 import { createContext } from 'react'
 import abi from './abi.json'
 import AuthStore from '../auth'
@@ -62,7 +63,7 @@ class ContractStore {
     if (this.contract) {
       try {
         let uri: string = `http://etherealm1.ddns.net/api/lands/land/${landTokenId}`
-        let tx = await this.contract.create(landTokenId, uri, { value: ethers.utils.parseEther(String(price))})
+        let tx = await this.contract.create(landTokenId, uri, {value: ethers.utils.parseEther(String(price))})
         return tx.hash
       } catch (error) {
         console.error(error)
@@ -120,6 +121,7 @@ class ContractStore {
 
   @action
   public async depositPoints(value: number): Promise<boolean> {
+    console.log(ethers.utils.parseEther(String(value)))
     const tx = await this.contract.depositPoint({value: ethers.utils.parseEther(String(value))})
     const receipt = await this.waitTransactionConfirm(tx)
     return receipt[0]
