@@ -364,6 +364,10 @@
                             font-size: 14px;
                             color: #2c53be;
                             font-weight: bold;
+                            width: 500px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                             &:hover {
                                 cursor: pointer;
                                 text-decoration: underline;
