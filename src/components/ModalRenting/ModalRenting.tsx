@@ -187,7 +187,6 @@ export default function ModalRenting(props: Props) {
           </div>
           <div className="name-input-div">
             <p className="label-name">Peroid</p>
-            {console.log("rentType"+props.land.rentType.rentTypeId+"period"+period.value)}
             <Select options={props.land.rentType.rentTypeId === 1 ? mapPeriodDayToOption() : mapPeriodToOption()} onChange={(e) => {props.land.rentType.rentTypeId === 1 ? mapEventPeriodDayToOption(e as ReactSelectOptionModel) : mapEventPeriodToOption(e as ReactSelectOptionModel)}} isDisabled={periodType?.value === 2} />
           </div>
         </div>

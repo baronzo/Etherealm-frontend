@@ -54,7 +54,6 @@ class ContractStore {
   public async getBalance(userTokenId: string): Promise<void> {
     if (this.contract) {
       let balance = await this.contract.balanceOf(userTokenId)
-      console.log(ethers.utils.formatUnits(balance, 0))
     }
   }
 
@@ -62,7 +61,6 @@ class ContractStore {
   public async purchaseLand(landTokenId: string, price: number): Promise<string> {
     if (this.contract) {
       try {
-        console.log(landTokenId)
         let uri: string = `http://etherealm1.ddns.net/api/lands/land/${landTokenId}`
         let tx = await this.contract.create(landTokenId, uri, { value: ethers.utils.parseEther(String(price))})
         return tx.hash
@@ -178,8 +176,6 @@ class ContractStore {
   private async waitTransactionConfirm(tx: any) {
     let receipt = await tx.wait()
     if (receipt.status) {
-      console.log(receipt)
-      console.log(Number(ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice))))
       return [true, receipt]
     }
     return [false, receipt]

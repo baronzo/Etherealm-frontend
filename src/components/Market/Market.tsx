@@ -217,7 +217,6 @@ export default function Market() {
                         <p className='owner-wallet'>{item.landTokenId.landTokenId}</p>
                       </div>
                     </div>
-                    {console.log(item)}
                       {!item.isLoading
                       ?
                         <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? e.stopPropagation() : onClickRent(e, item) }>

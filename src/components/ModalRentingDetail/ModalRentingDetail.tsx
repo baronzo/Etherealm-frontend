@@ -29,8 +29,6 @@ export default function ModalRentingDetail(props: Props) {
     const [remainingText, setremainingText] = useState('')
 
     useEffect(() => {
-        console.log("55555")
-        console.log(props.land)
         getRentingDetailsAPI()
     }, [])
 
@@ -44,7 +42,6 @@ export default function ModalRentingDetail(props: Props) {
 
     const getRentingDetails = async (): Promise<void> => {
         const rentingResponse: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(props.land.landTokenId)
-        console.log(rentingResponse)
         if (rentingResponse) {
             setRentingDetails(rentingResponse)
             setPaymentHistories(rentingResponse.paymentHistories)
@@ -94,7 +91,6 @@ export default function ModalRentingDetail(props: Props) {
                 clearInterval(x);
             }
             setremainingText(`${days}d ${hours}h ${minutes}m ${seconds}s`)
-            // console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`)
         }, 1000);
     }
 

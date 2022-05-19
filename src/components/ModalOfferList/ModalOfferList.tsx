@@ -52,7 +52,6 @@ export default function ModalOfferList(props: Props) {
       sortBy: sortBy?.value!,
     };
     const offersLandResponse: OffersLandResponseModel = await offerService.getOffersLandByLandTokenId(bodyOffersRequest);
-    console.log(offersLandResponse.data)
     const buttonList: Array<ButtonStatusModel> = []
     offersLandResponse.data.forEach((item: OffersDataOfLandModel) => {
       item.isWarning = false
@@ -119,7 +118,6 @@ export default function ModalOfferList(props: Props) {
       default:
         break;
     }
-    console.log(type)
     setButtonStatus(newData)
   }
 
