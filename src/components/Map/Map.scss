@@ -3,6 +3,7 @@
   $minimapMarginTop: $navBarHeight + 10px;
   width: 100vw;
   height: calc(100vh - #{$navBarHeight});
+  overflow: hidden;
   #miniMapBox {
       position: absolute;
       z-index: 1;

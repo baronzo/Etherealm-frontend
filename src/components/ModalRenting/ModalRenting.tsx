@@ -89,7 +89,7 @@ export default function ModalRenting(props: Props) {
         landTokenId: props.land.landTokenId.landTokenId,
         rentType: props.land.rentType.rentTypeId!,
         periodType: periodType?.value!,
-        period: props.land.rentType.rentTypeId === 1 ? periodDay.value! : period.value!,
+        period: props.land.rentType.rentTypeId === 1 ? periodDay.value! : period.value!*30,
         price: props.land.price,
         hash: hash
       }

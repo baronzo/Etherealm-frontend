@@ -20,6 +20,7 @@ class LandModel {
   public isOffer: boolean = Boolean()
   public isLoading: boolean = Boolean()
   public isDisable: boolean = Boolean()
+  public landLocationList: string = String()
 }
 
 export default LandModel

@@ -73,13 +73,19 @@ export default function Map({ }: Props) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
-        getMapDataFromApi()
+        // getMapDataFromApi()
         setLoadingPage(false)
     }, [])
 
     async function getMapDataFromApi() {
         try {
             let response: Array<LandModel> = await landService.getLands()
+            // console.log(response)
+            // response.forEach(item => {
+            //     if (item.landSize.landSize === 60) {
+            //         console.log(item)
+            //     }
+            // })
             setLands(response)
         } catch (error) {
             
@@ -152,7 +158,7 @@ export default function Map({ }: Props) {
                     if (item.landAssets) {
                         let image = new Image()
                         image.src = item.landAssets
-                        context.drawImage(image, item.landPosition.x, item.landPosition.y, 20, 20)
+                        context.drawImage(image, item.landPosition.x, item.landPosition.y, item.landSize.landSize, item.landSize.landSize)
                     }
                 }
                 changeSelectedColor()
@@ -173,14 +179,15 @@ export default function Map({ }: Props) {
     function changeSelectedColor() {
         if (canvasRef.current) {
             const context = canvasRef.current?.getContext("2d");
+            const boxSize: number = selectedLand.landSize.landSize
             if (context) {
-                if (selectedLand.landLocation.x <= width/box && selectedLand.landLocation.x > 0 && selectedLand.landLocation.y <= height/box && selectedLand.landLocation.y > 0) {
+                if (selectedLand.landLocation.x <= width/20 && selectedLand.landLocation.x > 0 && selectedLand.landLocation.y <= height/20 && selectedLand.landLocation.y > 0) {
                     if (selectedLand.landAssets) {
                         context.strokeStyle = "#ED1E79";
                         context.strokeRect(selectedLand.landPosition.x, selectedLand.landPosition.y, (selectedLand.landPosition.x + selectedLand.landSize.landSize) - selectedLand.landPosition.x, (selectedLand.landPosition.y + selectedLand.landSize.landSize) - selectedLand.landPosition.y)
                     } else {
-                        context.fillStyle = "#ED1E79";
-                        context.fillRect((selectedLand.landLocation.x * box - box), (selectedLand.landLocation.y * box - box), box, box)
+                        context.fillStyle = "#ED1E79";                   
+                        context.fillRect(selectedLand.landPosition.x, selectedLand.landPosition.y, boxSize, boxSize)
                     }
                     context.save();
                 }
@@ -191,10 +198,12 @@ export default function Map({ }: Props) {
     function changeSelectedColorOnMinimap(x: number, y: number) {
         if (canvasMinimapRef.current) {
             const newContext = canvasMinimapRef.current?.getContext("2d");
+            const boxSize: number = selectedLand.landSize.landSize
             if (newContext) {
-                if (x <= width/(box/viewScale) && x > 0 && y <= height/(box/viewScale) && y > 0) {
+                if (x <= width/(boxSize/viewScale) && x > 0 && y <= height/(boxSize/viewScale) && y > 0) {
                     newContext.fillStyle = "#ED1E79";
-                    newContext.fillRect((x * (box/viewScale) - (box/viewScale)), (y * (box/viewScale) - (box/viewScale)), (box/viewScale), (box/viewScale))
+                    // newContext.fillRect((x * (boxSize/viewScale) - (boxSize/viewScale)), (y * (boxSize/viewScale) - (boxSize/viewScale)), (boxSize/viewScale), (boxSize/viewScale))
+                    newContext.fillRect(((selectedLand.landPosition.x/viewScale)), (selectedLand.landPosition.y /viewScale), (boxSize/viewScale), (boxSize/viewScale))
                     newContext.save();
                 }
             }
@@ -204,15 +213,34 @@ export default function Map({ }: Props) {
     function getCursorPosition(event: any) {
         if (canvasRef.current) {
             if (!isOnMouseDragging) {
+                const boxSize = box
                 const rect = canvasRef.current.getBoundingClientRect();
                 const x = (currentTransformedCursor.x) - ((rect.left));
                 const y = (currentTransformedCursor.y + navbarSize) - ((rect.top));
-                const cy = ((y) + (box - ((y) % box))) / box;
-                const cx = ((x) + (box - ((x) % box))) / box;
+                const cy = ((y) + (boxSize - ((y) % boxSize))) / boxSize;
+                const cx = ((x) + (boxSize - ((x) % boxSize))) / boxSize;
                 let selectedLocation = {x: cx, y: cy}
-                let result: Array<LandModel> = lands.filter(item => JSON.stringify(item.landLocation) === JSON.stringify(selectedLocation))
-                if (result.length) {
-                    setselectedLand(result[0])
+                console.log(selectedLocation)
+                let result: LandModel = new LandModel
+                let found: boolean = false
+                for (let index = lands.length - 1; index >= 0; index--) {
+                    const locationList: Array<string> = lands[index].landLocationList.split(' ')
+                    for (let i = 0; i < locationList.length; i++) {
+                        const xx: number = Number(locationList[i].split(',')[0])
+                        const yy: number = Number(locationList[i].split(',')[1])
+                        if (xx === cx && yy === cy) {
+                            // console.log(lands[index])
+                            result = lands[index]
+                            found = true
+                            break
+                        }
+                    }
+                    if (found) {
+                        break
+                    }
+                }
+                if (result.landTokenId) {
+                    setselectedLand(result)
                 }
             }
         }
