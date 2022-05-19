@@ -67,10 +67,6 @@ export default function Map({ }: Props) {
         update()
     })
 
-    // useEffect(() => {
-    //     console.log('change')
-    // }, [cameraZoomRef, cameraOffSet, currentTransformedCursor])
-
     useEffect(() => {
         setLoadingPage(true)
         calculateMinZoom()
@@ -80,9 +76,6 @@ export default function Map({ }: Props) {
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
         mapSearchParamsToVariable()
-        // cameraZoom = 2.3744999999999994
-        // setCameraOffSet({x: -1111.95170279027, y: -1109.5116825626935})
-        // currentTransformedCursor = {x: 1558.6208585748254, y: 1402.0460034871032}
 
         setLoadingPage(false)
     }, [])
