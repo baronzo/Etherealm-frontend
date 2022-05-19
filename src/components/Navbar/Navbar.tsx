@@ -29,7 +29,6 @@ export default observer(function Navbar(props: IProps) {
     if (accountResponse.userTokenId) {
       const result = await contractStore.getPoint(accountResponse.userTokenId)
       authStore.setPoint(result)
-      console.log(result)
     }
   }
 

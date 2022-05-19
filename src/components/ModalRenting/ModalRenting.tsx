@@ -69,8 +69,6 @@ export default function ModalRenting(props: Props) {
   ])
 
   useEffect(() => {
-    console.log(period.value)
-    console.log(period)
   }, [])
 
   useEffect(() => {
