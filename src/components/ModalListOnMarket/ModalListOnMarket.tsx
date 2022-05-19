@@ -93,12 +93,9 @@ export default function ModalListOnMarket(props: Props) {
 
     const onChangeSellPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value: number = Number(e.target.value)
-        console.log(value)
         if (value < 0.00001) {
-            console.log('negative')
             setPrice('0.00001')
         } else if (value >= 0.00001) {
-            console.log('positive')
             setPrice(e.target.value)
         }
     }

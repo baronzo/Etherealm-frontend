@@ -134,7 +134,6 @@ export default function LandDetail() {
   async function getCheckIsHaveMyOfferAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
     let bodyRequest: CancelOfferLandRequestModel = { landTokenId: landTokenId, requestUserTokenId: ownerTokenId }
     const offerLandResponse: OffersDataOfLandModel = await offerService.getCheckIsHaveMyOffer(bodyRequest)
-    console.log(offerLandResponse)
     if (offerLandResponse) {
       setIsShowCancelOffer(true)
     }
@@ -164,7 +163,6 @@ export default function LandDetail() {
 
   const getLandRentingAPI = async (): Promise<void> => {
     const landResponse = await marketService.getLandForRintingDetail(params.landTokenId)
-    console.log(landResponse)
     if (landResponse) {
       setLandDetailsForRenting(landResponse)
     }
@@ -178,7 +176,6 @@ export default function LandDetail() {
   async function getDetailHiringAPI() {
     const result: HirePurchaseDetailResponseModel = await hirePurchaseService.getHirePurchaseDetail(params.landTokenId)
     setHirePurchase(result)
-    console.log(result)
   }
 
   return (

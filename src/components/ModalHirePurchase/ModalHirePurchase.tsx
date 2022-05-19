@@ -93,11 +93,9 @@ export default function ModalHirePurchase(props: Props) {
       endDate: endDate,
       fees: period.value! > 3 ? fees : platformFees
     }
-    // console.log(pay)
     if(checked) {
       const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
       if (hirePuechaseResponse) {
-        console.log(hirePuechaseResponse)
         setisLoading(false)
         props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
         props.setIsShowModalHirePurchase(false)
