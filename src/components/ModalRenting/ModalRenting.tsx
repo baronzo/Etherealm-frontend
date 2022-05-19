@@ -31,6 +31,7 @@ export default function ModalRenting(props: Props) {
   const [periodDay, setPeriodDay] = useState<Options>({ value: 1, label: '1'  })
   const rentService: RentService = new RentService
   const [isChecked, setIsChecked] = useState<boolean>(false)
+  const [isValid, setisValid] = useState(false)
 
   const [optionsPeroidType, setOptionsPeroidType] = useState<Array<Options>>([
     { value: 1, label: "Set time period" },
@@ -66,6 +67,18 @@ export default function ModalRenting(props: Props) {
     { value: 13, label: '13' },
     { value: 14, label: '14' }
   ])
+
+  useEffect(() => {
+    validateData()
+  }, [isChecked])
+
+  function validateData(): void {
+    if (isChecked) {
+      setisValid(true)
+    } else {
+      setisValid(false)
+    }
+  }
 
   async function confirmRenting() {
     setisLoading(true)
@@ -203,7 +216,7 @@ export default function ModalRenting(props: Props) {
         </div>
         <div className="button-save-div">
           {!isLoading ? (
-            <button className="button-save" onClick={confirmRenting}>
+            <button className={`button-save ${isValid ? '' : 'disable'}`} onClick={isValid ? confirmRenting : undefined}>
               Confirm Renting {props.land.price} ETH/{props.land.rentType.rentTypeText}
             </button>
           ) : (

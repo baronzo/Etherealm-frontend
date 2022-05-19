@@ -26,17 +26,21 @@ export default function ModalOffer(props: Props) {
   }, [])
 
   async function createOfferLand(): Promise<void> {
-    setIsLoading(true)
-    const body: CreateOfferLandRequestModel = {
-      landTokenId: props.landOffer.landTokenId,
-      offerPrice: Number(offerPrice),
-      requestUserTokenId: authStore.account.userTokenId
+    try {
+      setIsLoading(true)
+      const body: CreateOfferLandRequestModel = {
+        landTokenId: props.landOffer.landTokenId,
+        offerPrice: Number(offerPrice),
+        requestUserTokenId: authStore.account.userTokenId
+      }
+      const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
+      setIsLoading(false)
+      props.setIsShowModalOffer(false)
+      props.fetchOffer()
+    } catch (error) {
+      console.error(error)
+      setIsLoading(false)
     }
-    const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
-    console.log(result)
-    setIsLoading(false)
-    props.setIsShowModalOffer(false)
-    props.fetchOffer()
   }
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
@@ -108,7 +112,6 @@ export default function ModalOffer(props: Props) {
             <p className='text-format'>Platform Fee (2.5%)</p>
             <p className='text-format'>{Number(offerPrice) * 0.025} ETH</p>
           </div>
-          {console.log(props.landOffer)}
           <div className="bill-text">
             <p className='text-format'>You will receive</p>
             <p className='text-format'>{(Number(offerPrice) - Number(offerPrice) * 0.025).toFixed(6)} ETH</p>
@@ -118,7 +121,7 @@ export default function ModalOffer(props: Props) {
           <div className="button-section">
             {!isLoading 
             ?
-            <button className='button' onClick={createOfferLand}>offer</button>
+            <button className='button' onClick={createOfferLand}>Offer</button>
             : <button className={`button ${isLoading ? 'disable' : ''}`} onClick={createOfferLand}><i className="fas fa-spinner fa-spin"></i></button>
             }
           </div>

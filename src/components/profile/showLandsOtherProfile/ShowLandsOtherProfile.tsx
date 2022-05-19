@@ -237,11 +237,8 @@ export default function ShowLandsOtherProfile(props: Props) {
                     </div>
                     <div className="land-description">{item.landDescription}</div>
                     <div className="status-div">
-                      <div className="buy-land" onClick={(e) =>
-                        authStore.account.userTokenId === item.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)
-                      }>
-                        <i className="fab fa-ethereum icon"></i>
-                        <p className="button-text">Buy {item.price} ETH</p>
+                    <div className="land-detail" onClick={(e) => authStore.account.userTokenId === item.landOwnerTokenId ? undefined : goToDetailsPage(item.landTokenId)}>
+                        <p className="button-text">Land Details</p>
                       </div>
                     </div>
                     {/* <div className="offer-div">
