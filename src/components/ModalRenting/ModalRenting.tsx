@@ -26,7 +26,7 @@ interface Options {
 export default function ModalRenting(props: Props) {
   const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [periodType, setPeriodType] = useState<Options>();
+  const [periodType, setPeriodType] = useState<Options>({ value: 1, label: "Set time period" });
   const [period, setPeriod] = useState<Options>({ value: 3, label: '3'  })
   const [periodDay, setPeriodDay] = useState<Options>({ value: 1, label: '1'  })
   const rentService: RentService = new RentService
@@ -69,15 +69,16 @@ export default function ModalRenting(props: Props) {
   ])
 
   useEffect(() => {
+    console.log(period.value)
+    console.log(period)
+  }, [])
+
+  useEffect(() => {
     validateData()
   }, [isChecked])
 
   function validateData(): void {
-    if (isChecked) {
-      setisValid(true)
-    } else {
-      setisValid(false)
-    }
+    setisValid(isChecked ? true : false)
   }
 
   async function confirmRenting() {
@@ -196,11 +197,11 @@ export default function ModalRenting(props: Props) {
         <div className="name-description">
           <div className="name-input-div">
             <p className="label-name">Period Type</p>
-            <Select options={mapPeriodTypesToOption()} onChange={(e) => mapEventPeriodTypesToOption(e as ReactSelectOptionModel)} />
+            <Select options={mapPeriodTypesToOption()} onChange={(e) => mapEventPeriodTypesToOption(e as ReactSelectOptionModel)} value={periodType} />
           </div>
           <div className="name-input-div">
-            <p className="label-name">Peroid</p>
-            <Select options={props.land.rentType.rentTypeId === 1 ? mapPeriodDayToOption() : mapPeriodToOption()} onChange={(e) => {props.land.rentType.rentTypeId === 1 ? mapEventPeriodDayToOption(e as ReactSelectOptionModel) : mapEventPeriodToOption(e as ReactSelectOptionModel)}} isDisabled={periodType?.value === 2} />
+            <p className="label-name">Peroid  (max: {props.land.rentType.rentTypeId === 1 ? '14 Days' : '12 Months'})</p>
+            <Select options={props.land.rentType.rentTypeId === 1 ? mapPeriodDayToOption() : mapPeriodToOption()} onChange={(e) => {props.land.rentType.rentTypeId === 1 ? mapEventPeriodDayToOption(e as ReactSelectOptionModel) : mapEventPeriodToOption(e as ReactSelectOptionModel)}} isDisabled={periodType?.value === 2} value={props.land.rentType.rentTypeId === 1 ? periodDay : period} />
           </div>
         </div>
         <div className="checkbox">
