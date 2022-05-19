@@ -21,8 +21,8 @@ import TransactionService from '../../../services/notification/TransactionServic
 import TransactionsResponseModel from '../../../models/notifications/TransactionsResponseModel'
 import ModalOfferList from '../../ModalOfferList/ModalOfferList'
 import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
-import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
 import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
+import ModalLoadingPage from '../../ModalLoadingPage/ModalLoadingPage'
 
 interface IParams {
     userTokenId: string
@@ -50,16 +50,21 @@ export default observer(function Profile({ }: Props) {
     const params: IParams = useParams()
     const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
     const [isHirePurchase, setIsHirePurchase] = useState<boolean>(false)
+    const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
     }, [])
 
     async function getDataFromAPI(): Promise<void> {
+        setLoadingPage(true)
         await getLandByOwnerTokenId()
         await getNotificationAPI()
         await getUserDetail()
         await getTransactionAPI()
+        setTimeout(() => {
+            setLoadingPage(false)
+        }, 3000);
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {
@@ -110,7 +115,7 @@ export default observer(function Profile({ }: Props) {
                 <div className='profile-and-log'>
                     <div className='profile-container'>
                         <div className='profile'>
-                            <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)}/>
+                            <BsFillGearFill className='edit-icon' onClick={() => setIsShowModalEditProfile(true)} />
                             <div className='profile-image-div'>
                                 <img className='profle-image' src={authStore.account.userProfilePic ? authStore.account.userProfilePic : '/profile.jpg'} alt="" />
                             </div>
@@ -196,12 +201,14 @@ export default observer(function Profile({ }: Props) {
                         setIsHirePurchase={setIsHirePurchase}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket}/>}
-                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand} isHirePurchase={isHirePurchase}/>}
-                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile}/>}
-                {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer}/>}
-                {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList}/>}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
+                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand} isHirePurchase={isHirePurchase} />}
+                {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
+                {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer} />}
+                {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList} />}
+                {loadingPage && <ModalLoadingPage/>}
             </div>
+
         )
     }
     return (

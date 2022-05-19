@@ -5,6 +5,7 @@ import LandModel from '../../models/lands/LandModel';
 import LandService from '../../services/lands/LandService';
 import authStore from '../../store/auth';
 import LandModal from '../LandModal/LandModal';
+import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage';
 import './Map.scss'
 
 type Props = {}
@@ -50,6 +51,8 @@ export default function Map({ }: Props) {
     const cameraMouseFocusRef = useRef(cameraMouseFocus)
     const [lands, setLands] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
+
+    const [loadingPage, setLoadingPage] = useState<boolean>(false)
     
     useEffect(() => {
         cancelAnimationFrame(callbackKeyRef.current);
@@ -63,6 +66,7 @@ export default function Map({ }: Props) {
     })
 
     useEffect(() => {
+        setLoadingPage(true)
         calculateMinZoom()
         getMapDataFromApi()
         if (zoomRangeRef.current) {
@@ -70,6 +74,7 @@ export default function Map({ }: Props) {
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
         getMapDataFromApi()
+        setLoadingPage(false)
     }, [])
 
     async function getMapDataFromApi() {
@@ -314,6 +319,7 @@ export default function Map({ }: Props) {
     return (
     <div id="mapMain">
         <LandModal land={selectedLand} onLandChange={(value) => onLandChangeFromModel(value)}/>
+        {loadingPage && <ModalLoadingPage/>}
         <div id="miniMapBox">
             <canvas id="minimap" ref={canvasMinimapRef}></canvas>
             <canvas id="minimapViewport" ref={canvasMinimapViewportRef}></canvas>

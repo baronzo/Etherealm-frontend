@@ -13,6 +13,7 @@ import ModalRenting from '../ModalRenting/ModalRenting'
 import LandMarketPaginateRequestModel from '../../models/market/LandMarketPaginateRequestModel'
 import LandMarketPaginateResponseModel from '../../models/market/LandMarketPaginateResponseModel'
 import Pagination from '../pagination/Pagination'
+import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
 
 export default function Market() {
   const contractStore = useMemo(() => new ContractStore, [])
@@ -25,6 +26,7 @@ export default function Market() {
   const [landsSell, setLandsSell] = useState<LandMarketPaginateResponseModel>()
   const [selectedRentLand, setSelectedRentLand] = useState<LandMarketModel>()
   const searchParams: URLSearchParams = new URLSearchParams(window.location.search)
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
   useEffect(() => {
     if (searchParams.get("marketType")) {
@@ -33,10 +35,17 @@ export default function Market() {
       window.history.replaceState(null, '', window.location.pathname + "?marketType=1")
       setIsTab(true)
     }
-    getLandOnMarketFromAPI()
-    getLandRentOnMarketByMarketType()
-    getLandSellOnMarketByMarketType()
+    getMarketAPI()
   }, [])
+
+  async function getMarketAPI() {
+    setLoadingPage(true)
+    await getLandRentOnMarketByMarketType()
+    await getLandSellOnMarketByMarketType()
+    setTimeout(() => {
+      setLoadingPage(false)
+    }, 3000);
+  }
 
   function onChangeTab(isTab: boolean) {
     window.history.replaceState(null, '', window.location.pathname + `?marketType=${isTab ? 1 : 2}`)
@@ -262,6 +271,7 @@ export default function Market() {
         
       </div>
       {isShowModalRenting && <ModalRenting setIsShowModalRenting={setIsShowModalRenting} land={selectedRentLand!} fetchDetail={getLandRentOnMarketByMarketType}/>}
+      {loadingPage && <ModalLoadingPage/>}
     </div>
   )
 }
