@@ -63,6 +63,7 @@ export default function LandDetail() {
   const [renter, setRenter] = useState<RentingDetailsModel>(new RentingDetailsModel)
   const hirePurchaseService: HirePurchaseService = new HirePurchaseService()
   const [hirePurchase, setHirePurchase] = useState<HirePurchaseDetailResponseModel>(new HirePurchaseDetailResponseModel())
+  const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false)
 
   useEffect(() => {
     getDataFromApi()
@@ -111,10 +112,14 @@ export default function LandDetail() {
   }
 
   async function buyLandDetailOnMarketFromApi(landDetails: LandModel): Promise<void> {
+    setIsLoadingBuy(true)
     if (authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
       const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, Number(landDetails.price))
       if (isSuccess) {
-        getLandDetailsFromApi()
+        setTimeout(() => {
+          getLandDetailsFromApi()
+          setIsLoadingBuy(false)
+        }, 1500);
       }
     }
   }
@@ -271,7 +276,11 @@ export default function LandDetail() {
                     }
                   </div>
                 }
-                {!isOwner && landDetails.landStatus.landStatusId === 3 && <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button>}
+                {!isOwner && landDetails.landStatus.landStatusId === 3 && (
+                  !isLoadingBuy ? <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button> 
+                  :
+                  <button className="button-price-land"><i className="fas fa-spinner fa-spin"></i></button>
+                )}
                 {isOwner && landDetails.landStatus.landStatusId === 2 && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
