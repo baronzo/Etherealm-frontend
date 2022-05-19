@@ -25,7 +25,7 @@ class ContractStore {
   @observable 
   public contract: any = null
   
-  private contractAddress = '0x234a320Ff69b702b4CEB3518b96F1240007aA659'
+  private contractAddress = '0xc8b4Fa3B9fDD201c562866FF07Aa976280CB6D6e'
 
   private transactionService: TransactionService = new TransactionService()
   private landMarketService: LandMarketService = new LandMarketService()
@@ -100,7 +100,7 @@ class ContractStore {
   public async confirmOffer(landTokenId: string, ownerOfferUserTokenId: string, price: number) {
     if (this.contract) {
       try {
-        let tx = await this.contract.confirmOffer(landTokenId, ownerOfferUserTokenId, { value: ethers.utils.parseEther(String(price)) })
+        let tx = await this.contract.confirmOffer(landTokenId, ownerOfferUserTokenId, ethers.utils.parseEther(String(price)))
         const body: ConfirmOfferLandRequestModel = this.mapTxToConfirmOfferLandRequestModel(tx, landTokenId, ownerOfferUserTokenId)
         await this.offerService.confirmOfferland(body)
         await this.updateUserPoints()

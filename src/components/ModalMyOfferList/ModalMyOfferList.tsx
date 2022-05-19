@@ -124,6 +124,7 @@ export default function ModalMyOfferList(props: Props) {
           <Select id="selectSort" options={mapSortByToOption()} onChange={(e) => mapEventSortByToOption(e as ReactSelectOptionModel)} />
         </div>
         <div className="show-offer-list">
+          {!offeringList.length && <div className="no-offer-list">No Offer</div>}
           {offeringList.map((item: OffersDataOfLandModel, index: number) => {
             return (
               <div className="offer-item" key={item.offerId}>

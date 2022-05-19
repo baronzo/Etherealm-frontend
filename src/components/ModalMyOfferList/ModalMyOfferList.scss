@@ -80,6 +80,16 @@
             margin: 0;
             padding: 0;
             overflow-y: scroll;
+            .no-offer-list {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.8rem;
+                color: #8d8d8d;
+                font-weight: bold;
+            }
             .offer-item {
                 display: flex;
                 height: 90px;
