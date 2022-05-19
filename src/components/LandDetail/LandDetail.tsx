@@ -74,9 +74,10 @@ export default function LandDetail() {
     await getLandRentingAPI()
     await getDetailHiringAPI()
   }
-
+  
   async function getLandDetailsFromApi(): Promise<void> {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
+    console.log(result)
     setlandDetails(result)
     checkYouIsBestOffer(result)
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
@@ -239,20 +240,41 @@ export default function LandDetail() {
                   </div>
                 </div>
                 :
-                <div className="profile-box" onClick={() => goToProfile(ownerDetails.userTokenId)}>
-                  <div className="image-box">
-                    <img className="profile-image" src={ownerDetails.userProfilePic || '/profile.jpg'} alt="" />
-                  </div>
-                  <div className="detail-profile">
-                    <div className="name">{ownerDetails.userName ? ownerDetails.userName : '-'}</div>
-                    <div className="box">
-                      <div className="token-id">{ownerDetails.userTokenId}</div>
-                      <button className="copy" onClick={(e) => copyAddess(e)}>
-                        <FaCopy className='copy-icon' />
-                      </button>
+                <>
+                  {landDetails.landStatus.landStatusId === 5
+                    ?
+                    <div className="profile-box" onClick={() => goToProfile(renter.renterTokenId.userTokenId)}>
+                      <div className="image-box">
+                        <img className="profile-image" src={renter.renterTokenId.userProfilePic || '/profile.jpg'} alt="" />
+                      </div>
+                      <div className="detail-profile">
+                        <div className="name">{renter.renterTokenId.userName ? renter.renterTokenId.userName : '-'} <p className='role'>(Renter)</p></div>
+                        <div className="box">
+                          <div className="token-id">{renter.renterTokenId.userTokenId}</div>
+                          <button className="copy" onClick={(e) => copyAddess(e)}>
+                            <FaCopy className='copy-icon' />
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    :
+                    <div className="profile-box" onClick={() => goToProfile(ownerDetails.userTokenId)}>
+                      <div className="image-box">
+                        <img className="profile-image" src={ownerDetails.userProfilePic || '/profile.jpg'} alt="" />
+                      </div>
+                      <div className="detail-profile">
+                        <div className="name">{ownerDetails.userName ? ownerDetails.userName : '-'}</div>
+                        <div className="box">
+                          <div className="token-id">{ownerDetails.userTokenId}</div>
+                          <button className="copy" onClick={(e) => copyAddess(e)}>
+                            <FaCopy className='copy-icon' />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </>
+                
                 }
               </div>
               <div className="offer">
@@ -313,7 +335,7 @@ export default function LandDetail() {
                 { authStore.account.userTokenId === renter.renterTokenId.userTokenId ?
                   <div className='payable'>
                     <p className='text-price'>Payable {landDetails.price} ETH / {renter.rentType.rentTypeText}</p>
-                    <p className='text-price'>Next payment {new Date(renter.nextPayment!).toLocaleString().replace(',', '')}</p>
+                    {renter.rentType.rentTypeId === 2 && <p className='text-price'>Next payment {new Date(renter.nextPayment!).toLocaleString().replace(',', '')}</p>}
                     { new Date(Date.now()).toLocaleString().replace(',', '').slice(0, 9) === new Date(renter.nextPayment!).toLocaleString().replace(',', '').slice(0, 9) ?<button className="button-payable">Pay {landDetails.price} ETH</button> : ''}
                   </div>
                   : ''

@@ -259,6 +259,11 @@
               .name {
                 color: #7645D9;
                 font-weight: bold;
+                display: flex;
+                .role {
+                  margin: 0 0 0 5px;
+                  color: #b591fd;
+                }
               }
               .box {
                 display: flex;
