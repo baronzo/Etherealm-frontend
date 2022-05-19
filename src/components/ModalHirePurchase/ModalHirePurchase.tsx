@@ -71,15 +71,6 @@ export default function ModalHirePurchase(props: Props) {
   }
 
   async function postHirePuechaseLand(): Promise<void> {
-    // setisLoading(true)
-
-    // setTimeout(() => {
-    //   let newData = {...props.landDetails}
-    //   newData.landName = 'Testtt'
-    //   setisLoading(false)
-    //   props.onHirePurchaseSuccess(newData)
-    //   props.setIsShowModalHirePurchase(false)
-    // }, 3000);
     setisLoading(true)
     const currentDate: Date = new Date()
     const endDate: Date = calculateEndDate(currentDate, period.value!*30)
@@ -194,7 +185,7 @@ export default function ModalHirePurchase(props: Props) {
       </div>
       <div className="button-save-div">
         {!isLoading ? (
-          <button className="button-save" onClick={() => confirmHirePurchase()}>
+          <button className={`button-save ${checked ? '' : 'disable'}`} onClick={() => checked ? confirmHirePurchase() : undefined}>
             Confirm
           </button>
         ) : (
