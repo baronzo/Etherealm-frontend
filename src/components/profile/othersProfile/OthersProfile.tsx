@@ -16,6 +16,7 @@ import OfferService from '../../../services/offer/OfferService'
 import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import LandRentResponseModel from '../../../models/rent/LandRentResponseModel'
+import ModalLoadingPage from '../../ModalLoadingPage/ModalLoadingPage'
 
 interface IParams {
     userTokenId: string
@@ -34,6 +35,8 @@ export default function OthersProfile({ }: Props) {
     const userSerive: UserService = new UserService()
     const params: IParams = useParams()
     const offerService: OfferService = new OfferService()
+    const [loadingPage, setLoadingPage] = useState<boolean>(false)
+
     useEffect(() => {
         getDataFromAPI()
     }, [])
@@ -53,8 +56,10 @@ export default function OthersProfile({ }: Props) {
     }
 
     async function getDataFromAPI(): Promise<void> {
+        setLoadingPage(true)
         await  getLandByOwnerTokenId()
         await getUserDetails()
+        setLoadingPage(false)
     }
 
     async function getCheckIsHaveMyOfferAPI(landTokenId: string, ownerTokenId: string): Promise<boolean> {
@@ -105,6 +110,7 @@ export default function OthersProfile({ }: Props) {
             </div>
             {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand} fetchOffer={getDataFromAPI}/>}
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand}/>}
+            {loadingPage && <ModalLoadingPage/>}
         </div>
     )
 }
