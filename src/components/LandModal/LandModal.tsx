@@ -40,6 +40,8 @@ export default observer(function LandModal(props: IProps) {
         return 'un-listed'
       case 3:
         return 'listed'
+      case 4:
+        return 'listed'
       default:
         return 'no-owner'
     }
@@ -57,18 +59,28 @@ export default observer(function LandModal(props: IProps) {
       case 2:
         return (
           <div className="option">
-            <button id="offerLand" onClick={() => goToOffer(land.landTokenId)}>Offer this land</button>
+            <button id="offerLand" onClick={() => goToLandDetail(land.landTokenId)}>View land detail</button>
           </div>
         )
       case 3:
         return (
-          <div className="option">Offer this land</div>
+          <div className="option">
+            <button id="offerLand" onClick={() => goToMarketForSell(land.landTokenId)}>Go to market</button>
+          </div>
+        )
+      case 4:
+        return (
+          <div className="option">
+            <button id="offerLand" onClick={() => goToMarketForRent(land.landTokenId)}>Go to market</button>
+          </div>
         )
       default:
         break;
     }
     return (
-      <div className="option">Offer this land</div>
+      <div className="option">
+        <button id="offerLand" onClick={() => goToLandDetail(land.landTokenId)}>View land detail</button>
+      </div>
     )
   }
 
@@ -84,8 +96,16 @@ export default observer(function LandModal(props: IProps) {
     }
   }
 
-  function goToOffer(landTokenId: string) {
-    history.push(`/lands/${landTokenId}/details`)
+  function goToLandDetail(landTokenId: string) {
+    window.open(`/lands/${landTokenId}/details`)
+  }
+
+  function goToMarketForSell(landTokenId: string) {
+    window.open('/market?marketType=1')
+  }
+
+  function goToMarketForRent(landTokenId: string) {
+    window.open('/market?marketType=2')
   }
 
   function handleOnHirePurchaseSuccess(land: LandModel) {
