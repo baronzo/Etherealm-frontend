@@ -64,7 +64,7 @@ export default observer(function Profile({ }: Props) {
         await getTransactionAPI()
         setTimeout(() => {
             setLoadingPage(false)
-        }, 3000);
+        }, 1300);
     }
 
     async function getLandByOwnerTokenId(): Promise<void> {

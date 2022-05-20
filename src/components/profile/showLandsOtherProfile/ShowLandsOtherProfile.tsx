@@ -93,7 +93,7 @@ export default function ShowLandsOtherProfile(props: Props) {
         props.fetchDetail();
         setCancelLoading(index, false);
         setIsOfferInLandList(index);
-      }, 2000);
+      }, 1300);
     }
   };
 

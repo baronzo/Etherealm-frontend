@@ -157,7 +157,7 @@ export default function LandDetail() {
         getLandDetailsFromApi()
         setisCancelLoading(false)
         setIsShowCancelOffer(false)
-      }, 2000);
+      }, 1300);
     }
   }
 
