@@ -52,39 +52,45 @@ export default function Map({ }: Props) {
     const [lands, setLands] = useState<Array<LandModel>>([])
     const [selectedLand, setselectedLand] = useState<LandModel>(new LandModel)
 
-    const [loadingPage, setLoadingPage] = useState<boolean>(false)
+    const [loadingPage, setLoadingPage] = useState<boolean>(true)
     const searchParams: URLSearchParams = new URLSearchParams(window.location.search)
     
-    useEffect(() => {
-        cancelAnimationFrame(callbackKeyRef.current);
-        cameraZoom = cameraZoomRef.current
-        setUrl()
-        const update = () => {
-            cameraZoomRef.current = drawboard()
-            drawMinimap()
-            callbackKeyRef.current = requestAnimationFrame(update);
-        }
-        update()
-    })
 
     useEffect(() => {
+        onStart()
+
+        return () => {
+            cancelAnimationFrame(callbackKeyRef.current)
+            window.cancelAnimationFrame
+        }
+    }, [])
+
+    useEffect(() => {
+            cancelAnimationFrame(callbackKeyRef.current);
+            cameraZoom = cameraZoomRef.current
+            // setUrl()
+            const update = () => {
+                cameraZoomRef.current = drawboard()
+                drawMinimap()
+                callbackKeyRef.current = requestAnimationFrame(update);
+            }
+            update()
+    })
+
+    async function onStart(): Promise<void> {
         setLoadingPage(true)
         calculateMinZoom()
-        getMapDataFromApi()
+        await getMapDataFromApi()
         if (zoomRangeRef.current) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
         mapSearchParamsToVariable()
-
-        setLoadingPage(false)
-
-        return () => {
-            cancelAnimationFrame(callbackKeyRef.current)
-            window.cancelAnimationFrame
-            console.log('Clean up')
-        }
-    }, [])
+        setUrl()
+        setTimeout(() => {
+            setLoadingPage(false)
+        }, 500)
+    }
 
     function setUrl(): void {
         // window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}&currentTransformedCursor=${currentTransformedCursor.x},${currentTransformedCursor.y}`)
@@ -92,6 +98,7 @@ export default function Map({ }: Props) {
     }
 
     function mapSearchParamsToVariable(): void {
+        cameraZoomRef.current = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
         cameraZoom = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
 
         const cameraOffSetParams: Array<string> = searchParams.get('cameraOffSet')?.split(',') ?? ['0', '0']
@@ -283,7 +290,6 @@ export default function Map({ }: Props) {
             cameraOffSet.x = getEventLocation(e)?.x / cameraZoom - dragStart.x
             cameraOffSet.y = getEventLocation(e)?.y / cameraZoom - dragStart.y
             isOnMouseDragging = true
-            console.log(cameraOffSet)
             setUrl()
         }
         currentTransformedCursor = getTransformedPoint(e.nativeEvent.offsetX, e.nativeEvent.offsetY)

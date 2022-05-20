@@ -11,11 +11,11 @@
   align-items: center;
   visibility: visible;
   opacity: 1;
-  transition: visibility 0s, opacity 0.05s ease-out;
+  transition: visibility 0s, opacity 0.01s linear;
   &.hide {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.1s ease-out;
+    transition: visibility 0s, opacity 0.05s ease-out;
   }
   #landModelBackground {
     position: absolute;

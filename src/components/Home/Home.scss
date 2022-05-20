@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #F2F6FA;
+    background-color: #faf8ff;
     height: 100vh;
     #text {
       font-size: 48px;
@@ -52,6 +52,9 @@
         padding: 10px;
         &:hover {
           cursor: pointer;
+          border: 1px solid #ffffff;
+          background-color: #7645D9;
+          color: #ffffff;
         }
       }
     }
