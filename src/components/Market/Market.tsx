@@ -45,7 +45,7 @@ export default function Market() {
     await getLandSellOnMarketByMarketType()
     setTimeout(() => {
       setLoadingPage(false)
-    }, 3000);
+    }, 1300);
   }
 
   function onChangeTab(isTab: boolean) {
