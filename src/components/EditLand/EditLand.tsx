@@ -7,6 +7,7 @@ import LandService from '../../services/lands/LandService'
 import './EditLand.scss'
 import { BiArrowBack } from 'react-icons/bi'
 import ModalUploadImage from '../ModalUploadImage/ModalUploadImage'
+import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
 
 interface IParams {
   landTokenId: string
@@ -17,6 +18,7 @@ export default function EditLand() {
   const imageService: ImageService = new ImageService
   const inputImage = useRef<HTMLInputElement>(null)
   const [land, setLand] = useState<LandModel>(new LandModel)
+  const [minimumPrice, setMinimumPrice] = useState<number>(0.001)
   const [base64Image, setbase64Image] = useState<string>('')
   const params: IParams = useParams()
   const [isTab, setIsTab] = useState(true)
@@ -26,6 +28,7 @@ export default function EditLand() {
   const [isLoading, setisLoading] = useState<boolean>(false)
   const history = useHistory()
   const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
 
   useEffect(() => {
@@ -33,10 +36,15 @@ export default function EditLand() {
   }, [])
 
   async function getLandFromTokenId(): Promise<void> {
+    setLoadingPage(true)
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
+    setMinimumPrice(result.minimumOfferPrice)
     setPrevImage(result.landAssets)
     setLand(result)
     setprevData(result)
+    setTimeout(() => {
+      setLoadingPage(false)
+    }, 1100);
   }
 
   function onChangeImageClick(): void {
@@ -114,10 +122,12 @@ export default function EditLand() {
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
     let value: number = Number(e.target.value)
-    if (value < 0.00001) {
-      setLand({...land, ...{minimumOfferPrice: '0.00001'}})
-    } else if (value >= 0.00001) {
-      setLand({...land, ...{minimumOfferPrice: (e.target.value)}})
+    if (value < 0) {
+      setMinimumPrice(0)
+      setLand({...land, ...{minimumOfferPrice: 0.001}})
+    } else if (value >= 0) {
+      setMinimumPrice(value)
+      setLand({...land, ...{minimumOfferPrice: minimumPrice}})
     }
   }
 
@@ -173,7 +183,7 @@ export default function EditLand() {
             </div>
             <div className="input-box">
               <div className="text">Minimum Offer (ETH)</div>
-              <input type="number" className='input' value={land.minimumOfferPrice} onChange={onChangeOfferPrice}/>
+              <input type="number" className='input' value={minimumPrice} onChange={(event) => onChangeOfferPrice(event)} step={0.001}/>
             </div>
             <div className="button-section">
               {!isLoading 
@@ -186,6 +196,7 @@ export default function EditLand() {
           </div>
         </div>
       </div>
+      {loadingPage && <ModalLoadingPage/>}
     </div>
   )
 }
