@@ -30,6 +30,7 @@ import ModalRenting from '../ModalRenting/ModalRenting'
 import LandMarketModel from '../../models/market/LandMarketModel'
 import HirePurchaseDetailResponseModel from '../../models/hirePurchase/HirePurchaseDetailResponseModel'
 import HirePurchaseService from '../../services/hirePurchase/HirePurchaseService'
+import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
 
 interface IParams {
   landTokenId: string
@@ -64,15 +65,20 @@ export default function LandDetail() {
   const hirePurchaseService: HirePurchaseService = new HirePurchaseService()
   const [hirePurchase, setHirePurchase] = useState<HirePurchaseDetailResponseModel>(new HirePurchaseDetailResponseModel())
   const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false)
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
   useEffect(() => {
     getDataFromApi()
   }, [])
 
   async function getDataFromApi(): Promise<void> {
+    setLoadingPage(true)
     await getLandDetailsFromApi()
     await getLandRentingAPI()
     await getDetailHiringAPI()
+    setTimeout(() => {
+      setLoadingPage(false)
+    }, 1100);
   }
   
   async function getLandDetailsFromApi(): Promise<void> {
@@ -362,6 +368,7 @@ export default function LandDetail() {
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
       {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails}/>}
       {isShowModalrenting && <ModalRenting setIsShowModalRenting={setIsShowModalrenting} land={landDetailsForRenting} fetchDetail={getDataFromApi}/>}
+      {loadingPage && <ModalLoadingPage/>}
     </>
   )
 }

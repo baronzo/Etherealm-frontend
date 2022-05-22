@@ -7,6 +7,7 @@ import LandService from '../../services/lands/LandService'
 import './EditLand.scss'
 import { BiArrowBack } from 'react-icons/bi'
 import ModalUploadImage from '../ModalUploadImage/ModalUploadImage'
+import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
 
 interface IParams {
   landTokenId: string
@@ -26,6 +27,7 @@ export default function EditLand() {
   const [isLoading, setisLoading] = useState<boolean>(false)
   const history = useHistory()
   const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
 
   useEffect(() => {
@@ -33,10 +35,14 @@ export default function EditLand() {
   }, [])
 
   async function getLandFromTokenId(): Promise<void> {
+    setLoadingPage(true)
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setPrevImage(result.landAssets)
     setLand(result)
     setprevData(result)
+    setTimeout(() => {
+      setLoadingPage(false)
+    }, 1100);
   }
 
   function onChangeImageClick(): void {
@@ -186,6 +192,7 @@ export default function EditLand() {
           </div>
         </div>
       </div>
+      {loadingPage && <ModalLoadingPage/>}
     </div>
   )
 }
