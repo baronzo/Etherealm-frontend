@@ -27,7 +27,7 @@ export default function ModalRenting(props: Props) {
   const contractStore = useMemo(() => new ContractStore, [])
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [periodType, setPeriodType] = useState<Options>({ value: 1, label: "Set time period" });
-  const [period, setPeriod] = useState<Options>({ value: 3, label: '3'  })
+  const [period, setPeriod] = useState<Options>({ value: 90, label: '3'  })
   const [periodDay, setPeriodDay] = useState<Options>({ value: 1, label: '1'  })
   const rentService: RentService = new RentService
   const [isChecked, setIsChecked] = useState<boolean>(false)
@@ -87,7 +87,7 @@ export default function ModalRenting(props: Props) {
         landTokenId: props.land.landTokenId.landTokenId,
         rentType: props.land.rentType.rentTypeId!,
         periodType: periodType?.value!,
-        period: props.land.rentType.rentTypeId === 1 ? periodDay.value! : period.value!*30,
+        period: props.land.rentType.rentTypeId === 1 ? periodDay.value! : period.value!,
         price: props.land.price,
         hash: hash
       }
