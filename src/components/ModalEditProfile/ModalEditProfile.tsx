@@ -5,6 +5,7 @@ import UserModel from '../../models/auth/UserModel';
 import authStore from '../../store/auth';
 import UserService from '../../services/user/UserService';
 import ImageService from '../../services/imgbb/ImageService';
+import ModalUploadImage from '../ModalUploadImage/ModalUploadImage';
 
 type Props = {
     setIsShowModalEditProfile: (value: boolean) => void
@@ -28,6 +29,7 @@ export default function ModalEditProfile(props: Props) {
     const [prevData, setprevData] = useState<UserModel>(new UserModel)
     const [prevImage, setPrevImage] = useState<string>('')
     const [isLoading, setisLoading] = useState(false)
+    const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
 
     useEffect(() => {
         getDataFromAPI()
@@ -45,7 +47,8 @@ export default function ModalEditProfile(props: Props) {
     }
     
     function onChangeImageClick(): void {
-        inputImage.current?.click()
+        // inputImage.current?.click()
+        setisShowModalUploadImage(true)
     }
 
     function formatBase64Image(base64Image: string, type: string): string {
@@ -111,8 +114,19 @@ export default function ModalEditProfile(props: Props) {
         return result
     }
 
+    function handleOnUploadImage(base64Image: string): void {
+        if (base64Image) {
+            let newProfile = {...profile}
+            newProfile.userProfilePic = base64Image
+            base64Image = formatBase64Image(base64Image, 'jpeg')
+            setbase64Image(base64Image)
+            setProfile(newProfile)
+        }
+      }
+
     return (
         <div id="modalEditProfile">
+            {isShowModalUploadImage && <ModalUploadImage setisShowModalUploadImage={setisShowModalUploadImage} onImageCropped={handleOnUploadImage} />}
             <div id="editProfileBox">
                 <div className="topic-label-div">
                     <div className="topic">
@@ -120,14 +134,14 @@ export default function ModalEditProfile(props: Props) {
                     </div>
                     <MdClose className="close-icon" onClick={() => props.setIsShowModalEditProfile(false)} />
                 </div>
-                <div className="toggle-div">
+                {/* <div className="toggle-div">
                     <div className="toggle-upload-link">
                         <div className={`button-upload ${isActiveToggle ? 'active' : ''}`}
                             onClick={() => onChangeTab(true)}>Upload image</div>
                         <div className={`button-link ${!isActiveToggle ? 'active' : ''}`}
                             onClick={() => onChangeTab(false)}>Link image</div>
                     </div>
-                </div>
+                </div> */}
                 <div className="image-upload-or-link">
                     <div className="image-div">
                         <img className="image-profile" src={linkImageProfile ? linkImageProfile : profile.userProfilePic ? profile.userProfilePic : '/profile.jpg'} alt="" />

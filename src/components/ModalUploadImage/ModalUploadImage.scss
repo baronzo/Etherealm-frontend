@@ -1,0 +1,157 @@
+#uploadMainBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.534);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  #uploadBodyBox {
+    background-color: #fff;
+    width: 80%;
+    height: 85%;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column;
+    #headerBox {
+      width: 100%;
+      height: 45px;
+      display: flex;
+      #closeIconBox {
+        width: 5%;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid rgb(184, 184, 184);
+        .close-icon {
+          font-size: 23px;
+          cursor: pointer;
+          color: rgb(160, 160, 160);
+          &:hover {
+            color: rgb(121, 121, 121);
+          }
+        }
+      }
+      #uploadHeader {
+        width: 95%;
+        height: 45px;
+        border-radius: 5px 5px 0 0;
+        padding: 10px 10px 10px 20px;
+        border-bottom: 1px solid rgb(184, 184, 184);
+        font-size: 16px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        color: rgb(73, 73, 73);
+      }
+    }
+    #uploadBodyContent {
+      height: calc(100% - 45px);
+      display: flex;
+      #cropImageBox {
+        position: relative;
+        width: 80%;
+        background-color: transparent;
+        #noUploadImageText {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: rgb(153, 153, 153);
+        }
+      }
+      #detailsBox {
+        width: 20%;
+        #previewImageBox {
+          width: 100%;
+          padding: 15px 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-flow: column;
+          #previewImageText {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0 5px 0;
+            font-weight: 500;
+            color: rgb(95, 95, 95);
+          }
+          #noPreviewImage {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(163, 163, 163);
+          }
+          #previewImage {
+            width: 90%;
+            height: 90%;
+          }
+        }
+        #buttonBox {
+          display: flex;
+          flex-flow: column;
+          padding: 10px;
+          #inputFile {
+            display: none;
+          }
+          #uploadUrlInput {
+            height: 35px;
+            margin: 15px 0 0;
+            padding: 5px 5px 5px 10px;
+            border: 1px solid #CBCBCB;
+            outline: none;
+            &:focus {
+              border: 1px solid #873cff;
+              box-shadow: 0px 0px 10px -4px #b485ff;
+            }
+          }
+          #uploadButton, #confirmButton {
+            height: 35px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: rgb(0, 162, 255);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 14px;
+            &:hover {
+              background-color: rgb(74, 189, 255);
+            }
+            #uploadIcon, #confirmIcon {
+              font-size: 18px;
+              margin: 0 5px 0 0;
+            }
+          }
+          #uploadButton {
+            margin: 15px 0 0;
+          }
+          #confirmButton {
+            background-color: rgb(0, 214, 132);
+            margin: 10px 0 0;
+            &:hover {
+              background-color: rgb(26, 235, 154);
+            }
+          }
+          .select input {
+            font-family: "Times New Roman";
+          }
+        }
+      }
+    }
+  }
+}

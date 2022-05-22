@@ -6,6 +6,7 @@ import ImageService from '../../services/imgbb/ImageService'
 import LandService from '../../services/lands/LandService'
 import './EditLand.scss'
 import { BiArrowBack } from 'react-icons/bi'
+import ModalUploadImage from '../ModalUploadImage/ModalUploadImage'
 
 interface IParams {
   landTokenId: string
@@ -24,6 +25,7 @@ export default function EditLand() {
   const [prevData, setprevData] = useState<LandModel>(new LandModel)
   const [isLoading, setisLoading] = useState<boolean>(false)
   const history = useHistory()
+  const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
 
 
   useEffect(() => {
@@ -38,7 +40,8 @@ export default function EditLand() {
   }
 
   function onChangeImageClick(): void {
-    inputImage.current?.click()
+    // inputImage.current?.click()
+    setisShowModalUploadImage(true)
   }
 
   async function onImageSelected(e: HTMLInputElement): Promise<void> {
@@ -118,8 +121,18 @@ export default function EditLand() {
     }
   }
 
+  function handleOnUploadImage(base64Image: string): void {
+    if (base64Image) {
+      let newLand = {...land}
+      newLand.landAssets = base64Image
+      setLand(newLand)
+      setbase64Image(formatBase64Image(base64Image, 'jpeg'))
+    }
+  }
+
   return (
     <div id='editLand'>
+      {isShowModalUploadImage && <ModalUploadImage setisShowModalUploadImage={setisShowModalUploadImage} onImageCropped={handleOnUploadImage} />}
       <div id="editBox">
         <div id="title">
           <BiArrowBack className="icon-back" onClick={history.goBack}/>
@@ -127,12 +140,12 @@ export default function EditLand() {
         </div>
         <div id="editDetail">
           <div className="image-section">
-            <div className="menu">
+            {/* <div className="menu">
               <div className="menu-button">
                 <div className={`upload-image ${isTab ? 'active' : ''}`} onClick={() => onChangeTab(true)}>Uplaod Image</div>
                 <div className={`link-image ${!isTab ? 'active' : ''}`} onClick={() => onChangeTab(false)}>Link Image</div>
               </div>
-            </div>
+            </div> */}
             <img id="landImage" src={linkImage ? linkImage : land.landAssets ? land.landAssets : "/map.jpg"}  alt=""/>
             { isTab ? 
               <div id="changeImage">
