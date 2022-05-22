@@ -92,19 +92,34 @@ export default function Map({ }: Props) {
                         context.strokeRect(x, y, 20, 20)
                     }
                 }
-                landLists.forEach(foundedLand => {
+                // let lastHaveAssetIndex = 0
+                // for (let index = landLists.length - 1; index >= 0; index--) {
+                //     if (landLists[index].landAssets) {
+                //         lastHaveAssetIndex = index
+                //         break
+                //     }
+                // }
+                landLists.forEach((foundedLand, index) => {
                     context.fillStyle = "#2AC161";
                     context.fillRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
                     context.strokeStyle = "#ffffff";
                     context.strokeRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
-                
+                    // if (foundedLand.landAssets) {
+                    //     let image = new Image()
+                    //     image.onload = function() {
+                    //         context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
+                    //         setbase64Image(canvasRef.current!.toDataURL('image/webp', 1))
+
+                    //     };
+                    //     // image.src = `https://i.ibb.co/DgHP5JP/15c308fdcd53.jpg`
+                    //     image.src = foundedLand.landAssets
+                    //     image.crossOrigin = 'anonymous'
+                    //     // context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
+                    // }
                 })
                 context.save()
-                changeSelectedColor()
-                const url = canvasRef.current.toDataURL()
-                setbase64Image(url)
-
-               
+                setbase64Image(canvasRef.current!.toDataURL())
+                // changeSelectedColor()
             }
         }
     }
@@ -162,28 +177,6 @@ export default function Map({ }: Props) {
                 });
             })
         }
-    }
-
-    async function storeLandImage(response: Array<LandModel>) {
-        let newResponse = []
-        for await (const item of response) {
-            if (item.landAssets) {
-                try {
-                    // const response = await getBase64FromUrl(item.landAssets)
-                    const response = await getBase64FromUrl(`https://i1.sndcdn.com/artworks-Qdsc0Sgxu56jrRUL-FBDK7g-t500x500.jpg`)
-                    if (response) {
-                        item.landAssets = response as string
-                        newResponse.push(item)
-                    }
-                } catch (error) {
-                    continue
-                }
-            } else {
-                newResponse.push(item)
-            }
-
-        }
-        return newResponse
     }
 
     const getBase64FromUrl = async (url: string) => {
@@ -266,7 +259,6 @@ export default function Map({ }: Props) {
                     }
                 }
                 changeSelectedColor()
-
             }
         }
         return cameraZoom

@@ -9,9 +9,9 @@ export default function TestMap({ }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    test()
-    // console.log(canvasRef.current)
-    // onStart()
+    // test()
+    console.log('Wowww')
+    onStart()
   }, [])
 
   async function test() {
@@ -34,16 +34,19 @@ export default function TestMap({ }: Props) {
           context.fillRect(80, 80, 20, 20)
           for (let i = 0; i < 300; i+=60) {
             let image = new Image()
-            console.log('before draw')
             image.onload = function() {
               context.drawImage(image, i, 0, 60, 60);
+              console.log(canvasRef.current!.toDataURL())
             };
             image.src = `https://i1.sndcdn.com/artworks-Qdsc0Sgxu56jrRUL-FBDK7g-t500x500.jpg`
+            image.crossOrigin = 'anonymous'
+            context.drawImage(image, i, 0, 60, 60);
             
-            console.log('after draw')
           }
-          
+          context.save()
         }
+        
+        
     }
   }
 
