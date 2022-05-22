@@ -23,6 +23,7 @@ import ModalOfferList from '../../ModalOfferList/ModalOfferList'
 import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
 import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
 import ModalLoadingPage from '../../ModalLoadingPage/ModalLoadingPage'
+import ModalUploadImage from '../../ModalUploadImage/ModalUploadImage'
 
 interface IParams {
     userTokenId: string
