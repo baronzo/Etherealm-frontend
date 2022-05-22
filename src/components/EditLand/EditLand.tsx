@@ -38,6 +38,7 @@ export default function EditLand() {
   async function getLandFromTokenId(): Promise<void> {
     setLoadingPage(true)
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
+    setMinimumPrice(result.minimumOfferPrice)
     setPrevImage(result.landAssets)
     setLand(result)
     setprevData(result)
