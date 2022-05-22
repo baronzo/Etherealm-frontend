@@ -23,6 +23,7 @@ export default function ModalOffer(props: Props) {
   const offerService: OfferService = new OfferService
 
   useEffect(() => {
+    setOfferPrice(props.landOffer.minimumOfferPrice)
   }, [])
 
   async function createOfferLand(): Promise<void> {
@@ -30,7 +31,7 @@ export default function ModalOffer(props: Props) {
       setIsLoading(true)
       const body: CreateOfferLandRequestModel = {
         landTokenId: props.landOffer.landTokenId,
-        offerPrice: Number(offerPrice),
+        offerPrice: offerPrice,
         requestUserTokenId: authStore.account.userTokenId
       }
       const result: CreateOfferLandResponseModel = await offerService.createOffer(body)
