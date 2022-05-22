@@ -122,12 +122,13 @@ export default function EditLand() {
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
     let value: number = Number(e.target.value)
-    if (value < 0.001) {
-      setMinimumPrice(0.001)
-    } else if (value >= 0.001) {
+    if (value < 0) {
+      setMinimumPrice(0)
+      setLand({...land, ...{minimumOfferPrice: 0.001}})
+    } else if (value >= 0) {
       setMinimumPrice(value)
+      setLand({...land, ...{minimumOfferPrice: minimumPrice}})
     }
-    setLand({...land, ...{minimumOfferPrice: minimumPrice}})
   }
 
   function handleOnUploadImage(base64Image: string): void {
