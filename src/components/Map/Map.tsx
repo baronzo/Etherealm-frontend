@@ -54,6 +54,8 @@ export default function Map({ }: Props) {
 
     const [loadingPage, setLoadingPage] = useState<boolean>(true)
     const searchParams: URLSearchParams = new URLSearchParams(window.location.search)
+
+    const [base64Image, setbase64Image] = useState<string>('')
     
 
     useEffect(() => {
@@ -66,21 +68,67 @@ export default function Map({ }: Props) {
     }, [])
 
     useEffect(() => {
+        if (loadingPage === false) {
             cancelAnimationFrame(callbackKeyRef.current);
             cameraZoom = cameraZoomRef.current
-            // setUrl()
             const update = () => {
                 cameraZoomRef.current = drawboard()
                 drawMinimap()
                 callbackKeyRef.current = requestAnimationFrame(update);
             }
             update()
+        }
     })
+
+    function onDrawMapAndMapToBase64Image(landLists: Array<LandModel>) {
+        if (canvasRef.current) {
+            context = canvasRef.current?.getContext("2d");
+            canvasRef.current.width = width
+            canvasRef.current.height = height
+            if (context) {
+                for (let x = 0; x < width; x+=20) {
+                    for (let y = 0; y < height; y+=20) {
+                        context.strokeStyle = "#ffffff";
+                        context.strokeRect(x, y, 20, 20)
+                    }
+                }
+                // let lastHaveAssetIndex = 0
+                // for (let index = landLists.length - 1; index >= 0; index--) {
+                //     if (landLists[index].landAssets) {
+                //         lastHaveAssetIndex = index
+                //         break
+                //     }
+                // }
+                landLists.forEach((foundedLand, index) => {
+                    context.fillStyle = "#2AC161";
+                    context.fillRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
+                    context.strokeStyle = "#ffffff";
+                    context.strokeRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
+                    // if (foundedLand.landAssets) {
+                    //     let image = new Image()
+                    //     image.onload = function() {
+                    //         context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
+                    //         setbase64Image(canvasRef.current!.toDataURL('image/webp', 1))
+
+                    //     };
+                    //     // image.src = `https://i.ibb.co/DgHP5JP/15c308fdcd53.jpg`
+                    //     image.src = foundedLand.landAssets
+                    //     image.crossOrigin = 'anonymous'
+                    //     // context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
+                    // }
+                })
+                context.save()
+                setbase64Image(canvasRef.current!.toDataURL())
+                // changeSelectedColor()
+            }
+        }
+    }
 
     async function onStart(): Promise<void> {
         setLoadingPage(true)
         calculateMinZoom()
-        await getMapDataFromApi()
+        const responseLand = await getMapDataFromApi()
+        await onDrawMapAndMapToBase64Image(responseLand)
         if (zoomRangeRef.current) {
             zoomRangeRef.current.value = String(cameraZoom)
         }
@@ -109,14 +157,40 @@ export default function Map({ }: Props) {
 
     }
 
-    async function getMapDataFromApi() {
-        try {
-            let response: Array<LandModel> = await landService.getLands()
-            setLands(response)
-        } catch (error) {
-            
+    async function getMapDataFromApi(): Promise<Array<LandModel>> {
+        let response: Array<LandModel> = await landService.getLands()
+        setLands(response)
+        return response
+    }
+
+    async function canvasToBase64Image(): Promise<void> {
+        if (canvasRef.current) {
+            canvasRef.current?.toBlob(blob => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob!); 
+                    reader.onloadend = () => {
+                        const base64data = reader.result;
+                        setbase64Image(base64data as string)
+                        resolve(base64data);
+                    }
+                });
+            })
         }
     }
+
+    const getBase64FromUrl = async (url: string) => {
+        const data = await fetch(url);
+        const blob = await data.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob); 
+          reader.onloadend = () => {
+            const base64data = reader.result;   
+            resolve(base64data);
+          }
+        });
+      }
 
     function calculateMinZoom(): void {
         if (canvasRef.current) {
@@ -174,13 +248,10 @@ export default function Map({ }: Props) {
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)
                 context.translate(-rect.width / 2 + cameraOffSet.x, -rect.height / 2 + cameraOffSet.y)
+                let image = new Image()
+                image.src = base64Image
+                context.drawImage(image, 0, 0, width, height)
                 for (const item of lands) {
-                    context.fillStyle = "#2AC161";
-                    context.fillRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
-                    context.strokeStyle = "#ffffff";
-                    context.strokeRect(item.landPosition.x, item.landPosition.y, (item.landPosition.x + item.landSize.landSize) - item.landPosition.x, (item.landPosition.y + item.landSize.landSize) - item.landPosition.y)
-                    context.save()
-                    
                     if (item.landAssets) {
                         let image = new Image()
                         image.src = item.landAssets
@@ -255,7 +326,6 @@ export default function Map({ }: Props) {
                         const xx: number = Number(locationList[i].split(',')[0])
                         const yy: number = Number(locationList[i].split(',')[1])
                         if (xx === cx && yy === cy) {
-                            // console.log(lands[index])
                             result = lands[index]
                             found = true
                             break

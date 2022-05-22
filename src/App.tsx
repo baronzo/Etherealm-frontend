@@ -10,6 +10,7 @@ import OwnerProfile from './components/profile/ownerProfile/OwnerProfile';
 import EditLand from './components/EditLand/EditLand';
 import LandDetail from './components/LandDetail/LandDetail';
 import Map from './components/Map/Map';
+import TestMap from './components/Map/TestMap';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Switch>
           <Route exact path='/'><Layout children={Home}/></Route>
           <Route exact path='/map'><Layout children={Map}/></Route>
+          <Route exact path='/map2'><Layout children={TestMap}/></Route>
           <Route exact path='/market'><Layout children={Market}/></Route>
           <Route exact path='/auction'><Layout children={Auction}/></Route>
           <Route exact path='/bid'><Layout children={Bid}/></Route>
