@@ -40,7 +40,6 @@ export default function EditLand() {
     const result: LandModel = await landService.getLandByLandTokenId(params.landTokenId)
     setPrevImage(result.landAssets)
     setLand(result)
-    setMinimumPrice(result.minimumOfferPrice)
     setprevData(result)
     setTimeout(() => {
       setLoadingPage(false)
