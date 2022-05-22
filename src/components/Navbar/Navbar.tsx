@@ -17,10 +17,10 @@ export default observer(function Navbar(props: IProps) {
   const [isShowModalMenu, setIsShowModalMenu] = useState<boolean>(false);
   const [isShowAddPoint, setIsShowAddPoint] = useState<boolean>(false);
   const [isShowWithdrawPoint, setisShowWithdrawPoint] = useState<boolean>(false)
-  const [point, setpoint] = useState<number>(0.00001)
+  const [point, setpoint] = useState<number>(0.001)
   const [isAddPointLoading, setisAddPointLoading] = useState<boolean>(false)
   const [isWithDrawPointLoading, setisWithDrawPointLoading] = useState(false)
-  const [withdrawPoint, setwithdrawPoint] = useState(0.00001)
+  const [withdrawPoint, setwithdrawPoint] = useState(0.001)
 
   const history = useHistory();
 
@@ -84,6 +84,24 @@ export default observer(function Navbar(props: IProps) {
     setIsShowAddPoint(!isShowAddPoint)
   }
 
+  const onChangePoints = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value: number = Number(e.target.value)
+    if (value < 0) {
+      setpoint(0)
+    } else if (value >= 0) {
+      setpoint(value)
+    }
+  }
+
+  const onChangewithdrawPoint = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value: number = Number(e.target.value)
+    if (value < 0) {
+      setwithdrawPoint(0)
+    } else if (value >= 0) {
+      setwithdrawPoint(value)
+    }
+  }
+
   (window as any).ethereum.on("accountsChanged", onAccountChangeHandler);
 
   return (
@@ -140,7 +158,7 @@ export default observer(function Navbar(props: IProps) {
               {isShowAddPoint && (
                 <div id="addPoint">
                   <p className="label">Points (ETH)</p>
-                  <input type="number" className="input-point" value={point} onChange={event => setpoint(Number(event.target.value))} step={0.00001}/>
+                  <input type="number" className="input-point" value={point} onChange={event => onChangePoints(event)} step={0.001}/>
                   {!isAddPointLoading
                     ?
                       <button className="add-point-button" onClick={onAddPointClick}>Deposit Point</button>
@@ -152,7 +170,7 @@ export default observer(function Navbar(props: IProps) {
               {isShowWithdrawPoint && (
                 <div id="addPoint">
                   <p className="label">Points (ETH)</p>
-                  <input type="number" className="input-point" value={withdrawPoint} onChange={event => setwithdrawPoint(Number(event.target.value))} step={0.00001}/>
+                  <input type="number" className="input-point" value={withdrawPoint} onChange={event => onChangewithdrawPoint(event)} step={0.001}/>
                   {!isWithDrawPointLoading
                     ?
                       <button className="add-point-button withdraw" onClick={onWithdrawPointClick}>Withdraw Point</button>
