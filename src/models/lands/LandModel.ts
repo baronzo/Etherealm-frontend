@@ -15,7 +15,7 @@ class LandModel {
   public landStatus: LandStatusModel = new LandStatusModel
   public landSize: LandSizeModel = new LandSizeModel
   public price: number | null = null
-  public minimumOfferPrice: string = String()
+  public minimumOfferPrice: number = Number()
   public bestOffer: BestOfferModel | null = null
   public isOffer: boolean = Boolean()
   public isLoading: boolean = Boolean()

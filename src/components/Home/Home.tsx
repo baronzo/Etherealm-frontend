@@ -43,13 +43,13 @@ const Home = () => {
         </div>
       </div>
       <div id="landRent">
+      <div className="image-matket-div">
+          <img className='image-market' src="/image3.png" alt="" />
+        </div>
         <div className="land-box">
           <div className="title">Rent in ETHEREALM</div>
           <div className="text-description">Don't want to sell at the moment? Rent it!</div>
           <button className="buy-land" onClick={goToRentPage}>Rent Land</button>
-        </div>
-        <div className="image-matket-div">
-          <img className='image-market' src="/image3.png" alt="" />
         </div>
       </div>
       <div id="footer">

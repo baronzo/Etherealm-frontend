@@ -26,7 +26,7 @@ interface Status {
 export default function ModalListOnMarket(props: Props) {
     const [isActiveToggle, setIsActiveToggle] = useState<Status>({ sell: true, rent: false })
     const landMarketService = new LandMarketService()
-    const [price, setPrice] = useState<string>('0.00001')
+    const [price, setPrice] = useState<number>(0.001)
     const [isLoading, setisLoading] = useState<boolean>(false)
     const [totalReceive, setTotalReceive] = useState<number>(0)
     const [fee, setFee] = useState<number>(0)
@@ -93,10 +93,10 @@ export default function ModalListOnMarket(props: Props) {
 
     const onChangeSellPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value: number = Number(e.target.value)
-        if (value < 0.00001) {
-            setPrice('0.00001')
-        } else if (value >= 0.00001) {
-            setPrice(e.target.value)
+        if (value < 0) {
+            setPrice(0)
+        } else if (value >= 0) {
+            setPrice(value)
         }
     }
 
@@ -160,7 +160,7 @@ export default function ModalListOnMarket(props: Props) {
                                     <div className="input-price-div">
                                         <input type="number" className='input-price'
                                         value={price}
-                                        onChange={onChangeSellPrice}/>
+                                        onChange={(event) => onChangeSellPrice(event)} step={0.001}/>
                                     </div>
                                 </div>
                                 <div className='fee-div'>
@@ -183,7 +183,7 @@ export default function ModalListOnMarket(props: Props) {
                                     <Select id="reactSelect" options={mapRentTypesToOption()} onChange={(e) => mapRentTypeToOption(e as ReactSelectOptionModel) } />
                                     <div className="text-period">Price (ETH/{rentType?.rentTypeText})</div>
                                     <div className="input-period-div">
-                                        <input type="text" className='input-period' value={price} onChange={onChangeSellPrice} />
+                                        <input type="number" className='input-period' value={price} onChange={(event) => onChangeSellPrice(event)} step={0.001}/>
                                     </div>
                                 </div>
                                 <div className='fee-div'>

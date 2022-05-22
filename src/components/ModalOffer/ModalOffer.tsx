@@ -17,7 +17,7 @@ type Props = {
 }
 
 export default function ModalOffer(props: Props) {
-  const [offerPrice, setOfferPrice] = useState<string>('0.001')
+  const [offerPrice, setOfferPrice] = useState<number>(0.001)
   const [offerResponse, setOfferResponse] = useState<OffersLandResponseModel>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const offerService: OfferService = new OfferService
@@ -45,10 +45,10 @@ export default function ModalOffer(props: Props) {
 
   function onChangeOfferPrice(e: React.ChangeEvent<HTMLInputElement>) {
     let value: number = Number(e.target.value)
-    if (value < 0.00001) {
-      setOfferPrice('0.00001')
-    } else if (value >= 0.00001) {
-      setOfferPrice(e.target.value)
+    if (value < props.landOffer.minimumOfferPrice) {
+      setOfferPrice(props.landOffer.minimumOfferPrice)
+    } else if (value >= props.landOffer.minimumOfferPrice) {
+      setOfferPrice(value)
     }
   }
 
@@ -104,7 +104,7 @@ export default function ModalOffer(props: Props) {
             <p className='text-grey'>(Minimum {props.landOffer.minimumOfferPrice} ETH)</p>
           </div>
           <div className="input-box">
-            <input className="input" type="number" value={offerPrice} onChange={onChangeOfferPrice} />
+            <input className="input" type="number" value={offerPrice} onChange={(e) => onChangeOfferPrice(e)} step={0.001}/>
           </div>
         </div>
         <div id="billBox">
