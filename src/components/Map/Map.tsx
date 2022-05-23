@@ -244,8 +244,6 @@ export default function Map({ }: Props) {
             const rect = canvasRef.current.getBoundingClientRect();
             canvasRef.current.width = window.innerWidth
             canvasRef.current.height = window.innerHeight - navbarSize
-            // canvasRef.current.width = this.naturalWidth;
-            // canvasRef.current.height = window.innerHeight - navbarSize
             if (context) {
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)

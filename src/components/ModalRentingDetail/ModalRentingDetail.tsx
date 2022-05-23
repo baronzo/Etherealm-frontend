@@ -119,7 +119,7 @@ export default function ModalRentingDetail(props: Props) {
                 </div>
                 <div id="detailSection">
                     <div className="image-section">
-                        <img className='land-image' src={props.land.landAssets ? props.land.landAssets : "/map.jpg"} alt="" />
+                        <img className='land-image' src={props.land.landAssets ? props.land.landAssets : "/default.jpg"} alt="" />
                         <div className='land-name'>
                             <p className='land-name-text'>{props.land.landName}</p>
                             <FaInfoCircle className='icon-info' />

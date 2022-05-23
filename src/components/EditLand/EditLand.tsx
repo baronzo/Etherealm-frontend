@@ -165,7 +165,7 @@ export default function EditLand() {
                 <div className={`link-image ${!isTab ? 'active' : ''}`} onClick={() => onChangeTab(false)}>Link Image</div>
               </div>
             </div> */}
-            <img id="landImage" src={linkImage ? linkImage : land.landAssets ? land.landAssets : "/map.jpg"}  alt=""/>
+            <img id="landImage" src={linkImage ? linkImage : land.landAssets ? land.landAssets : "/default.jpg"}  alt=""/>
             { isTab ? 
               <div id="changeImage">
                 <input type="file" ref={inputImage} name="" id="uploadInput" onChange={e => onImageSelected(e.target)} accept="image/png, image/jpeg" />

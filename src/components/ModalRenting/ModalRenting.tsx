@@ -188,7 +188,7 @@ export default function ModalRenting(props: Props) {
         </div>
         <div className="image-upload-or-link">
           <div className="image-div">
-            <img className="image-profile" src={props.land.landTokenId.landAssets ? props.land.landTokenId.landAssets : "/map.jpg"} alt="" />
+            <img className="image-profile" src={props.land.landTokenId.landAssets ? props.land.landTokenId.landAssets : "/default.jpg"} alt="" />
           </div>
           <p className="text-land-name">{props.land.landTokenId.landName}</p>
         </div>

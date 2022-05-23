@@ -155,7 +155,7 @@ export default function Market() {
             return(
               <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                 <div className='land-image-div'>
-                  <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/map.jpg'} alt="" />
+                  <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/default.jpg'} alt="" />
                 </div>
                 <div className='land-detail'>
                   <div className='name-location'>
@@ -203,7 +203,7 @@ export default function Market() {
               return(
                 <div className='land-card' key={item.landMarketId} onClick={() => goToLandDetail(item.landTokenId.landTokenId)}>
                   <div className='land-image-div'>
-                    <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/map.jpg'} alt="" />
+                    <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : '/default.jpg'} alt="" />
                   </div>
                   <div className='land-detail'>
                     <div className='name-location'>
