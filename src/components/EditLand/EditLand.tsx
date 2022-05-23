@@ -8,6 +8,9 @@ import './EditLand.scss'
 import { BiArrowBack } from 'react-icons/bi'
 import ModalUploadImage from '../ModalUploadImage/ModalUploadImage'
 import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import Notify from '../notify/Notify'
 
 interface IParams {
   landTokenId: string
@@ -29,7 +32,7 @@ export default function EditLand() {
   const history = useHistory()
   const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
   const [loadingPage, setLoadingPage] = useState<boolean>(false)
-
+  const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
     getLandFromTokenId()
@@ -102,6 +105,8 @@ export default function EditLand() {
     setLand(result)
     setprevData(result)
     setisLoading(false)
+    setIsSuccess(true)
+    Notify.notifySuccess('Edit Success')
   }
 
   function onChangeTab(isTab: boolean ) {
@@ -196,6 +201,7 @@ export default function EditLand() {
           </div>
         </div>
       </div>
+      {isSuccess && <ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
       {loadingPage && <ModalLoadingPage/>}
     </div>
   )
