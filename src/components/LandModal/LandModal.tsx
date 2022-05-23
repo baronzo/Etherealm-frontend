@@ -2,12 +2,14 @@ import { observer } from 'mobx-react'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { MdLocationOn } from 'react-icons/md'
 import { useHistory } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import LandModel from '../../models/lands/LandModel'
 import LandService from '../../services/lands/LandService'
 import authStore from '../../store/auth'
 import ContractStore from '../../store/contract'
 import ModalLoading from '../Loading/ModalLoading'
 import ModalHirePurchase from '../ModalHirePurchase/ModalHirePurchase'
+import Notify from '../notify/Notify'
 import './LandModal.scss'
 
 interface IProps {
@@ -42,6 +44,8 @@ export default observer(function LandModal(props: IProps) {
         return 'listed'
       case 4:
         return 'listed'
+      case 6:
+        return 'hiring'
       default:
         return 'no-owner'
     }
@@ -86,12 +90,19 @@ export default observer(function LandModal(props: IProps) {
 
   async function onPurchaseClick() {
     setisLoading(true)
-    let hash: string = await contractStore.purchaseLand(land.landTokenId, land.price!)
-    if (hash) {
-      let result: LandModel = await landService.purchaseLand(land.landTokenId, hash)
-      setLand(result)
-      await authStore.updateAccount()
-      props.onLandChange(result)
+    try {
+      let hash: string = await contractStore.purchaseLand(land.landTokenId, land.price!)
+      if (hash) {
+        let result: LandModel = await landService.purchaseLand(land.landTokenId, hash)
+        setLand(result)
+        await authStore.updateAccount()
+        props.onLandChange(result)
+        setisLoading(false)
+        Notify.notifySuccess('Purchase Land Successfully')
+      }     
+    } catch (error) {
+      console.log(error)
+      Notify.notifyError('Purchase Land Failed')
       setisLoading(false)
     }
   }
@@ -144,6 +155,7 @@ export default observer(function LandModal(props: IProps) {
         <ModalHirePurchase landDetails={props.land} setIsShowModalHirePurchase={setIsShowModalHirePurchase} onHirePurchaseSuccess={handleOnHirePurchaseSuccess}/>
       )
       }
+      <ToastContainer theme='colored' style={{marginTop: '50px'}}/>
     </div>
   )
 })

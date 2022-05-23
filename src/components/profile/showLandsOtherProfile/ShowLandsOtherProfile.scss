@@ -67,6 +67,16 @@
             color: #7645D9;
         }
     }
+    .no-land-data {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.9rem;
+        font-weight: bold;
+        color: #b9b9b9;
+    }
     .show-my-land {
         width: 100%;
         display: grid;
