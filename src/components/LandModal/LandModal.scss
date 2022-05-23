@@ -87,6 +87,26 @@
           background-color: #2b49df;
         }
       }
+      .land-url {
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #5373ff;
+        margin: 5px 0 5px 0;
+        padding: 0 10px;
+        min-width: 250px;
+        font-weight: bold;
+        &.active {
+          cursor: pointer;
+          &:hover {
+            color: #002fff;
+          }
+        }
+        .link-icon {
+          margin: 0 7px 0 0;
+        }
+      }
       .land-description {
         margin-top: 20px;
         text-align: center;

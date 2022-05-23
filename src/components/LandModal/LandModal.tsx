@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import { MdLocationOn } from 'react-icons/md'
 import { useHistory } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import LandModel from '../../models/lands/LandModel'
 import LandService from '../../services/lands/LandService'
+import UserService from '../../services/user/UserService'
 import authStore from '../../store/auth'
 import ContractStore from '../../store/contract'
 import ModalLoading from '../Loading/ModalLoading'
@@ -19,6 +21,7 @@ interface IProps {
 
 export default observer(function LandModal(props: IProps) {
   const contractStore = useMemo(() => new ContractStore, [])
+  const userService: UserService = new UserService
   const landService: LandService = new LandService
   const [land, setLand] = useState<LandModel>(new LandModel)
   const [isLoading, setisLoading] = useState<boolean>(false)
@@ -96,6 +99,8 @@ export default observer(function LandModal(props: IProps) {
         let result: LandModel = await landService.purchaseLand(land.landTokenId, hash)
         setLand(result)
         await authStore.updateAccount()
+        const point: number = await contractStore.getPoint(authStore.account.userTokenId)
+        authStore.setPoint(point)
         props.onLandChange(result)
         setisLoading(false)
         Notify.notifySuccess('Purchase Land Successfully')
@@ -123,6 +128,10 @@ export default observer(function LandModal(props: IProps) {
     setLand(land)
     props.onLandChange(land)
   }
+
+  function onLandWebsiteClick(): void {
+    window.open(land.landUrl, '_blank')
+  }
   
   return (
     <div id='landModal' className={!land.landTokenId ? 'hide' : ''}>
@@ -145,6 +154,16 @@ export default observer(function LandModal(props: IProps) {
               <img className='land-image' src={land.landAssets ? land.landAssets : '/default.jpg'} alt="" />
           </div>
           <div className={`tags-land ${mapStatusToClassName(land.landStatus.landStatusId)}`}>{land.landStatus.landStatusName}</div>
+          {land.landStatus.landStatusId !== 1 &&
+            <>
+              {land.landUrl
+                ?
+                <div className="land-url active" onClick={onLandWebsiteClick}><FaExternalLinkAlt className='link-icon'/>{land.landUrl}</div>
+                :
+                <div className="land-url">This land doesn't have a website</div>
+              }
+            </>
+          }
           <div className="land-description">
             {land.landDescription}
           </div>
