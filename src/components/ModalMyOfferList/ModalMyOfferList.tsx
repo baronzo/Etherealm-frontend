@@ -12,6 +12,8 @@ import authStore from "../../store/auth";
 import Select from 'react-select'
 import "./ModalMyOfferList.scss";
 import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
+import { ToastContainer } from "react-toastify";
+import Notify from "../notify/Notify";
 
 type Props = {
   setIsShowModalMyOfferList: (value: boolean) => void;
@@ -68,12 +70,21 @@ export default function ModalMyOfferList(props: Props) {
       landTokenId: landTokenId,
       requestUserTokenId: authStore.account.userTokenId
     };
-    const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
-    if (cancelOfferResponse) {
+    try {
+      const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
+      if (cancelOfferResponse) {
+        setTimeout(() => {
+          getOfferForThisLand()
+          setLoading(index, false)
+          Notify.notifySuccess('Cancel Offering Successfully')
+        }, 2000);
+      }    
+    } catch (error) {
+      console.log(error)
       setTimeout(() => {
-        getOfferForThisLand()
+        Notify.notifyError('Cancel Offering Failed')
         setLoading(index, false)
-      }, 2000);
+      }, 2000)
     }
   }
 
@@ -167,6 +178,7 @@ export default function ModalMyOfferList(props: Props) {
           })}
         </div>
       </div>
+      <ToastContainer theme='colored' style={{marginTop: '50px'}}/>
     </div>
   );
 }
