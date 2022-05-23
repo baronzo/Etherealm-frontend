@@ -8,6 +8,7 @@ import HirePurchasePostRequestModel from "../../models/hirePurchase/HirePurchase
 import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
 import HirePurchasePostResponseModel from "../../models/hirePurchase/HirePurchasePostResponseModel";
 import ContractStore from "../../store/contract";
+import Notify from "../notify/Notify";
 
 type Props = {
   landDetails: LandModel;
@@ -84,13 +85,20 @@ export default function ModalHirePurchase(props: Props) {
       endDate: endDate,
       fees: period.value! > 3 ? fees : platformFees
     }
-    if(checked) {
-      const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
-      if (hirePuechaseResponse) {
-        setisLoading(false)
-        props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
-        props.setIsShowModalHirePurchase(false)
-      }
+    try {
+      if(checked) {
+        const hirePuechaseResponse: HirePurchasePostResponseModel = await hirePurchaseService.postHirePurchaseLand(bodyRequest)
+        if (hirePuechaseResponse) {
+          setisLoading(false)
+          props.onHirePurchaseSuccess(hirePuechaseResponse.landTokenId)
+          props.setIsShowModalHirePurchase(false)
+          Notify.notifySuccess('Hire purchase land successfully')
+        }
+      }    
+    } catch (error) {
+      console.log(error)
+      setisLoading(false)
+      Notify.notifyError('Hire purchase land failed')
     }
   }
 
