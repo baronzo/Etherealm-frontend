@@ -39,11 +39,11 @@ export default function ModalOffer(props: Props) {
       setIsLoading(false)
       props.setIsShowModalOffer(false)
       props.fetchOffer()
-      Notify.notifySuccess('Offer this land successfully')
+      Notify.notifySuccess(`offer land ${props.landOffer.landName} successfully`)
     } catch (error) {
       console.error(error)
       setIsLoading(false)
-      Notify.notifyError('Offer this land failed !!')
+      Notify.notifyError(`offer land ${props.landOffer.landName} failed !!`)
     }
   }
 
