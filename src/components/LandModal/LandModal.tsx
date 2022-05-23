@@ -44,6 +44,8 @@ export default observer(function LandModal(props: IProps) {
         return 'listed'
       case 4:
         return 'listed'
+      case 6:
+        return 'hiring'
       default:
         return 'no-owner'
     }

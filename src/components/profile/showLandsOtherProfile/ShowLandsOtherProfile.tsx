@@ -127,6 +127,9 @@ export default function ShowLandsOtherProfile(props: Props) {
           <div className="topic-my-land-div">
             <p className="topic-my-land-text">Owned Lands</p>
           </div>
+          {!data.length &&
+            <div className="no-land-data">Not have Land</div>
+          }
           <div className="show-my-land">
             {data.map((item: LandModel, index: number) => {
               return (
@@ -211,6 +214,9 @@ export default function ShowLandsOtherProfile(props: Props) {
           <div className="topic-my-land-div">
             <p className="topic-my-land-text">Lands for Sell on Market</p>
           </div>
+          {!data.length &&
+            <div className="no-land-data">Not have Land</div>
+          }
           <div className="show-my-land">
             {data.map((item: LandModel, index: number) => {
               return (
@@ -264,6 +270,9 @@ export default function ShowLandsOtherProfile(props: Props) {
           <div className="topic-my-land-div">
             <p className="topic-my-land-text">Lands for Rent on Market</p>
           </div>
+          {!data.length &&
+            <div className="no-land-data">Not have Land</div>
+          }
           <div className="show-my-land">
             {data.map((item: LandModel, index: number) => {
               return (
