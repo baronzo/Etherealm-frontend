@@ -131,7 +131,7 @@ export default observer(function LandModal(props: IProps) {
             </div>
           </div>
           <div className='land-image-div'>
-              <img className='land-image' src={land.landAssets ? land.landAssets : '/land.png'} alt="" />
+              <img className='land-image' src={land.landAssets ? land.landAssets : '/default.jpg'} alt="" />
           </div>
           <div className={`tags-land ${mapStatusToClassName(land.landStatus.landStatusId)}`}>{land.landStatus.landStatusName}</div>
           <div className="land-description">

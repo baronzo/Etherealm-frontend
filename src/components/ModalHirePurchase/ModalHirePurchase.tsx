@@ -139,7 +139,7 @@ export default function ModalHirePurchase(props: Props) {
         <div className="image-div">
           <img
             className="image-profile"
-            src={props.landDetails.landAssets? props.landDetails.landAssets: "/map.jpg"}
+            src={props.landDetails.landAssets? props.landDetails.landAssets: "/default.jpg"}
             alt=""
           />
         </div>

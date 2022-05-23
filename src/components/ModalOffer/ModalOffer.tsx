@@ -63,7 +63,7 @@ export default function ModalOffer(props: Props) {
           <MdClose className="close-icon" onClick={() => props.setIsShowModalOffer(false)}/>
         </div>
         <div id="imageLandBox">
-          <img className="image-land" src={props.landOffer.landAssets ? props.landOffer.landAssets : "/map.jpg"} alt="" />
+          <img className="image-land" src={props.landOffer.landAssets ? props.landOffer.landAssets : "/default.jpg"} alt="" />
         </div>
         <div id="landNameBox">
           <p className='land-name'>{props.landOffer.landName}</p>

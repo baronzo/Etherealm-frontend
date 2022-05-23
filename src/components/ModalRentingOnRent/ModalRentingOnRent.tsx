@@ -21,7 +21,7 @@ export default function ModalRentingOnRent({ setIsShowModalRentingOnRent }: Prop
                 </div>
                 <div id="detailSectionOnRent">
                     <div className="image-section">
-                        <img className='land-image' src="/map.jpg" alt="" />
+                        <img className='land-image' src="/default.jpg" alt="" />
                         <div className='land-name'>
                             <p className='land-name-text'>Anicha Land</p>
                             <FaInfoCircle className='icon-info' />

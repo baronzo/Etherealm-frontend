@@ -134,7 +134,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                   <div className="land-image-div">
                     <img
                       className="land-image"
-                      src={item.landAssets ? item.landAssets : "/map.jpg"}
+                      src={item.landAssets ? item.landAssets : "/default.jpg"}
                       alt=""
                     />
                   </div>
@@ -218,7 +218,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                   <div className="land-image-div">
                     <img
                       className="land-image"
-                      src={item.landAssets ? item.landAssets : "/map.jpg"}
+                      src={item.landAssets ? item.landAssets : "/default.jpg"}
                       alt=""
                     />
                   </div>
@@ -269,7 +269,7 @@ export default function ShowLandsOtherProfile(props: Props) {
               return (
                 <div className="land-card" key={index} onClick={() => goToDetailsPage(item.landTokenId)}>
                   <div className="land-image-div">
-                    <img className="land-image" src={item.landAssets ? item.landAssets : "/map.jpg"} alt="" />
+                    <img className="land-image" src={item.landAssets ? item.landAssets : "/default.jpg"} alt="" />
                   </div>
                   <div className="land-detail">
                     <div className="name-location">
