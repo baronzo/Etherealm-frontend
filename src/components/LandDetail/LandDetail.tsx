@@ -31,6 +31,8 @@ import LandMarketModel from '../../models/market/LandMarketModel'
 import HirePurchaseDetailResponseModel from '../../models/hirePurchase/HirePurchaseDetailResponseModel'
 import HirePurchaseService from '../../services/hirePurchase/HirePurchaseService'
 import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
+import { ToastContainer } from 'react-toastify'
+import Notify from '../notify/Notify'
 
 interface IParams {
   landTokenId: string
@@ -120,26 +122,36 @@ export default function LandDetail() {
 
   async function buyLandDetailOnMarketFromApi(landDetails: LandModel): Promise<void> {
     setIsLoadingBuy(true)
-    if (authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
-      const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, Number(landDetails.price))
-      if (isSuccess) {
-        setTimeout(() => {
-          getLandDetailsFromApi()
-          setIsLoadingBuy(false)
-        }, 1500);
+    try {
+      if (authStore.account.userTokenId !== landDetails.landOwnerTokenId) {
+        const isSuccess: boolean = await contractStore.buyLand(landDetails.landTokenId, landDetails.landOwnerTokenId, Number(landDetails.price))
+        if (isSuccess) {
+          setTimeout(() => {
+            getLandDetailsFromApi()
+            setIsLoadingBuy(false)
+          }, 1500);
+        }
+        Notify.notifySuccess('Buy this land successfully')
       }
+    } catch (error) {
+      Notify.notifyError('Buy this land failed !!')
     }
   }
 
   async function cancelLandOnMarketAPI(landTokenId: string, ownerTokenId: string): Promise<void> {
     setIsLoading(true)
     let bodyCancel: CancelListedOnMarketRequestModel = { landTokenId: landTokenId, ownerTokenId: ownerTokenId }
-    const cancelIsSuccess: string = await landMarketService.cancelListedOnMarket(bodyCancel)
-    if (cancelIsSuccess) {
-      setTimeout(() => {
-        getLandDetailsFromApi()
-        setIsLoading(false)
-      }, 1500);
+    try {
+      const cancelIsSuccess: string = await landMarketService.cancelListedOnMarket(bodyCancel)
+      if (cancelIsSuccess) {
+        setTimeout(() => {
+          getLandDetailsFromApi()
+          setIsLoading(false)
+        }, 1500);
+        Notify.notifySuccess('Cancel land list on market successfully')
+      }
+    } catch (error) {
+      Notify.notifyError('Cancel land list on market failed !!')
     }
   }
 
@@ -157,13 +169,18 @@ export default function LandDetail() {
       landTokenId: landTokenId,
       requestUserTokenId: authStore.account.userTokenId
     };
-    const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
-    if (cancelOfferResponse) {
-      setTimeout(() => {
-        getLandDetailsFromApi()
-        setisCancelLoading(false)
-        setIsShowCancelOffer(false)
-      }, 1300);
+    try {
+      const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
+      if (cancelOfferResponse) {
+        setTimeout(() => {
+          getLandDetailsFromApi()
+          setisCancelLoading(false)
+          setIsShowCancelOffer(false)
+        }, 1300);
+      }
+      Notify.notifySuccess('Cancel offering this land successfully')
+    } catch (error) {
+      Notify.notifyError('Cancel offering this land failed !!')
     }
   }
 
@@ -325,7 +342,7 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 2 && <button className='button-view-offer' onClick={() => setIsShowModalOffreList(true)}>View offer list</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 4 && 
                   <div className='cancel-rent'>
-                    <p className='text-price'>Listed on market for {landDetails.price} eth/month</p>
+                    <p className='text-price'>Listed on market for {landDetailsForRenting.price} ETH / {landDetailsForRenting.rentType.rentTypeText}</p>
                     {!isLoading ?
                       (<button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>)
                       :
@@ -349,7 +366,8 @@ export default function LandDetail() {
                 }
                 {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && 
                   <div className='cancel-rent'>
-                    <p className='text-price'>Payable {hirePurchase.price} ETH / Month (Next Payment {new Date(hirePurchase.nextPayment).toLocaleString().replace(',', '')})</p>
+                    <p className='text-price'>Payable {hirePurchase.price} ETH / Month</p>
+                    <p className='text-price'>(Next Payment {new Date(hirePurchase.nextPayment).toLocaleString().replace(',', '')})</p>
                     { new Date(Date.now()).toLocaleString().replace(',', '').slice(0, 9) === new Date(hirePurchase.nextPayment!).toLocaleString().replace(',', '').slice(0, 9) ? <button className="button-price-land">Pay {landDetails.price} ETH </button> : ''}
                   </div>
                 }
@@ -363,12 +381,13 @@ export default function LandDetail() {
           </div>
         </div>
       </div>
-      {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi} />}
+      {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi}/>}
       {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails} />}
       {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails} fetchOffer={getLandDetailsFromApi} />}
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
       {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails} />}
       {isShowModalrenting && <ModalRenting setIsShowModalRenting={setIsShowModalrenting} land={landDetailsForRenting} fetchDetail={getDataFromApi}/>}
+      {<ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
       {loadingPage && <ModalLoadingPage/>}
     </>
   )
