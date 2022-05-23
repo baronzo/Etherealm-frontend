@@ -114,23 +114,34 @@ export default function Map({ }: Props) {
         }
         setCameraOffSet({x: (window.innerWidth / 2) - (width / 2), y: ((window.innerHeight - navbarSize) / 2) - (height / 2)})
         mapSearchParamsToVariable()
-        setUrl()
+        // setUrl()
         setTimeout(() => {
             setLoadingPage(false)
         }, 500)
     }
 
-    function setUrl(): void {
+    function setUrl(cameraZoomParam: number = cameraZoom, cameraOffetSetParams: LocationModel = cameraOffSet): void {
         // window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}&currentTransformedCursor=${currentTransformedCursor.x},${currentTransformedCursor.y}`)
-        window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoom}&cameraOffSet=${cameraOffSet.x},${cameraOffSet.y}`)
+        window.history.replaceState(null, '', window.location.pathname + `?zoom=${cameraZoomParam}&cameraOffSet=${cameraOffetSetParams.x},${cameraOffetSetParams.y}`)
+    }
+
+    function autoFocusOnStart(): void {
+        cameraZoomRef.current = 2
+        cameraZoom = 2
+        setCameraOffSet({x: 138.9340500894599, y: -580.6815401569717})
+        setUrl(cameraZoom, {x: 138.9340500894599, y: -580.6815401569717})
     }
 
     function mapSearchParamsToVariable(): void {
-        cameraZoomRef.current = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
-        cameraZoom = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
-
-        const cameraOffSetParams: Array<string> = searchParams.get('cameraOffSet')?.split(',') ?? ['0', '0']
-        setCameraOffSet({x: Number(cameraOffSetParams[0]), y: Number(cameraOffSetParams[1])})
+        if (!searchParams.get('zoom') && !searchParams.get('cameraOffSet')) {
+            autoFocusOnStart()
+        } else {
+            cameraZoomRef.current = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
+            cameraZoom = searchParams.get('zoom') ? Number(searchParams.get('zoom')) : 1
+    
+            const cameraOffSetParams: Array<string> = searchParams.get('cameraOffSet')?.split(',') ?? ['0', '0']
+            setCameraOffSet({x: Number(cameraOffSetParams[0]), y: Number(cameraOffSetParams[1])})
+        }
 
         // const currentTransformedCursorParams: Array<string> = searchParams.get('currentTransformedCursor')?.split(',') ?? ['0', '0']
         // currentTransformedCursor = {x: Number(currentTransformedCursorParams[0]), y: Number(currentTransformedCursorParams[1])}
