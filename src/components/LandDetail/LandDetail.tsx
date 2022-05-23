@@ -201,8 +201,8 @@ export default function LandDetail() {
               {isOwner && landDetails.landStatus.landStatusId === 2 && <div className="edit-land" onClick={() => goToEditPage(landDetails.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
               {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
               {landDetails.landStatus.landStatusId === 6 && hirePurchase.renterTokenId.userTokenId === authStore.account.userTokenId && <div className="edit-land" onClick={() => goToEditPage(hirePurchase.landTokenId.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>}
-              {!isOwner && landDetails.landStatus.landStatusId === 5 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
-              {isOwner && landDetails.landStatus.landStatusId === 5 && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
+              {landDetails.landStatus.landStatusId === 5 && !isOwner && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
+              {landDetails.landStatus.landStatusId === 5 && isOwner && <button className='detail-rent' onClick={() => setIsShowModalDetailRenting(true)}><i className="far fa-file-alt icon-doc"></i></button> }
               {authStore.account.userTokenId === renter.renterTokenId.userTokenId && <div className="edit-land" onClick={() => goToEditPage(renter.landTokenId.landTokenId)}><BsFillGearFill className="edit-icon" /> Edit this land</div>  }
               <div className="tags">{landDetails.landStatus.landStatusName}</div>
             </div>
