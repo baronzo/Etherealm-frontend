@@ -14,7 +14,7 @@
 
     #offerBox {
         width: 650px;
-        height: 610px;
+        height: 650px;
         margin: 60px 0 0 0;
         padding: 0;
         box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
@@ -74,9 +74,7 @@
             }
         }
         .show-offer-list {
-            display: flex;
-            flex-direction: column;
-            height: 510px;
+            height: 540px;
             margin: 0;
             padding: 0;
             overflow-y: scroll;
@@ -121,7 +119,7 @@
                     align-items: flex-start;
                     justify-content: center;
                     flex-direction: column;
-                    width: 300px;
+                    width: 260px;
                     margin: 0;
                     padding: 0;
                     .land-and-location {
@@ -197,7 +195,7 @@
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    width: 130px;
+                    width: 170px;
                     margin: 0;
                     padding: 22px 0 0 10px;
                     .offer-price-label {
