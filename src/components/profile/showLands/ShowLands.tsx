@@ -141,7 +141,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landAssets ? item.landAssets : '/map.jpg'} alt="" />
+                                        <img className='land-image' src={item.landAssets ? item.landAssets : '/default.jpg'} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
@@ -191,7 +191,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landAssets ? item.landAssets : '/map.jpg'} alt="" />
+                                        <img className='land-image' src={item.landAssets ? item.landAssets : '/default.jpg'} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
@@ -238,7 +238,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.landTokenId} onClick={() => goToDetailsPage(item.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landAssets ? item.landAssets : "/map.jpg"} alt="" />
+                                        <img className='land-image' src={item.landAssets ? item.landAssets : "/default.jpg"} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
@@ -283,7 +283,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.landTokenId.landTokenId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/default.jpg"} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
@@ -329,7 +329,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.hirePurchaseId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/default.jpg"} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>
@@ -375,7 +375,7 @@ export default function ShowLands(props: Props) {
                             return (
                                 <div className='land-card' key={item.rentId} onClick={() => goToDetailsPage(item.landTokenId.landTokenId)}>
                                     <div className='land-image-div'>
-                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/map.jpg"} alt="" />
+                                        <img className='land-image' src={item.landTokenId.landAssets ? item.landTokenId.landAssets : "/default.jpg"} alt="" />
                                     </div>
                                     <div className='land-detail'>
                                         <div className='name-location'>

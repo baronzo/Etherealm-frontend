@@ -84,7 +84,7 @@ export default function ModalEditPriceListing(props: Props) {
         </div>
         <div className="image-upload-or-link">
           <div className="image-div">
-            <img className="image-profile" src={props.landDetails.landAssets ? props.landDetails.landAssets : "/map.jpg"} alt="" />
+            <img className="image-profile" src={props.landDetails.landAssets ? props.landDetails.landAssets : "/default.jpg"} alt="" />
           </div>
           <p className="text-land-name">{props.landDetails.landName}</p>
         </div>
