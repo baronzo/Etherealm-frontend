@@ -235,7 +235,7 @@ export default function LandDetail() {
               </div>
               <div className="detail-url">
                 <div className="text-title">Link</div>
-                <div className="text-url">http://www.google.com</div>
+                <div className="text-url">{landDetails.landUrl}</div>
               </div>
               <div className="button-section">
                 <button className='button-size'>SIZE: 1x1</button>
