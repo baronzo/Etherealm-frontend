@@ -9,6 +9,7 @@ import ContractStore from "../../store/contract";
 import AccountModel from "../../models/auth/AccountModel";
 import authStore from "../../store/auth";
 import { BiTransferAlt } from "react-icons/bi";
+import Notify from "../notify/Notify";
 
 interface IProps { }
 
@@ -24,6 +25,17 @@ export default observer(function Navbar(props: IProps) {
 
   const history = useHistory();
 
+  useEffect(() => {
+    checkMetamask()
+  }, [])
+
+  async function checkMetamask(): Promise<void> {
+    const isHave: boolean = await authStore.checkUserHaveMetamask()
+    if (!isHave) {
+      Notify.notifyWarning('Please install Metamask.')
+    }
+  }
+
   async function onLogin(): Promise<void> {
     const accountResponse = await authStore.login();
     if (accountResponse.userTokenId) {
@@ -38,7 +50,9 @@ export default observer(function Navbar(props: IProps) {
   }
 
   async function onAccountChangeHandler(): Promise<void> {
-    authStore.accountChange();
+    await authStore.accountChange();
+    const point: number = await contractStore.getPoint(authStore.account.userTokenId)
+    authStore.setPoint(point)
   }
 
   function goToProfilePage(address: string) {
@@ -58,6 +72,9 @@ export default observer(function Navbar(props: IProps) {
       await authStore.updateAccount()
       authStore.setPoint(result)
       setIsShowAddPoint(false)
+      Notify.notifySuccess('Deposit Points Successfully')
+    } else {
+      Notify.notifyError('Deposit Points Failed')
     }
     setisAddPointLoading(false)
   }
@@ -70,6 +87,9 @@ export default observer(function Navbar(props: IProps) {
       await authStore.updateAccount()
       authStore.setPoint(result)
       setisShowWithdrawPoint(false)
+      Notify.notifySuccess('Withdraw Points Successfully')
+    } else {
+      Notify.notifyError('Withdraw Points Failed')
     }
     setisWithDrawPointLoading(false)
   }
@@ -102,7 +122,7 @@ export default observer(function Navbar(props: IProps) {
     }
   }
 
-  (window as any).ethereum.on("accountsChanged", onAccountChangeHandler);
+  (window as any).ethereum?.on("accountsChanged", onAccountChangeHandler);
 
   return (
     <div id="navbar">

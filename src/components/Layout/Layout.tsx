@@ -14,6 +14,7 @@ import OthersProfile from '../profile/othersProfile/OthersProfile'
 import { observer } from 'mobx-react'
 import AuthStore from '../../store/auth'
 import AccountModel from '../../models/auth/AccountModel'
+import { ToastContainer } from 'react-toastify'
 
 interface IProps {
     children: React.FunctionComponent
@@ -26,6 +27,7 @@ export default observer(function Layout(props: IProps): ReactElement {
 
     return (
         <div id='layout' >
+            <ToastContainer theme='colored' style={{marginTop: '50px'}}/>
             <Navbar/>
             <props.children/>
         </div>

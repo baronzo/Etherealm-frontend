@@ -92,34 +92,14 @@ export default function Map({ }: Props) {
                         context.strokeRect(x, y, 20, 20)
                     }
                 }
-                // let lastHaveAssetIndex = 0
-                // for (let index = landLists.length - 1; index >= 0; index--) {
-                //     if (landLists[index].landAssets) {
-                //         lastHaveAssetIndex = index
-                //         break
-                //     }
-                // }
                 landLists.forEach((foundedLand, index) => {
                     context.fillStyle = "#2AC161";
                     context.fillRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
                     context.strokeStyle = "#ffffff";
                     context.strokeRect(foundedLand.landPosition.x, foundedLand.landPosition.y, (foundedLand.landPosition.x + foundedLand.landSize.landSize) - foundedLand.landPosition.x, (foundedLand.landPosition.y + foundedLand.landSize.landSize) - foundedLand.landPosition.y)
-                    // if (foundedLand.landAssets) {
-                    //     let image = new Image()
-                    //     image.onload = function() {
-                    //         context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
-                    //         setbase64Image(canvasRef.current!.toDataURL('image/webp', 1))
-
-                    //     };
-                    //     // image.src = `https://i.ibb.co/DgHP5JP/15c308fdcd53.jpg`
-                    //     image.src = foundedLand.landAssets
-                    //     image.crossOrigin = 'anonymous'
-                    //     // context.drawImage(image, foundedLand.landPosition.x, foundedLand.landPosition.y, foundedLand.landSize.landSize, foundedLand.landSize.landSize)
-                    // }
                 })
                 context.save()
                 setbase64Image(canvasRef.current!.toDataURL())
-                // changeSelectedColor()
             }
         }
     }

@@ -4,7 +4,20 @@ class Notify {
   public static notifyError(text: string): void {
     toast.error(`${text} !!`, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+      })
+  }
+
+  public static notifyWarning(text: string): void {
+    toast.warn(`${text} !!`, {
+      position: "top-right",
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -17,7 +30,7 @@ class Notify {
   public static notifySuccess(text: string): void {
     toast.success(`🦄 ${text}`), {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

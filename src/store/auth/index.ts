@@ -22,7 +22,19 @@ class AuthStore {
   @action
   public async checkLogin(): Promise<void> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
+      await this.checkUserHaveMetamask()
       this.account = JSON.parse(window.localStorage.getItem('account')!)
+    }
+  }
+
+  @action
+  public async checkUserHaveMetamask(): Promise<boolean> {
+    let eth = (window as any).ethereum
+    if (eth) {
+      let accounts = await eth.request({method: 'eth_requestAccounts'})
+      return true
+    } else {
+      return false
     }
   }
 
@@ -95,9 +107,10 @@ class AuthStore {
 
   @action
   public async accountChange(): Promise<void> {
+    // await this.checkUserHaveMetamask()
     this.account = await this.getAccount()
     window.localStorage.setItem('account', JSON.stringify(this.account))
-    this.setAxiosHeader()
+    // this.setAxiosHeader()
   }
 
   @action
