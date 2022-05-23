@@ -14,7 +14,7 @@
 
     #offerBox {
         width: 650px;
-        height: 610px;
+        height: 650px;
         margin: 60px 0 0 0;
         padding: 0;
         box-shadow: 0.5px 0.5px 3px 2px rgba(0, 0, 0, 0.25);
@@ -80,9 +80,7 @@
             }
         }
         .show-offer-list {
-            display: flex;
-            flex-direction: column;
-            height: 510px;
+            height: 540px;
             margin: 0;
             padding: 0;
             overflow-y: scroll;
