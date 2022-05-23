@@ -58,7 +58,7 @@ export default function ModalRentingDetail(props: Props) {
             setRentingDetails(rentingResponse)
             setPaymentHistories(rentingResponse.paymentHistories)
             setIsOwnerOfLand(rentingResponse.landTokenId.landOwnerTokenId === authStore.account.userTokenId ? true : false)
-            calculatNetAmount()
+            calculatNetAmount(rentingResponse.paymentHistories)
             showRemaining(rentingResponse.endDate)
         }
     }
@@ -73,10 +73,10 @@ export default function ModalRentingDetail(props: Props) {
         }
     }
 
-    const calculatNetAmount = ():void => {
+    const calculatNetAmount = (paymentList: Array<PaymentHistoryModel>):void => {
         let totalReceive:number = 0
         let totalFees:number = 0
-        paymentHistories.forEach(element => {
+        paymentList.forEach(element => {
             totalReceive += element.price
             totalFees += element.fees
         });
