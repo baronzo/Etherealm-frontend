@@ -17,6 +17,7 @@ import ModalRentingOnRent from '../../ModalRentingOnRent/ModalRentingOnRent'
 import ModalRentingDetail from '../../ModalRentingDetail/ModalRentingDetail'
 import LandRentResponseModel from '../../../models/rent/LandRentResponseModel'
 import ModalLoadingPage from '../../ModalLoadingPage/ModalLoadingPage'
+import { ToastContainer } from 'react-toastify'
 
 interface IParams {
     userTokenId: string
@@ -110,6 +111,7 @@ export default function OthersProfile({ }: Props) {
             </div>
             {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={selectedLand} fetchOffer={getDataFromAPI}/>}
             {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand}/>}
+            {<ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
             {loadingPage && <ModalLoadingPage/>}
         </div>
     )

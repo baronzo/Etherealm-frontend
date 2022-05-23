@@ -19,6 +19,7 @@ import OfferService from "../../services/offer/OfferService";
 import ContractStore from "../../store/contract";
 import Select from 'react-select'
 import "./ModalOfferList.scss";
+import Notify from "../notify/Notify";
 
 type Props = {
   setIsShowModalOfferList: (value: boolean) => void;
@@ -92,10 +93,15 @@ export default function ModalOfferList(props: Props) {
     setLoading(index, true)
     const valid: boolean = await validatePoints(item)
     if (valid) {
-      const isSuccess: boolean = await contractStore.confirmOffer(item.landTokenId.landTokenId, item.fromUserTokenId.userTokenId, item.offerPrice)
-      if (isSuccess) {
-        props.fetchLands()
-        props.setIsShowModalOfferList(false)
+      try {
+        const isSuccess: boolean = await contractStore.confirmOffer(item.landTokenId.landTokenId, item.fromUserTokenId.userTokenId, item.offerPrice)
+        if (isSuccess) {
+          props.fetchLands()
+          props.setIsShowModalOfferList(false)
+        }
+        Notify.notifySuccess(`Confirm offer ${offerlist[index].fromUserTokenId.userName} successfully`)
+      } catch (error) {
+        Notify.notifyError(`Confirm offer ${offerlist[index].fromUserTokenId.userName} failed !!`)
       }
     } else {
       changButtonStatus(index, 3)

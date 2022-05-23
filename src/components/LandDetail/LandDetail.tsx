@@ -382,7 +382,7 @@ export default function LandDetail() {
         </div>
       </div>
       {isShowListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowListOnMarket} land={landDetails} fetchLands={getLandDetailsFromApi}/>}
-      {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landDetails={landDetails} />}
+      {isShowEditPrice && <ModalEditPriceListing setIsShowModalEditPrice={setIsShowEditPrice} fetchDetail={getLandDetailsFromApi} landMarketDetails={landDetailsForRenting} landDetails={landDetails} />}
       {isShowModalOffer && <ModalOffer setIsShowModalOffer={setIsShowModalOffer} landOffer={landDetails} fetchOffer={getLandDetailsFromApi} />}
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
       {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails} />}

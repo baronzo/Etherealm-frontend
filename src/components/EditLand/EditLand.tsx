@@ -134,7 +134,7 @@ export default function EditLand() {
     if (value < 0) {
       setMinimumPrice(0)
       setLand({...land, ...{minimumOfferPrice: 0.001}})
-    } else if (value >= 0) {
+    } else if (value > 0) {
       setMinimumPrice(value)
       setLand({...land, ...{minimumOfferPrice: minimumPrice}})
     }

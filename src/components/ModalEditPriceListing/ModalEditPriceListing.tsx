@@ -7,16 +7,18 @@ import ListOnMarketResponseModel from "../../models/market/ListOnMarketResponseM
 import LandMarketService from "../../services/market/LandMarketService";
 import LandModel from "../../models/lands/LandModel";
 import Notify from "../notify/Notify";
+import LandMarketModel from "../../models/market/LandMarketModel";
 
 type Props = {
   setIsShowModalEditPrice: (value: boolean) => void;
   fetchDetail: () => void;
   landDetails: LandModel;
+  landMarketDetails: LandMarketModel;
 };
 
 export default function ModalEditPriceListing(props: Props) {
   const landMarketService: LandMarketService = new LandMarketService();
-  const [price, setPrice] = useState<number>(0.001)
+  const [price, setPrice] = useState<number>(props.landMarketDetails.price)
   const [isLoading, setisLoading] = useState<boolean>(false)
   const [totalReceive, setTotalReceive] = useState<number>(0)
   const [fee, setFee] = useState<number>(0)
@@ -32,7 +34,7 @@ export default function ModalEditPriceListing(props: Props) {
         let bodyUpdatePrice: UpdatePriceListedOnMarketRequestModel = {
           landTokenId: props.landDetails.landTokenId,
           ownerTokenId: props.landDetails.landOwnerTokenId,
-          price: Number(price)
+          price: price
         };
         const updateResponse: ListOnMarketResponseModel = await landMarketService.updatePriceListedOnMarket(bodyUpdatePrice);
         if (updateResponse) {
