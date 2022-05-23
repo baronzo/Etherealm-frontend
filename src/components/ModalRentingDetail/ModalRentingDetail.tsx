@@ -33,9 +33,10 @@ export default function ModalRentingDetail(props: Props) {
     }, [])
 
     async function getRentingDetailsAPI() {
-        if (props.isHirePurchase) {
+        if (props.land.landStatus.landStatusId === 6) {
             await getRentPurchase()
-        }else{
+        }
+        if (props.land.landStatus.landStatusId === 5) {
             await getRentingDetails()
         }
     }
@@ -113,7 +114,7 @@ export default function ModalRentingDetail(props: Props) {
                             <FaInfoCircle className='icon-info' />
                         </div>
                     </div>
-                    {!props.isHirePurchase ?
+                    {props.land.landStatus.landStatusId === 5 ?
                     <div className="detail-section">
                         <div className='land-detail'>
                             <div className='detail-item'>
@@ -137,7 +138,7 @@ export default function ModalRentingDetail(props: Props) {
                                 <div className='detail-value'><p className='detail-value-text'>{remainingText}</p></div>
                             </div>
                         </div>
-                        {isOwnerOfLand &&
+                        {isOwnerOfLand && 
                             <div className='receive-detail'>
                                 <div className='receive-item'>
                                     <div className='receive-label'><p className='receive-label-text'>Total receive</p></div>
