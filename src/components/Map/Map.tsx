@@ -88,7 +88,7 @@ export default function Map({ }: Props) {
             if (context) {
                 for (let x = 0; x < width; x+=20) {
                     for (let y = 0; y < height; y+=20) {
-                        context.strokeStyle = "#ffffff";
+                        context.strokeStyle = "#cccccc";
                         context.strokeRect(x, y, 20, 20)
                     }
                 }
@@ -244,6 +244,8 @@ export default function Map({ }: Props) {
             const rect = canvasRef.current.getBoundingClientRect();
             canvasRef.current.width = window.innerWidth
             canvasRef.current.height = window.innerHeight - navbarSize
+            // canvasRef.current.width = this.naturalWidth;
+            // canvasRef.current.height = window.innerHeight - navbarSize
             if (context) {
                 context.translate(rect.width / 2, rect.height / 2)
                 context.scale(cameraZoom, cameraZoom)
