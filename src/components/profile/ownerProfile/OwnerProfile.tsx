@@ -24,6 +24,7 @@ import ModalMyOfferList from '../../ModalMyOfferList/ModalMyOfferList'
 import LandRentResponseModel from "../../../models/rent/LandRentResponseModel"
 import ModalLoadingPage from '../../ModalLoadingPage/ModalLoadingPage'
 import ModalUploadImage from '../../ModalUploadImage/ModalUploadImage'
+import { ToastContainer } from 'react-toastify'
 
 interface IParams {
     userTokenId: string
@@ -202,12 +203,13 @@ export default observer(function Profile({ }: Props) {
                         setIsHirePurchase={setIsHirePurchase}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket}/>}
                 {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand} isHirePurchase={isHirePurchase} />}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
                 {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer} />}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList} />}
                 {loadingPage && <ModalLoadingPage/>}
+                {<ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
             </div>
 
         )

@@ -11,6 +11,7 @@ import ModalLoading from '../Loading/ModalLoading'
 import Select from 'react-select'
 import ReactSelectOptionModel from '../../models/reactSelect/ReactSelectOptionModel'
 import RentTypeModel from '../../models/rent/RentTypeModel'
+import Notify from '../notify/Notify'
 
 type Props = {
     setIsShowModalListOnMarket: (value: boolean) => void
@@ -40,7 +41,14 @@ export default function ModalListOnMarket(props: Props) {
             rentTypeText: 'Month'
         }
     ])
-    const [rentType, setRentType] = useState<RentTypeModel>()
+    const [rentType, setRentType] = useState<RentTypeModel>({
+        rentTypeId: 1,
+        rentTypeText: 'Day'
+    })
+    const [typeName, setTypeName] = useState<ReactSelectOptionModel>({
+        value: 1,
+        label: 'Day'
+    })
 
     useEffect(() => {
         calculateReceive()
@@ -49,7 +57,7 @@ export default function ModalListOnMarket(props: Props) {
     
     async function postListLandOnMarket(): Promise<void> {
         setisLoading(true)
-        if (price !== null || price !== "" || Number(price) !== 0 || !price) {
+        if (price !== null || price !== "" || price !== 0 || !price) {
             let bodyListLandOnMarket: ListLandOnMarketRequestModel = { 
                 landTokenId: props.land.landTokenId,
                 ownerUserTokenId: authStore.account.userTokenId,
@@ -58,20 +66,29 @@ export default function ModalListOnMarket(props: Props) {
                 period: null,
                 rentType: null
             }
-            const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
-            setTimeout(() => {
+            try {
+                const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
+                console.log(bodyResponse)
+                setTimeout(() => {
+                    setisLoading(false)
+                    props.fetchLands()
+                    props.setIsShowModalListOnMarket(false)
+                }, 2000)
+                Notify.notifySuccess('List for sell on market successfully') 
+            } catch (error) {
+                console.error(error)
                 setisLoading(false)
-                props.fetchLands()
-                props.setIsShowModalListOnMarket(false)
-            }, 2000)   
+                Notify.notifyError('List for sell on market failed !!!')  
+            }
         }else {
             console.error('Price is null')
+            Notify.notifyError('Price is null')
         }
     }
 
     async function rentLandOnMarket(): Promise<void> {
         setisLoading(true)
-        if (price !== null || price !== "" || Number(price) !== 0 || !price) {
+        if (price !== null || price !== "" || price !== 0 || !price) {
             let bodyListLandOnMarket: ListLandOnMarketRequestModel = { 
                 landTokenId: props.land.landTokenId,
                 ownerUserTokenId: authStore.account.userTokenId,
@@ -80,14 +97,22 @@ export default function ModalListOnMarket(props: Props) {
                 period: null,
                 rentType: rentType?.rentTypeId!
             }
-            const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
-            setTimeout(() => {
+            try {
+                const bodyResponse: ListOnMarketResponseModel = await landMarketService.listLandOnMarket(bodyListLandOnMarket)
+                setTimeout(() => {
+                    setisLoading(false)
+                    props.fetchLands()
+                    props.setIsShowModalListOnMarket(false)
+                }, 2000)
+                Notify.notifySuccess('List for rent on market successfully')
+            } catch (error) {
+                console.error(error)
                 setisLoading(false)
-                props.fetchLands()
-                props.setIsShowModalListOnMarket(false)
-            }, 2000)   
+                Notify.notifyError('List for rent on market failed !!')
+            }
         }else {
             console.error('Price is null')
+            Notify.notifyError('Price is null')
         }
     }
 
@@ -123,6 +148,7 @@ export default function ModalListOnMarket(props: Props) {
         let newType = new RentTypeModel
         newType!.rentTypeText = reactSelectOption.label
         newType!.rentTypeId = reactSelectOption.value
+        setTypeName(e)
         setRentType(newType)
     }
 
@@ -180,7 +206,7 @@ export default function ModalListOnMarket(props: Props) {
                             <div className="detail-rent">
                                 <div className='price-div'>
                                     <div className="text-price">Type</div>
-                                    <Select id="reactSelect" options={mapRentTypesToOption()} onChange={(e) => mapRentTypeToOption(e as ReactSelectOptionModel) } />
+                                    <Select id="reactSelect" options={mapRentTypesToOption()} onChange={(e) => mapRentTypeToOption(e as ReactSelectOptionModel) } value={typeName}/>
                                     <div className="text-period">Price (ETH/{rentType?.rentTypeText})</div>
                                     <div className="input-period-div">
                                         <input type="number" className='input-period' value={price} onChange={(event) => onChangeSellPrice(event)} step={0.001}/>
