@@ -14,6 +14,7 @@ type Props = {
     setIsShowModalDetailRenting: (value: boolean) => void
     land: LandModel
     isHirePurchase?: boolean 
+    rentOrHirePurchase?: number
 }
 
 export default function ModalRentingDetail(props: Props) {
@@ -33,15 +34,25 @@ export default function ModalRentingDetail(props: Props) {
     }, [])
 
     async function getRentingDetailsAPI() {
-        if (props.land.landStatus.landStatusId === 6) {
-            await getRentPurchase()
-        }
-        if (props.land.landStatus.landStatusId === 5) {
-            await getRentingDetails()
+        if (props.rentOrHirePurchase) {
+            if (props.rentOrHirePurchase === 2) {
+                await getRentPurchase()
+            }
+            else if (props.rentOrHirePurchase === 1) {
+                await getRentingDetails()
+            }
+        } else {
+            if (props.land.landStatus.landStatusId === 6) {
+                await getRentPurchase()
+            }
+            else if (props.land.landStatus.landStatusId === 5) {
+                await getRentingDetails()
+            }
         }
     }
 
     const getRentingDetails = async (): Promise<void> => {
+        console.log(props.land.landTokenId)
         const rentingResponse: RentingDetailsModel = await rentService.getRentingDetailsByLandTokenId(props.land.landTokenId)
         if (rentingResponse) {
             setRentingDetails(rentingResponse)
@@ -114,7 +125,7 @@ export default function ModalRentingDetail(props: Props) {
                             <FaInfoCircle className='icon-info' />
                         </div>
                     </div>
-                    {props.land.landStatus.landStatusId === 5 ?
+                    {props.rentOrHirePurchase === 1 || props.land.landStatus?.landStatusId === 5 ?
                     <div className="detail-section">
                         <div className='land-detail'>
                             <div className='detail-item'>
