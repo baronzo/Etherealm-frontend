@@ -53,6 +53,7 @@ export default observer(function Profile({ }: Props) {
     const [userProfile, setUserProfile] = useState<UserModel>(new UserModel)
     const [isHirePurchase, setIsHirePurchase] = useState<boolean>(false)
     const [loadingPage, setLoadingPage] = useState<boolean>(false)
+    const [rentOrHirePurchase, setrentOrHirePurchase] = useState<number>(0)
 
     useEffect(() => {
         getDataFromAPI()
@@ -201,10 +202,11 @@ export default observer(function Profile({ }: Props) {
                         setIsShowModalDetailRenting={setIsShowModalDetailRenting}
                         setIsShowModalOfferList={setIsShowModalOfferList}
                         setIsHirePurchase={setIsHirePurchase}
+                        setRentOrHirePurchase={setrentOrHirePurchase}
                     />
                 </div>
-                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket}/>}
-                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={selectedLand} isHirePurchase={isHirePurchase} />}
+                {isShowModalListOnMarket && <ModalListOnMarket setIsShowModalListOnMarket={setIsShowModalListOnMarket} land={selectedLand} fetchLands={handleWhenListedLandToMarket} />}
+                {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} rentOrHirePurchase={rentOrHirePurchase} land={selectedLand} isHirePurchase={isHirePurchase} />}
                 {isShowModalEditProfile && <ModalEditProfile setIsShowModalEditProfile={setIsShowModalEditProfile} fetchDetail={fetchUserProfile} />}
                 {isShowModalOfferList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOfferList} land={selectedLand} fetchLands={handleWhenConfirmOffer} />}
                 {isShowModalMyOfferList && <ModalMyOfferList setIsShowModalMyOfferList={setIsShowModalMyOfferList} />}
