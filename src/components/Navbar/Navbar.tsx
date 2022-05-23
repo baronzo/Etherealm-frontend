@@ -33,6 +33,13 @@ export default observer(function Navbar(props: IProps) {
     const isHave: boolean = await authStore.checkUserHaveMetamask()
     if (!isHave) {
       Notify.notifyWarning('Please install Metamask.')
+      setTimeout(() => {
+        window.location.href = 'https://metamask.io/'
+      }, 2500);
+    } else {
+      await authStore.login()
+      const point: number = await contractStore.getPoint(authStore.account.userTokenId)
+      authStore.setPoint(point)
     }
   }
 
