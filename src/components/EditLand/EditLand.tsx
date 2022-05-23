@@ -32,7 +32,6 @@ export default function EditLand() {
   const history = useHistory()
   const [isShowModalUploadImage, setisShowModalUploadImage] = useState<boolean>(false)
   const [loadingPage, setLoadingPage] = useState<boolean>(false)
-  const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
     getLandFromTokenId()
@@ -100,13 +99,18 @@ export default function EditLand() {
       onRecommend: land.onRecommend,
       minimumOfferPrice: land.minimumOfferPrice
     }
-    let result: LandModel = await landService.updateLand(body)
-    onChangeTab(true)
-    setLand(result)
-    setprevData(result)
-    setisLoading(false)
-    setIsSuccess(true)
-    Notify.notifySuccess('Edit Success')
+    try { 
+      let result: LandModel = await landService.updateLand(body)
+      onChangeTab(true)
+      setLand(result)
+      setprevData(result)
+      setisLoading(false)
+      Notify.notifySuccess('Edit land Success')
+    } catch (error) {
+      console.log(error)
+      Notify.notifyError('Edit land failed')
+      setisLoading(false)
+    }
   }
 
   function onChangeTab(isTab: boolean ) {
@@ -130,7 +134,7 @@ export default function EditLand() {
     if (value < 0) {
       setMinimumPrice(0)
       setLand({...land, ...{minimumOfferPrice: 0.001}})
-    } else if (value >= 0) {
+    } else if (value > 0) {
       setMinimumPrice(value)
       setLand({...land, ...{minimumOfferPrice: minimumPrice}})
     }
@@ -201,7 +205,7 @@ export default function EditLand() {
           </div>
         </div>
       </div>
-      {isSuccess && <ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
+      <ToastContainer theme='colored' style={{marginTop: '50px'}}/>
       {loadingPage && <ModalLoadingPage/>}
     </div>
   )

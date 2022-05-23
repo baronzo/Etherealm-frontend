@@ -6,16 +6,19 @@ import UpdatePriceListedOnMarketRequestModel from "../../models/market/UpdatePri
 import ListOnMarketResponseModel from "../../models/market/ListOnMarketResponseModel";
 import LandMarketService from "../../services/market/LandMarketService";
 import LandModel from "../../models/lands/LandModel";
+import Notify from "../notify/Notify";
+import LandMarketModel from "../../models/market/LandMarketModel";
 
 type Props = {
   setIsShowModalEditPrice: (value: boolean) => void;
   fetchDetail: () => void;
   landDetails: LandModel;
+  landMarketDetails: LandMarketModel;
 };
 
 export default function ModalEditPriceListing(props: Props) {
   const landMarketService: LandMarketService = new LandMarketService();
-  const [price, setPrice] = useState<string>('0.00001')
+  const [price, setPrice] = useState<number>(props.landMarketDetails.price)
   const [isLoading, setisLoading] = useState<boolean>(false)
   const [totalReceive, setTotalReceive] = useState<number>(0)
   const [fee, setFee] = useState<number>(0)
@@ -26,31 +29,37 @@ export default function ModalEditPriceListing(props: Props) {
 
   async function updatePriceLandOnMarketAPI(): Promise<void> {
     setisLoading(true)
-    if (price !== null || price !== "" || Number(price) !== 0 || !price) {
-      let bodyUpdatePrice: UpdatePriceListedOnMarketRequestModel = {
-        landTokenId: props.landDetails.landTokenId,
-        ownerTokenId: props.landDetails.landOwnerTokenId,
-        price: Number(price)
-      };
-      const updateResponse: ListOnMarketResponseModel = await landMarketService.updatePriceListedOnMarket(bodyUpdatePrice);
-      if (updateResponse) {
-        setTimeout(() => {
-          setisLoading(false)
-          props.setIsShowModalEditPrice(false)
-          props.fetchDetail();
-        }, 2000);
+    if (price !== null || price !== "" || price !== 0 || !price) {
+      try {
+        let bodyUpdatePrice: UpdatePriceListedOnMarketRequestModel = {
+          landTokenId: props.landDetails.landTokenId,
+          ownerTokenId: props.landDetails.landOwnerTokenId,
+          price: price
+        };
+        const updateResponse: ListOnMarketResponseModel = await landMarketService.updatePriceListedOnMarket(bodyUpdatePrice);
+        if (updateResponse) {
+          setTimeout(() => {
+            setisLoading(false)
+            props.setIsShowModalEditPrice(false)
+            props.fetchDetail();
+          }, 2000);
+        }
+        Notify.notifySuccess('Cancel land list on market successfully')
+      } catch (error) {
+        Notify.notifyError('Cancel land list on market failed !!')
       }
     }else {
       console.error('Price is null')
+      Notify.notifyError('Price is null')
     }
   }
 
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value: number = Number(e.target.value)
-    if (value < 0.00001) {
-      setPrice('0.00001')
-    } else if (value >= 0.00001) {
-      setPrice(e.target.value)
+    if (value < 0.001) {
+      setPrice(0.001)
+    } else if (value >= 0.001) {
+      setPrice(value)
     }
   }
 
@@ -82,7 +91,7 @@ export default function ModalEditPriceListing(props: Props) {
         <div className="name-description">
           <div className="name-input-div">
             <p className="label-name">Price(ETH)</p>
-            <input className="name-input" type="number" value={price} onChange={onChangePrice} />
+            <input className="name-input" type="number" value={price} onChange={onChangePrice} step={0.001}/>
           </div>
           <div className="fee-div">
             <div className="fee-item">
