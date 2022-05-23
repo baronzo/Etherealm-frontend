@@ -21,6 +21,7 @@ class LandModel {
   public isLoading: boolean = Boolean()
   public isDisable: boolean = Boolean()
   public landLocationList: string = String()
+  public landUrl: string = String()
 }
 
 export default LandModel

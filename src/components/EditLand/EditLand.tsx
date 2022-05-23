@@ -97,7 +97,8 @@ export default function EditLand() {
       landSize: land.landSize.landSizeId,
       landStatus: land.landStatus.landStatusId,
       onRecommend: land.onRecommend,
-      minimumOfferPrice: land.minimumOfferPrice
+      minimumOfferPrice: land.minimumOfferPrice,
+      landUrl: land.landUrl
     }
     try { 
       let result: LandModel = await landService.updateLand(body)
@@ -187,8 +188,8 @@ export default function EditLand() {
               <textarea className='input-description' value={land.landDescription} onChange={e => setLand({...land, ...{landDescription: e.target.value}})}/>
             </div>
             <div className="input-box">
-              <div className="text">URL</div>
-              <input type="text" className='input'/>
+              <div className="text">Link</div>
+              <input type="text" className='input' value={land.landUrl} onChange={e => setLand({...land, ...{landUrl: e.target.value}})}/>
             </div>
             <div className="input-box">
               <div className="text">Minimum Offer (ETH)</div>

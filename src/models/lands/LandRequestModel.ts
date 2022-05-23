@@ -10,6 +10,7 @@ class LandRequestModel {
     public landSize: number = Number()
     public onRecommend: boolean = Boolean()
     public minimumOfferPrice: number = Number()
+    public landUrl: string = String()
 }
 
 export default LandRequestModel
