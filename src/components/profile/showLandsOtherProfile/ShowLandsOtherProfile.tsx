@@ -15,6 +15,7 @@ import OffersDataOfLandModel from "../../../models/offer/OffersDataOfLandModel";
 import OfferService from "../../../services/offer/OfferService";
 import LandRentResponseModel from "../../../models/rent/LandRentResponseModel";
 import RentService from "../../../services/rent/RentService";
+import Notify from "../../notify/Notify";
 
 type Props = {
   allLands: Array<LandModel>;
@@ -53,22 +54,22 @@ export default function ShowLandsOtherProfile(props: Props) {
   }
 
 
-  async function buyLandOnMarketFromApi(
-    e: React.MouseEvent<HTMLDivElement>,
-    index: number
-  ): Promise<void> {
+  async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>, index: number): Promise<void> {
     e.stopPropagation();
-    if (
-      authStore.account.userTokenId !== props.allLands[index].landOwnerTokenId
-    ) {
-      const isSuccess: boolean = await contractStore.buyLand(
-        props.allLands[index].landTokenId,
-        props.allLands[index].landOwnerTokenId,
-        Number(props.allLands[index].price)
-      );
-      if (isSuccess) {
-        props.fetchDetail();
+    try {
+      if (authStore.account.userTokenId !== props.allLands[index].landOwnerTokenId) {
+        const isSuccess: boolean = await contractStore.buyLand(
+          props.allLands[index].landTokenId,
+          props.allLands[index].landOwnerTokenId,
+          Number(props.allLands[index].price)
+        );
+        if (isSuccess) {
+          props.fetchDetail();
+          Notify.notifySuccess(`Buy land ${props.allLands[index].landName} successfully`)
+        }
       }
+    } catch (error) {
+      Notify.notifyError(`Buy land ${props.allLands[index].landName} failed !!`)
     }
   }
 
@@ -77,23 +78,24 @@ export default function ShowLandsOtherProfile(props: Props) {
     props.setIsShowModalOffer(true);
   };
 
-  const cancelOffering = async (
-    landTokenId: string,
-    index: number
-  ): Promise<void> => {
+  const cancelOffering = async (landTokenId: string, index: number): Promise<void> => {
     setCancelLoading(index, true);
-    const bodyOfferingRequest: CancelOfferLandRequestModel = {
-      landTokenId: landTokenId,
-      requestUserTokenId: authStore.account.userTokenId,
-    };
-    const cancelOfferResponse: OffersDataOfLandModel =
-      await offerService.cancelOffering(bodyOfferingRequest);
-    if (cancelOfferResponse) {
-      setTimeout(() => {
-        props.fetchDetail();
-        setCancelLoading(index, false);
-        setIsOfferInLandList(index);
-      }, 1300);
+    try {
+      const bodyOfferingRequest: CancelOfferLandRequestModel = {
+        landTokenId: landTokenId,
+        requestUserTokenId: authStore.account.userTokenId,
+      };
+      const cancelOfferResponse: OffersDataOfLandModel = await offerService.cancelOffering(bodyOfferingRequest);
+      if (cancelOfferResponse) {
+        setTimeout(() => {
+          props.fetchDetail();
+          setCancelLoading(index, false);
+          setIsOfferInLandList(index);
+        }, 1300);
+      }
+      Notify.notifySuccess(`Cancel offer land ${props.allLands[index].landName} successfully`)
+    } catch (error) {
+      Notify.notifyError(`Cancel offer land ${props.allLands[index].landName} failed !!`)
     }
   };
 
@@ -236,6 +238,7 @@ export default function ShowLandsOtherProfile(props: Props) {
                     </div>
                     <div className="land-description">{item.landDescription}</div>
                     <div className="status-div">
+
                       <div className="buy-land" onClick={(e) =>
                         authStore.account.userTokenId === item.landOwnerTokenId ? undefined : buyLandOnMarketFromApi(e, index)
                       }>

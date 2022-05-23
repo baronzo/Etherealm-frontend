@@ -9,6 +9,7 @@ import authStore from '../../store/auth'
 import OffersLandRequestModel from '../../models/offer/OffersLandRequestModel'
 import './ModalOffer.scss'
 import OffersLandResponseModel from '../../models/offer/OffersLandResponseModel'
+import Notify from '../notify/Notify'
 
 type Props = {
   setIsShowModalOffer: (value: boolean) => void
@@ -38,9 +39,11 @@ export default function ModalOffer(props: Props) {
       setIsLoading(false)
       props.setIsShowModalOffer(false)
       props.fetchOffer()
+      Notify.notifySuccess('Offer this land successfully')
     } catch (error) {
       console.error(error)
       setIsLoading(false)
+      Notify.notifyError('Offer this land failed !!')
     }
   }
 
