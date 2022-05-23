@@ -323,7 +323,7 @@ export default function LandDetail() {
                   </div>
                 }
                 {!isOwner && landDetails.landStatus.landStatusId === 3 && (
-                  !isLoadingBuy ? <button className="button-price-land" onClick={() => buyLandDetailOnMarketFromApi(landDetails)}>Buy {landDetails.price} eth</button> 
+                  !isLoadingBuy ? <button className={`button-price-land ${!authStore.validateIsLogin() ? 'disable' : ''}`} onClick={() => authStore.validateIsLogin() ? buyLandDetailOnMarketFromApi(landDetails) : undefined}>Buy {landDetails.price} eth</button> 
                   :
                   <button className="button-price-land"><i className="fas fa-spinner fa-spin"></i></button>
                 )}

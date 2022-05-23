@@ -355,6 +355,10 @@
               cursor: pointer;
               background-color: #7645d9ef;
             }
+            &.disable {
+              background-color: #b493f8b7;
+              cursor: no-drop;
+            }
           }
           .button-view-offer {
             background-color: #1080e4;

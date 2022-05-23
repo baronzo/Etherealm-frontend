@@ -14,6 +14,7 @@ import LandMarketPaginateRequestModel from '../../models/market/LandMarketPagina
 import LandMarketPaginateResponseModel from '../../models/market/LandMarketPaginateResponseModel'
 import Pagination from '../pagination/Pagination'
 import ModalLoadingPage from '../ModalLoadingPage/ModalLoadingPage'
+import Notify from '../notify/Notify'
 
 export default function Market() {
   const contractStore = useMemo(() => new ContractStore, [])
@@ -63,19 +64,32 @@ export default function Market() {
   }
 
   async function buyLandOnMarketFromApi(e: React.MouseEvent<HTMLDivElement>,index: number): Promise<void> {
-    setSellLoading(true, index)
     e.stopPropagation()
-    if(authStore.account.userTokenId !== landsSell?.data[index].ownerUserTokenId.userTokenId) {
-      const isSuccess: boolean = await contractStore.buyLand(landsSell?.data[index].landTokenId.landTokenId!, landsSell?.data[index].ownerUserTokenId.userTokenId!, landsSell?.data[index].price!)
-      if (isSuccess) {
-        await getLandSellOnMarketByMarketType()
+    if (validateIsLogin()) {
+      setSellLoading(true, index)
+      if(authStore.account.userTokenId !== landsSell?.data[index].ownerUserTokenId.userTokenId) {
+        const isSuccess: boolean = await contractStore.buyLand(landsSell?.data[index].landTokenId.landTokenId!, landsSell?.data[index].ownerUserTokenId.userTokenId!, landsSell?.data[index].price!)
+        if (isSuccess) {
+          await getLandSellOnMarketByMarketType()
 
-        const point: number = await contractStore.getPoint(authStore.account.userTokenId)
-        await authStore.updateAccount()
-        await authStore.setPoint(point)
+          const point: number = await contractStore.getPoint(authStore.account.userTokenId)
+          await authStore.updateAccount()
+          await authStore.setPoint(point)
+          Notify.notifySuccess(`Buy ${landsSell?.data[index].landTokenId.landName} Successfully`)
+        }
       }
     }
-    // setSellLoading(false, index)
+  }
+
+  function validateIsLogin(showAlert: boolean = true): boolean {
+    if (authStore.account.userTokenId) {
+      return true
+    } else {
+      if (showAlert) {
+        Notify.notifyError(`Please Login`)
+      }
+      return false
+    }
   }
 
   async function getLandOnMarketFromAPI(): Promise<void> {
@@ -120,8 +134,10 @@ export default function Market() {
 
   function onClickRent(e: React.MouseEvent<HTMLDivElement>, item: LandMarketModel) {
     e.stopPropagation()
-    setIsShowModalRenting(true)
-    setSelectedRentLand(item)
+    if (validateIsLogin()) {
+      setIsShowModalRenting(true)
+      setSelectedRentLand(item)
+    }
   }
 
   async function handleOnSelectPage(pageNumber: number, type: number) {
@@ -172,7 +188,7 @@ export default function Market() {
                   </div>
                     {!item.isLoading
                     ?
-                      <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? e.stopPropagation() : buyLandOnMarketFromApi(e, index)}>
+                      <div className={`button ${!item.isActive || !validateIsLogin(false) ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId || !validateIsLogin(false) ? e.stopPropagation() : buyLandOnMarketFromApi(e, index)}>
                         { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                           ?
                             <>
@@ -220,7 +236,7 @@ export default function Market() {
                     </div>
                       {!item.isLoading
                       ?
-                        <div className={`button ${!item.isActive ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId ? e.stopPropagation() : onClickRent(e, item) }>
+                        <div className={`button ${!item.isActive || !validateIsLogin(false) ? 'owner' : ''}`} onClick={(e) => authStore.account.userTokenId === item.landTokenId.landOwnerTokenId || !validateIsLogin(false) ? e.stopPropagation() : onClickRent(e, item) }>
                           { authStore.account.userTokenId === item.landTokenId.landOwnerTokenId
                             ?
                               <>

@@ -11,6 +11,7 @@ import ContractStore from "../../store/contract";
 import Select from 'react-select'
 import "./ModalRenting.scss";
 import ReactSelectOptionModel from "../../models/reactSelect/ReactSelectOptionModel";
+import Notify from "../notify/Notify";
 
 type Props = {
   setIsShowModalRenting: (value: boolean) => void;
@@ -96,6 +97,7 @@ export default function ModalRenting(props: Props) {
         props.fetchDetail()
         props.setIsShowModalRenting(false)
         setisLoading(false)
+        Notify.notifySuccess(`Rent ${props.land.landTokenId.landName} Successfully`)
       }
     }
   }

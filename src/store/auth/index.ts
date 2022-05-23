@@ -28,6 +28,14 @@ class AuthStore {
   }
 
   @action
+  public validateIsLogin(): boolean {
+    if (this.account.userTokenId) {
+      return true
+    }
+    return false
+  }
+
+  @action
   public async checkUserHaveMetamask(): Promise<boolean> {
     let eth = (window as any).ethereum
     if (eth) {
