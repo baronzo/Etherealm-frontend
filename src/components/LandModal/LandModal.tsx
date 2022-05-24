@@ -158,7 +158,10 @@ export default observer(function LandModal(props: IProps) {
             <>
               {land.landUrl
                 ?
-                <div className="land-url active" onClick={onLandWebsiteClick}><FaExternalLinkAlt className='link-icon'/>{land.landUrl}</div>
+                <div className="land-url active" onClick={onLandWebsiteClick}>
+                  <FaExternalLinkAlt className='link-icon'/>
+                  <div className="land-url-text">{land.landUrl}</div>
+                </div>
                 :
                 <div className="land-url">This land doesn't have a website</div>
               }
