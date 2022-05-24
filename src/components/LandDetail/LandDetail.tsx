@@ -207,6 +207,10 @@ export default function LandDetail() {
     setHirePurchase(result)
   }
 
+  function onLandWebsiteClick(): void {
+    window.open(landDetails.landUrl, '_blank')
+  }
+
   return (
     <>
       <div id="landDetail">
@@ -235,7 +239,7 @@ export default function LandDetail() {
               </div>
               <div className="detail-url">
                 <div className="text-title">Link</div>
-                <div className="text-url">{landDetails.landUrl}</div>
+                <div className="text-url" onClick={onLandWebsiteClick}>{landDetails.landUrl ? landDetails.landUrl : '-'}</div>
               </div>
               <div className="button-section">
                 <button className='button-size'>SIZE: 1x1</button>
