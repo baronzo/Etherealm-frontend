@@ -22,8 +22,8 @@ class AuthStore {
   @action
   public async checkLogin(): Promise<void> {
     if (Cookies.get('is_login') && window.localStorage.getItem('account')) {
-      await this.checkUserHaveMetamask()
       this.account = JSON.parse(window.localStorage.getItem('account')!)
+      await this.checkUserHaveMetamask()
     }
   }
 

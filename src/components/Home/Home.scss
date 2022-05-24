@@ -73,8 +73,8 @@
     margin: 0;
     padding: 90px 0 0px 0;
     .topic-text {
-      color: black;
-      font-size: 45px;
+      color: rgb(255, 255, 255);
+      font-size: 30px;
       font-weight: bold;
       margin: 0;
     }
@@ -87,8 +87,8 @@
     padding: 0;
     height: 85%;
     .land-sell {
-      width: 30%;
-      height: 80%;
+      width: 28%;
+      height: 78%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -98,6 +98,10 @@
       background-color: #ffffff;
       border-radius: 10px;
       box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.25);
+      transition: transform .2s ease-in-out;
+      &:hover {
+        transform: scale(1.015);
+      }
       .image-matket-div {
         position: relative;
         display: flex;
@@ -159,8 +163,8 @@
       }
     }
     .land-rent {
-      width: 30%;
-      height: 80%;
+      width: 28%;
+      height: 78%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -170,6 +174,10 @@
       background-color: #ffffff;
       border-radius: 10px;
       box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.25);
+      transition: transform .2s ease-in-out;
+      &:hover {
+        transform: scale(1.015);
+      }
       .image-matket-div {
         position: relative;
         display: flex;
