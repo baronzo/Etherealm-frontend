@@ -11,6 +11,7 @@ import EditLand from './components/EditLand/EditLand';
 import LandDetail from './components/LandDetail/LandDetail';
 import Map from './components/Map/Map';
 import TestMap from './components/Map/TestMap';
+import About from './components/About/About';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route exact path='/profile/:userTokenId'><Layout children={OwnerProfile}/></Route>
           <Route exact path='/lands/:landTokenId/edit'><Layout children={EditLand}/></Route>
           <Route exact path='/lands/:landTokenId/details'><Layout children={LandDetail}/></Route>
+          <Route exact path='/about'><Layout children={About}/></Route>
           <Route exact path='*'><Layout children={Home}/></Route>
         </Switch>
       </React.Fragment>

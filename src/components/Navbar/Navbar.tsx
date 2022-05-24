@@ -161,7 +161,9 @@ export default observer(function Navbar(props: IProps) {
             </NavLink>
           </div> */}
           <div className="path">
-            <div>About</div>
+            <NavLink to={"/about"} activeClassName="active">
+              About
+            </NavLink>
           </div>
         </div>
       </div>
