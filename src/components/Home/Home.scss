@@ -60,114 +60,175 @@
     }
   }
 
-#landMarket {
-  height: 550px;
+#landOnMarket {
   background: linear-gradient(279.22deg, #F1FFFF 3.66%, #A6FEC9 44.76%, #65D6D2 100%);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  height: 100vh;
   margin: 0;
   padding: 0;
-  .image-matket-div {
+  .topic {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    height: 15%;
     margin: 0;
-    padding: 0;
-    .image-market {
-      width: 530px;
-      height: 400px;
-      object-fit: cover;
-      object-position: center;
-      margin: 0;
-    }
-  }
-  .land-box {
-    width: 60%;
-    padding: 50px 90px 50px 50px;
-    .title {
+    padding: 90px 0 0px 0;
+    .topic-text {
       color: black;
       font-size: 45px;
       font-weight: bold;
       margin: 0;
     }
-    .text-description {
-      color: black;
-      font-size: 18px;
-      font-weight: normal;
-      margin: 20px 0 0 0;
-      height: 100px;
-    }
-    .buy-land {
-      border: none;
-      height: 45px;
-      border-radius: 20px;
-      background-color: #7645D9;
-      width: 200px;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 500;
-      margin-top: 30px;
-      &:hover {
-        cursor: pointer;
-        
+  }
+  .sell-and-rent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 85%;
+    .land-sell {
+      width: 30%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 40px;
+      padding: 0;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.25);
+      .image-matket-div {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 500px;
+        height: 437px;
+        margin: 0;
+        padding: 0;
+        .cycle {
+          position: absolute;
+          background: linear-gradient(279.22deg, #FDFF9F 3.66%, #FEE250 41.24%, #FF7043 100%);
+          height: 380px;
+          width: 380px;
+          border-radius: 50%;
+          top: 0;
+        }
+        .image-market {
+          transform: scale(0.33);
+          object-fit: cover;
+          object-position: center;
+          margin: 0;
+        }
+      }
+      .land-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 10px 0 10px 0;
+        .title {
+          color: black;
+          font-size: 25px;
+          font-weight: bold;
+          margin: 0;
+        }
+        .text-description {
+          color: black;
+          font-size: 15px;
+          font-weight: 300;
+          margin: 0;
+        }
+        .buy-land {
+          border: none;
+          height: 35px;
+          border-radius: 5px;
+          background-color: #7645D9;
+          width: 350px;
+          color: #fff;
+          font-size: 16px;
+          font-weight: bold;
+          margin-top: 30px;
+          &:hover {
+            cursor: pointer;
+            background-color: #7f4ee2;
+          }
+        }
       }
     }
-  }
-}
-#landRent {
-  height: 550px;
-  background: linear-gradient(279.8deg, #E5E5E5 0%, #CFB8FD 42.04%, #69A3F1 100%);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  .image-matket-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40%;
-    margin: 0;
-    padding: 0;
-    .image-market {
-      width: 400px;
-      height: 430px;
-      object-fit: cover;
-      object-position: center;
-      margin: 0;
-    }
-  }
-  .land-box {
-    width: 60%;
-    padding: 50px 90px 50px 50px;
-    .title {
-      color: black;
-      font-size: 45px;
-      font-weight: bold;
-      margin: 0;
-    }
-    .text-description {
-      color: black;
-      font-size: 18px;
-      font-weight: normal;
-      margin: 20px 0 0 0;
-      height: 100px;
-    }
-    .buy-land {
-      border: none;
-      height: 45px;
-      border-radius: 20px;
-      background-color: #7645D9;
-      width: 200px;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 500;
-      margin-top: 30px;
-      &:hover {
-        cursor: pointer;
-        
+    .land-rent {
+      width: 30%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 40px;
+      padding: 0;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.25);
+      .image-matket-div {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 500px;
+        height: 437px;
+        margin: 0;
+        padding: 0;
+        .cycle {
+          position: absolute;
+          background: linear-gradient(279.8deg, #E5E5E5 0%, #CFB8FD 42.04%, #69A3F1 100%);
+          height: 380px;
+          width: 380px;
+          border-radius: 50%;
+          top: 0;
+          left: 4;
+        }
+        .image-market {
+          transform: scale(0.79);
+          object-fit: cover;
+          object-position: center;
+          margin: 0;
+        }
+      }
+      .land-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 10px 0 10px 0;
+        .title {
+          color: black;
+          font-size: 25px;
+          font-weight: bold;
+          margin: 0;
+        }
+        .text-description {
+          color: black;
+          font-size: 15px;
+          font-weight: 300;
+          margin: 0;
+        }
+        .buy-land {
+          border: none;
+          height: 35px;
+          border-radius: 5px;
+          background-color: #7645D9;
+          width: 350px;
+          color: #fff;
+          font-size: 16px;
+          font-weight: bold;
+          margin-top: 30px;
+          &:hover {
+            cursor: pointer;
+            background-color: #7f4ee2;
+          }
+        }
       }
     }
   }
