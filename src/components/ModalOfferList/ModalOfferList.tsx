@@ -129,7 +129,6 @@ export default function ModalOfferList(props: Props) {
 
   const goToProfile = (userToketId: string) => {
     let url: string = `/profile/${userToketId}`
-    history.push(url)
     window.open(url, '_blank')
   }
 
