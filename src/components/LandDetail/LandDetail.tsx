@@ -88,6 +88,7 @@ export default function LandDetail() {
     console.log(result)
     setlandDetails(result)
     checkYouIsBestOffer(result)
+    await getLandRentingAPI()
     await getOwnerDetailsFromUserTokenId(result.landOwnerTokenId)
     checkLandOwner(result.landOwnerTokenId)
     await getCheckIsHaveMyOfferAPI(result.landTokenId, authStore.account.userTokenId)
@@ -334,7 +335,7 @@ export default function LandDetail() {
                 {isOwner && landDetails.landStatus.landStatusId === 2 && <button className="button-price-land" onClick={() => setIsShowListOnMarket(true)}>List on Market</button>}
                 {isOwner && landDetails.landStatus.landStatusId === 3 &&
                   <div className='cancel-edit'>
-                    <p className='text-price'>Listed on market for {landDetails.price} ETH</p>
+                    <p className='text-price'>Listed on market for {landDetailsForRenting.price} ETH</p>
                     {!isLoading ? 
                       <button className="button-cancel-land" onClick={() => cancelLandOnMarketAPI(landDetails.landTokenId, ownerDetails.userTokenId)}>Cancel Listing</button>
                       :
@@ -391,7 +392,6 @@ export default function LandDetail() {
       {isShowModalOffreList && <ModalOfferList setIsShowModalOfferList={setIsShowModalOffreList} land={landDetails} fetchLands={getDataFromApi}/>}
       {isShowModalDetailRenting && <ModalRentingDetail setIsShowModalDetailRenting={setIsShowModalDetailRenting} land={landDetails} />}
       {isShowModalrenting && <ModalRenting setIsShowModalRenting={setIsShowModalrenting} land={landDetailsForRenting} fetchDetail={getDataFromApi}/>}
-      {<ToastContainer theme='colored' style={{marginTop: '50px'}}/>}
       {loadingPage && <ModalLoadingPage/>}
     </>
   )
