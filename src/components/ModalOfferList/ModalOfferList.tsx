@@ -190,7 +190,7 @@ export default function ModalOfferList(props: Props) {
                         alt=""
                       />
                     </div>
-                    <div className="detail-profile" onClick={() => goToProfile(item.fromUserTokenId.userTokenId)}>
+                    <div className="detail-profile">
                       <div className="name" onClick={() => goToProfile(item.fromUserTokenId.userTokenId)}>{item.fromUserTokenId.userName ? item.fromUserTokenId.userName : '-'}</div>
                       <div className="box">
                         <div className="token-id">
