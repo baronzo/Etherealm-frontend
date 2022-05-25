@@ -151,10 +151,19 @@
             color: #7645D9;
           }
           .text-url {
+            text-overflow: ellipsis;
+            overflow: hidden; 
+            white-space: nowrap;
             margin: 5px 0 0 0;
-            color: #787878;
+            color: #5373ff;
             font-size: 14px;
-            font-weight: normal;
+            font-weight: bold;
+            &.active {
+              cursor: pointer;
+              &:hover {
+                color: #002fff;
+              }
+            }
           }
         }
         .button-section {
