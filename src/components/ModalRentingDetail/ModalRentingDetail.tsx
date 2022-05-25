@@ -81,9 +81,9 @@ export default function ModalRentingDetail(props: Props) {
             totalFees += element.fees
         });
         let netAmount = totalReceive - totalFees
-        setTotalReceive(totalReceive)
-        setTotalFee(totalFees)
-        setNetAmount(netAmount)
+        setTotalReceive(Number(totalReceive.toFixed(6)))
+        setTotalFee(Number(totalFees.toFixed(6)))
+        setNetAmount(Number(netAmount.toFixed(6)))
     }
 
     const goToEtherScan = (transactionHash: string) => {
