@@ -44,7 +44,7 @@ export default function ModalEditPriceListing(props: Props) {
             props.fetchDetail();
           }, 2000);
         }
-        Notify.notifySuccess('Cancel land list on market successfully')
+        Notify.notifySuccess('Update price on market successfully')
       } catch (error) {
         Notify.notifyError('Cancel land list on market failed !!')
       }
