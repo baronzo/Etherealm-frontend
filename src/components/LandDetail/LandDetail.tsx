@@ -239,7 +239,7 @@ export default function LandDetail() {
               </div>
               <div className="detail-url">
                 <div className="text-title">Link</div>
-                <div className="text-url" onClick={onLandWebsiteClick}>{landDetails.landUrl ? landDetails.landUrl : '-'}</div>
+                <div className={`text-url ${landDetails.landUrl ? 'active': ''}`} onClick={landDetails.landUrl ? onLandWebsiteClick : undefined}>{landDetails.landUrl ? landDetails.landUrl : '-'}</div>
               </div>
               <div className="button-section">
                 <button className='button-size'>SIZE: {landDetails.landSize.landSize / 20}x{landDetails.landSize.landSize / 20}</button>

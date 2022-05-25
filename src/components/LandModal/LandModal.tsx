@@ -66,7 +66,7 @@ export default observer(function LandModal(props: IProps) {
       case 2:
         return (
           <div className="option">
-            <button id="offerLand" onClick={() => goToLandDetail(land.landTokenId)}>View land detail</button>
+            <button id="offerLand" onClick={() => goToLandDetail(land.landTokenId)}>View land details</button>
           </div>
         )
       case 3:
